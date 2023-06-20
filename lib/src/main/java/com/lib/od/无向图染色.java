@@ -76,7 +76,7 @@ public class 无向图染色 extends BaseTest{
         return count;
     }
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
 
         int nodeNum = scanner.nextInt();
         int edgeNum = scanner.nextInt();

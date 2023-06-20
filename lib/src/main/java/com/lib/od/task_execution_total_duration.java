@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 public class task_execution_total_duration extends BaseTest{
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         List<Integer> taskTimes = Arrays.stream(scanner.nextLine().split(",")) // 读取用户输入，将其转为数组
                 .map(Integer::parseInt) // 将数组中的每个元素转为整数类型
                 .collect(Collectors.toList()); // 将转换后的数组转为 List 集合

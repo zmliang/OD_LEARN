@@ -20,7 +20,7 @@ package com.lib.od;
 public class binary_difference_num extends BaseTest{
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         int n = scanner.nextInt();
         int[] arr = new int[n];
         for (int i = 0; i < n; i++) {

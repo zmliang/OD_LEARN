@@ -20,7 +20,7 @@ public class shooting_contest extends BaseTest{
     }
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
 
         String input = scanner.nextLine();
         ArrayList<String> operations = new ArrayList<>();

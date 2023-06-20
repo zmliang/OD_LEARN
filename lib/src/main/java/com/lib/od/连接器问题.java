@@ -29,7 +29,7 @@ import java.util.List;
  */
 public class 连接器问题 extends BaseTest{
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         String range_str = scanner.next(); // 输入区间字符串
         range_str = range_str.replaceAll("\\[|\\]", ""); // 去掉左右括号
         String[] temp_ranges = range_str.split(","); // 切分区间字符串

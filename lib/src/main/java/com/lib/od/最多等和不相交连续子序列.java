@@ -64,7 +64,7 @@ public class 最多等和不相交连续子序列 extends BaseTest{
 
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         int n = scanner.nextInt(); // 输入序列的长度
 
         int[] nums = new int[n];

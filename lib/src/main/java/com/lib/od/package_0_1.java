@@ -22,7 +22,7 @@ public class package_0_1 extends BaseTest{
 
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         int money = Integer.parseInt(scanner.nextLine());
         //转为数组
         List<Integer> topup_info = Arrays.stream(scanner.nextLine().split(" "))

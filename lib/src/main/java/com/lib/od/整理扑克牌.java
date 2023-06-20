@@ -125,7 +125,7 @@ public class 整理扑克牌 extends BaseTest{
     }
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
 
     }
 

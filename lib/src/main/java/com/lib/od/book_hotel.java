@@ -22,7 +22,7 @@ public class book_hotel extends BaseTest{
      * 3.酒店价格可能相同重复
      */
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         int numberOfWineshops = scanner.nextInt();
         int numberOfPickedWineshops = scanner.nextInt();
         int referencePrice = scanner.nextInt();

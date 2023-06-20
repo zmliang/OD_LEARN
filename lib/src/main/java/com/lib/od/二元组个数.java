@@ -21,7 +21,7 @@ import java.util.Set;
  */
 public class 二元组个数 extends BaseTest{
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         int m = scanner.nextInt(); // 输入m的值
         List<Integer> listM = new ArrayList<>(m); // 创建一个长度为m的整型列表listM
         for (int i = 0; i < m; i++) { // 循环m次

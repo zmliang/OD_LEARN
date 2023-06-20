@@ -29,7 +29,7 @@ import java.util.LinkedList;
 public class 区间交叠问题 extends BaseTest{
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         int n = Integer.parseInt(scanner.nextLine());
 
         Integer[][] ranges = new Integer[n][];

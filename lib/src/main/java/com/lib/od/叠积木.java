@@ -40,7 +40,7 @@ public class 叠积木 extends BaseTest{
 
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         String inputStr = scanner.nextLine();
         List<Integer> nums = new ArrayList<>();
         for (String str : inputStr.split(" ")) {

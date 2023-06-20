@@ -65,7 +65,7 @@ public class 最大化控制资源成本 extends BaseTest{
     }
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
 
         int numOfRanges = scanner.nextInt();
         int[][] ranges = new int[numOfRanges][3];

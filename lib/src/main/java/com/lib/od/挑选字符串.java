@@ -27,7 +27,7 @@ public class 挑选字符串 extends BaseTest{
 
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         String strA = scanner.next();
         String strB = scanner.next();
 

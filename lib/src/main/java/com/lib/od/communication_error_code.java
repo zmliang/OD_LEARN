@@ -22,7 +22,7 @@ public class communication_error_code extends BaseTest{
 
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         int n = scanner.nextInt();
         int[] nums = new int[n];
         for (int i = 0; i < n; i++) {

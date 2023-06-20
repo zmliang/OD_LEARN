@@ -11,7 +11,7 @@ public class obtain_max_software_version extends BaseTest{
 
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         // 输入版本号
         String version1 = scanner.nextLine(); // 获取第一个版本号
         String version2 = scanner.nextLine(); // 获取第二个版本号

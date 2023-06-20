@@ -45,7 +45,7 @@ import java.util.HashMap;
 public class 完美走位 extends BaseTest{
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         String s = scanner.next();
         HashMap<Character, Integer> counts = new HashMap<>();
         for (int i = 0; i < s.length(); i++) {

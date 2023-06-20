@@ -12,7 +12,7 @@ import java.util.Arrays;
 public class 等和子数组最小和 extends BaseTest{
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         int n = scanner.nextInt(); // 输入数组长度
         int[] nums = new int[n]; // 创建数组
         int sum = 0; // 记录数组元素和

@@ -25,7 +25,7 @@ package com.lib.od;
 public class 最大报酬 extends BaseTest{
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         int T = scanner.nextInt(); // 工作时长
         int n = scanner.nextInt(); // 工作数量
         int[][] works = new int[n][2]; // 工作清单，每个工作包含耗时和报酬

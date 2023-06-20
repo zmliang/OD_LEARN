@@ -10,7 +10,7 @@ public class monetary_units_exchange extends BaseTest{
 
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         int n = scanner.nextInt();
 
         // 创建字符串数组，存储输入的货币字符串

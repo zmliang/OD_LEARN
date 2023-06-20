@@ -33,7 +33,7 @@ import java.util.Arrays;
 public class 租车骑绿岛 extends BaseTest{
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         int maxWeight = scanner.nextInt();
         int n = scanner.nextInt();
         // 输入每个人的体重，存入数组中

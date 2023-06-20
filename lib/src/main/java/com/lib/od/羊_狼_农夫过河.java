@@ -38,7 +38,7 @@ public class 羊_狼_农夫过河 extends BaseTest{
     }
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
 
     }
 

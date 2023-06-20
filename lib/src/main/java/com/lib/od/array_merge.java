@@ -9,7 +9,7 @@ public class array_merge extends BaseTest{
 
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         // 处理输入
         int k = scanner.nextInt(); // 读取第一个整数，表示每个数组要取出的元素个数
         int n = scanner.nextInt(); // 读取第二个整数，表示数组的个数

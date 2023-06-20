@@ -25,7 +25,7 @@ import java.util.PriorityQueue;
 public class 最短木板长度 extends BaseTest{
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         int n = scanner.nextInt(); // 木板数量
         int m = scanner.nextInt(); // 切割次数
         scanner.nextLine();

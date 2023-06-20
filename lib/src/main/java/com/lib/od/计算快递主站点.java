@@ -48,7 +48,7 @@ public class 计算快递主站点 extends BaseTest{
     }
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         int n = scanner.nextInt();
         int[][] sites = new int[n][n]; // 定义一个n*n的矩阵sites
         for (int i = 0; i < n; i++) {

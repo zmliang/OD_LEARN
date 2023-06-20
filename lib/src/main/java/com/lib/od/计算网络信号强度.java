@@ -7,7 +7,7 @@ public class 计算网络信号强度 extends BaseTest{
 
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
 
         int rows = scanner.nextInt();
         int cols = scanner.nextInt();

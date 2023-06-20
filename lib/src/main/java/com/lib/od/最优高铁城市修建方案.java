@@ -20,7 +20,7 @@ import java.util.HashMap;
 public class 最优高铁城市修建方案 extends BaseTest{
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         int cityCount = scanner.nextInt(); // 城市数量
         int pairCount1 = scanner.nextInt(); // 可建设高铁的两城市间修建成本列表数量
         int pairCount2 = scanner.nextInt(); // 必建高铁的城市列表数量

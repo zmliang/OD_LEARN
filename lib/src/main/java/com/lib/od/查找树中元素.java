@@ -11,7 +11,7 @@ public class 查找树中元素 extends BaseTest{
 
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
 
         // 读取输入的第一行，表示节点信息的行数
         int size = Integer.parseInt(scanner.nextLine());

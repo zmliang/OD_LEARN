@@ -83,7 +83,7 @@ public class 最大平分数组 extends BaseTest{
         return false; // 如果无法将LinkedList分成m个相等和子集，返回false
     }
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         int n = scanner.nextInt(); // 读取n
 
         LinkedList<Integer> numsList = new LinkedList<>(); // 创建LinkedList对象，保存输入的数字

@@ -85,7 +85,7 @@ public class 任务调度_ extends BaseTest{
 
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         List<Task> taskList = new ArrayList<>();
 
         // 读取输入并创建任务列表

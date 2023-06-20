@@ -24,7 +24,7 @@ public class minimum_adjustment_frequency extends BaseTest{
     }
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         String input_number_str = scanner.nextLine();
         int number = Integer.parseInt(input_number_str);//数据的范围
 

@@ -21,7 +21,7 @@ public class 开心消消乐 extends BaseTest{
      * BFS+计数
      */
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         int rows = scanner.nextInt(); // 输入矩阵的行数
         int cols = scanner.nextInt(); // 输入矩阵的列数
         int[][] matrix = new int[rows][cols]; // 定义一个rows行cols列的矩阵

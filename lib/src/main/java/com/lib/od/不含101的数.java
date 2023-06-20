@@ -69,7 +69,7 @@ public class 不含101的数 extends BaseTest{
     }
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         int L = scanner.nextInt();
         int R = scanner.nextInt();
 

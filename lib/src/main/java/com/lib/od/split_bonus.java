@@ -30,7 +30,7 @@ public class split_bonus extends BaseTest{
 
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         int employeeNum = scanner.nextInt(); // 读取用户输入的员工数量
 
         int[] randomNumbers = new int[employeeNum]; // 创建一个长度为员工数量的整型数组

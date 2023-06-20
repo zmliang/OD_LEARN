@@ -145,7 +145,7 @@ public class 处理器问题 extends BaseTest{
 
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         // 读取输入的可用处理器信息
         List<Integer> availableProcessors = Arrays.stream(scanner.nextLine().split("[\\[\\]\\,\\s]"))
                 .filter(str -> !"".equals(str))

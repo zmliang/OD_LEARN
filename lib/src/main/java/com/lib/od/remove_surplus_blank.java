@@ -11,7 +11,7 @@ public class remove_surplus_blank extends BaseTest{
 
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         String text = scanner.nextLine(); // 输入文本
         Integer[][] ranges = Arrays.stream(scanner.nextLine().split(",")) // 输入关键词的起始和结束坐标
                 .map(s -> Arrays.stream(s.split(" "))

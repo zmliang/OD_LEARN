@@ -74,7 +74,7 @@ public class 模拟商场优惠打折 extends BaseTest{
     }
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
 // 输入每个人可以使用的满减券、打折券和无门槛券的数量
         int m = scanner.nextInt();
         int n = scanner.nextInt();

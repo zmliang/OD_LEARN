@@ -59,7 +59,7 @@ public class 对称美学 extends BaseTest{
         }
     }
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         int t = scanner.nextInt();
         List<List<Long>> input_case = new ArrayList<>();
         // 读入所有测试用例

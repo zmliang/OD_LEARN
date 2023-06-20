@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class k_grace_array extends BaseTest{
 
     @Override
-    void officialSolution() {
+    protected void officialSolution() {
         // 处理输入
         int n = scanner.nextInt();
         int k = scanner.nextInt();
