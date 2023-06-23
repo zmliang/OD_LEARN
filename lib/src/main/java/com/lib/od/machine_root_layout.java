@@ -9,6 +9,11 @@ package com.lib.od;
  */
 public class machine_root_layout extends BaseTest{
     @Override
+    protected void officialSolution() {
+
+    }
+
+    @Override
     protected void mySolution() {
         String cabinetLayout = scanner.nextLine();
         int len = cabinetLayout.length();

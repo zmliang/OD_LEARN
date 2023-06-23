@@ -4,6 +4,11 @@ public class 几何平均值最大子数组 extends BaseTest{
 
 
     @Override
+    protected void officialSolution() {
+
+    }
+
+    @Override
     protected void mySolution() {
 
     }

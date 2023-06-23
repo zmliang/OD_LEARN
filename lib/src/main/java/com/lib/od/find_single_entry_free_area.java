@@ -62,6 +62,11 @@ public class find_single_entry_free_area extends BaseTest{
 
 
     @Override
+    protected void officialSolution() {
+
+    }
+
+    @Override
     protected void mySolution() {
         rows = scanner.nextInt();
         cols = scanner.nextInt();

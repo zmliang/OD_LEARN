@@ -4,6 +4,11 @@ import com.lib.od.BaseTest;
 
 public class number_add_sub_game extends BaseTest {
     @Override
+    protected void officialSolution() {
+
+    }
+
+    @Override
     protected void mySolution() {
         int s = scanner.nextInt();
         int t = scanner.nextInt();

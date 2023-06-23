@@ -20,6 +20,10 @@ package com.lib.od;
 public class left_side_redundant_overlay_substring extends BaseTest{
 
 
+    @Override
+    protected void officialSolution() {
+
+    }
 
     @Override
     protected void mySolution() {

@@ -14,6 +14,11 @@ public class soldiers_cross_river extends BaseTest {
 
 
     @Override
+    protected void officialSolution() {
+
+    }
+
+    @Override
     protected void mySolution() {
         int k = scanner.nextInt();
         int t = scanner.nextInt();

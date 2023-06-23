@@ -1,6 +1,8 @@
 package com.lib.od;
 
-public class 简单的自动曝光平均像素值 extends BaseTest{
+public class 整型数组按个位值排序 extends BaseTest{
+
+
     @Override
     protected void officialSolution() {
 
@@ -8,6 +10,6 @@ public class 简单的自动曝光平均像素值 extends BaseTest{
 
     @Override
     protected void mySolution() {
-        
+
     }
 }

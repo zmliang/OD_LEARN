@@ -15,12 +15,12 @@ public class 开放日活动取出尽量少的球 extends BaseTest{
         for (int i=0;i<n;i++){
             buckets[i] = scanner.nextInt();
         }
-        System.out.println(getResult(sum,buckets,n));
+        //System.out.println(getResult(sum,buckets,n));
     }
 
-    public static String getResult(int sum,Integer[] buckets,int n){
-
-    }
+//    public static String getResult(int sum,Integer[] buckets,int n){
+//
+//    }
 
     @Override
     protected void mySolution() {

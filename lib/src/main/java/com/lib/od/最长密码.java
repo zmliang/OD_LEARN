@@ -1,6 +1,6 @@
 package com.lib.od;
 
-public class 简单的自动曝光平均像素值 extends BaseTest{
+public class 最长密码 extends BaseTest{
     @Override
     protected void officialSolution() {
 
@@ -8,6 +8,6 @@ public class 简单的自动曝光平均像素值 extends BaseTest{
 
     @Override
     protected void mySolution() {
-        
+
     }
 }

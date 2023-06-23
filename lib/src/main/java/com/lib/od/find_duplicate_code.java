@@ -41,6 +41,11 @@ public class find_duplicate_code extends BaseTest{
     }
 
     @Override
+    protected void officialSolution() {
+
+    }
+
+    @Override
     protected void mySolution() {
         String code1 = scanner.nextLine();
         String code2 = scanner.nextLine();

@@ -6,8 +6,10 @@ package com.lib.od;
 public class 天然蓄水池 extends BaseTest{
 
 
+    @Override
+    protected void officialSolution() {
 
-
+    }
 
     @Override
     protected void mySolution() {

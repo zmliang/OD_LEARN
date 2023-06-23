@@ -12,6 +12,11 @@ import java.util.List;
  */
 public class worst_product_award extends BaseTest{
     @Override
+    protected void officialSolution() {
+
+    }
+
+    @Override
     protected void mySolution() {
         int m = scanner.nextInt();
         scanner.nextLine();

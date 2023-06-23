@@ -1,6 +1,13 @@
 package com.lib.od;
 
+import com.lib.od.回溯.全排列;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,6 +16,34 @@ public class ZRunner {
         //new array_merge().mySolution();      //数组合并
         // new find_duplicate_code().mySolution();  //最长公共子串
         // new k_grace_array().mySolution();//K优雅子数组
+
+        //new 全排列().permute(new int[]{1,2,3});
+
+        int sum = 525;
+        int n = 6;
+        int left,right;
+        if (n%2 == 0){//n是偶数
+            int halfLen = n/2-1;
+            int mid = sum/n;
+            left = mid-halfLen;
+            right = (mid)+halfLen;
+            if (sum%n != 0){
+                right = (mid+1)+halfLen;
+            }else {
+
+            }
+
+        }else {//奇数
+            int mid = sum/n;
+            int halfLen = n/2;
+            left = mid-halfLen;
+            right = mid+halfLen;
+        }
+        List<Integer> ret = new ArrayList<>();
+        for (int i=left;i<=right;i++){
+            ret.add(i);
+        }
+        System.out.println(ret);
 
 
     }
