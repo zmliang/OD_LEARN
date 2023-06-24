@@ -1,8 +1,8 @@
-package com.lib.od;
+package com.lib.od.dynamic_program;
 
-import java.util.Scanner;
+import com.lib.od.BaseTest;
 
-public class find_duplicate_code extends BaseTest{
+public class 查找重复代码 extends BaseTest {
 
 
     //动态规划算法

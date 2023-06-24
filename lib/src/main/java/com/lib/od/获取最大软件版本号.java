@@ -1,12 +1,10 @@
 package com.lib.od;
 
 
-import java.util.Scanner;
-
 /**
  * 获取最大软件版本号
  */
-public class obtain_max_software_version extends BaseTest{
+public class 获取最大软件版本号 extends BaseTest{
 
 
 

@@ -36,6 +36,7 @@ public class 优秀学员统计 extends BaseTest{
             }
         });
 
+        return 0;
     }
 
     @Override

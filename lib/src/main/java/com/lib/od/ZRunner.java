@@ -16,20 +16,7 @@ import java.util.stream.Collectors;
 
 public class ZRunner {
 
-    public static int getResult(String content,String word){
-        Map<Character,Integer> charCountMap = new HashMap<>();
-        for (char c:word.toCharArray()){
-            charCountMap.put(c,charCountMap.getOrDefault(c,0)+1);
-        }
-        int ret = 0;
-        int winSize = word.length();
-        for (int i=0;i<content.length()-winSize;i++){
-           String sub = content.substring(i,winSize);
-           System.out.println(sub);
 
-        }
-        return ret;
-    }
     public static void main(String[] args) {
         //new array_merge().mySolution();      //数组合并
         // new find_duplicate_code().mySolution();  //最长公共子串
@@ -37,8 +24,8 @@ public class ZRunner {
 
         //new 全排列().permute(new int[]{1,2,3})
 
-
-       System.out.println(getResult("qweebaewqd","qwe"));
+        int n = 6;
+        System.out.println(1<<n);
 
     }
 

@@ -15,10 +15,13 @@ public class 上班之路是否能到达公司 extends BaseTest{
             int new_y = y+item[1];
             if (new_y>=0 && !visit[new_x][new_y]){
                 if (lastDirect!=direct){
-                    if (useTurn>)
+                    if (useTurn>0){
+
+                    }
                 }
             }
         }
+        return true;
     }
 
     @Override
