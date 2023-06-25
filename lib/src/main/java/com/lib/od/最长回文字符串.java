@@ -1,7 +1,9 @@
 package com.lib.od;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class 最长回文字符串 extends BaseTest{
 
@@ -23,7 +25,26 @@ public class 最长回文字符串 extends BaseTest{
 
     @Override
     protected void officialSolution() {
+        String str = scanner.nextLine();
+        Map<Character,Integer> map = new HashMap<>();
+        for (char c:str.toCharArray()){
+            map.put(c,map.getOrDefault(c,0)+1);
+        }
 
+        String middleStr = "";
+        StringBuilder sb = new StringBuilder();
+        for (Character c: map.keySet()){
+            int count = map.get(c);
+            if (count>=2){
+                for (int i=0;i<count/2;i++){
+                    sb.append(c);
+                }
+            }
+            if (count%2!=0 && (middleStr == "" || middleStr.compareTo(c+"")>0)){
+                middleStr+=c;
+            }
+        }
+        //sb.toString().toCharArray().
     }
 
     @Override

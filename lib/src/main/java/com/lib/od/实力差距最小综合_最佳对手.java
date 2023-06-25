@@ -1,6 +1,7 @@
 package com.lib.od;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -61,8 +62,57 @@ public class 实力差距最小综合_最佳对手 extends BaseTest{
         }
     }
 
+
+    /**
+     * 零钱兑换
+     */
+    int ret = 0;
+    int coinChange_1(int[] coins, int amount){
+        if (amount == 0){
+            return 0;
+        }
+        if (amount<0){
+            return -1;
+        }
+        for (int coin:coins){
+            if (amount-coin<0){
+                continue;
+            }
+            int subRet= coinChange_1(coins,amount-coin);
+            ret = Math.min(subRet+1,ret);//在子问题中选择最优解，然后+1；
+        }
+        return ret;
+    }
+
+
+    /**
+     * 动态规划解法
+     * @param coins
+     * @param amount
+     */
+    void coinChange_2(int[] coins,int amount){
+        int[] dp = new int[amount+1];//
+        Arrays.fill(dp,amount+1);
+        dp[0] = 0;
+
+        for (int i=0;i<dp.length;i++){
+            for (int coin:coins){
+                if (i-coin<0){
+                    continue;
+                }
+                dp[i] = Math.min(dp[i],dp[i-coin]+1);
+            }
+        }
+    }
+
+
+
     @Override
     protected void officialSolution() {
+        int[] coins;
+        int amount;
+
+
 
     }
 

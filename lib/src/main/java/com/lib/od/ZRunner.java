@@ -24,8 +24,9 @@ public class ZRunner {
 
         //new 全排列().permute(new int[]{1,2,3})
 
-        int n = 6;
-        System.out.println(1<<n);
+        String str = "a.b.c";
+
+        System.out.println(Arrays.stream(str.split("\\.")).collect(Collectors.toList()));
 
     }
 
