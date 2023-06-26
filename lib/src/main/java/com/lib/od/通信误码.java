@@ -2,9 +2,7 @@ package com.lib.od;
 
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * 通信误码
@@ -17,7 +15,7 @@ import java.util.Set;
  * 输出描述
  * 包含频率最高的误码最小子数组长度
  */
-public class communication_error_code extends BaseTest{
+public class 通信误码 extends BaseTest{
 
 
 
@@ -61,6 +59,37 @@ public class communication_error_code extends BaseTest{
 
     @Override
     protected void mySolution() {
+        int[] errorCodes = new int[]{};
+
+        int n = errorCodes.length;
+
+        Map<Integer,Integer> map = new HashMap<>();
+        for (int i=0;i<n;i++){
+            map.put(errorCodes[i],map.getOrDefault(errorCodes[i],0)+1);
+        }
+
+        int maxCount = 0;
+        for (int v: map.values()){
+            maxCount = Math.max(maxCount,v);
+        }
+
+        for (int key : map.keySet()){
+            if (map.get(key) == maxCount){
+                int start = -1;
+                int end = -1;
+                for (int i=0;i<n;i++){
+                    if (key == errorCodes[i]){
+                        if (start == -1){
+                            start = i;
+                        }
+                        end = i;
+                    }
+                }
+
+            }
+        }
+
+
 
     }
 }
