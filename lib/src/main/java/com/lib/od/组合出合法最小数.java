@@ -2,6 +2,7 @@ package com.lib.od;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -80,6 +81,31 @@ public class 组合出合法最小数 extends BaseTest{
 
     @Override
     protected void mySolution() {
+        String[] str = new String[]{};
+        Arrays.sort(str, new Comparator<String>() {
+            @Override
+            public int compare(String a, String b) {
+                int a1=Integer.parseInt(a+b);
+                int b1 = Integer.parseInt(b+a);
+                return a1-b1;
+            }
+        });
+
+        if (str[0].startsWith("0")){
+            for (int i=1;i<str.length;i++){
+                String a= str[i];
+                if (!a.startsWith("0")){
+
+                    for (int j=i;j>0;j--){
+                        str[j] = str[j-1];
+                    }
+                    str[0] = a;
+                }
+            }
+        }
+
+
+
 
     }
 }

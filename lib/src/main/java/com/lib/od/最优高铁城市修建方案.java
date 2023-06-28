@@ -17,7 +17,7 @@ import java.util.HashMap;
  * 最小生成树
  * 
  */
-public class 最优高铁城市修建方案 extends BaseTest{
+public class 最优高铁城市修建方案 extends BaseTest{//TODO
 
     @Override
     protected void officialSolution() {

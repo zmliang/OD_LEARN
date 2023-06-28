@@ -86,8 +86,8 @@ public class 最多几个直角三角形 extends BaseTest{
         trianglePerimeterList.add(num);
     }
 
-    @Override
-    protected void officialSolution() {
+
+    public void officialSolution() {
         int testCases = scanner.nextInt();
         for (int i=0;i<testCases;i++){
             int n = scanner.nextInt();
@@ -99,6 +99,7 @@ public class 最多几个直角三角形 extends BaseTest{
             Arrays.sort(nums);//对数组排序
             //求出所有符合条件的三角形
             dfs(nums,0,new LinkedList<>());
+            System.out.println(triangleList);
             //统计每个数字出现的次数
             int[] count = new int[100];
             for (int num:nums){
@@ -124,4 +125,5 @@ public class 最多几个直角三角形 extends BaseTest{
     protected void mySolution() {
 
     }
+
 }

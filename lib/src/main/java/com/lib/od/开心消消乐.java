@@ -61,6 +61,30 @@ public class 开心消消乐 extends BaseTest{
 
     @Override
     protected void mySolution() {
+        int[][] matrix = new int[][]{};
 
+        int ret = 0;
+        for (int i=0; i<matrix.length;i++){
+            for (int j=0; j<matrix[0].length;j++){
+                if (_dfs(matrix,i,j)){
+                    ret++;
+                }
+            }
+        }
+    }
+
+
+    private int[][] directions = new int[][]{{-1,0},{1,0},{0,-1},{0,1},{1,1},{1,-1},{-1,-1},{-1,1}};
+
+
+    public boolean _dfs(int[][] matrix,int x,int y){
+        for (int[] direction:directions){
+            int _x = direction[0];
+            int _y = direction[1];
+
+
+            _dfs(matrix,x+_x,y+_y);
+        }
+        return false;
     }
 }

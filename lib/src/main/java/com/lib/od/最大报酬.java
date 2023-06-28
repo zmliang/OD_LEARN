@@ -22,7 +22,7 @@ package com.lib.od;
  * <p>工作的报酬相当于物品的价值</p>
  *
  */
-public class 最大报酬 extends BaseTest{
+public class 最大报酬 extends BaseTest{//TODO
 
     @Override
     protected void officialSolution() {
@@ -52,7 +52,22 @@ public class 最大报酬 extends BaseTest{
     }
 
     @Override
-    protected void mySolution() {
+    protected void mySolution() {//TODO error
+        int totalTime = scanner.nextInt();//总时长
+        int workCount = scanner.nextInt();
+        int[][] workInfo = new int[][]{};//index=0 工作时长，index=1 收益
+
+        int[] dp = new int[totalTime+1];//dp[i]工作i时间，收到的报酬
+        for (int i=0;i<=totalTime;i++){
+            dp[i] = 0;
+            for (int j=0;j<workCount;j++){
+                int[] info = workInfo[j];
+                if (i>0 && i>info[0])
+                    dp[i] = Math.max(dp[i],dp[i-info[0]]+info[1]);
+            }
+        }
+
+        System.out.println(dp[totalTime]);
 
     }
 }

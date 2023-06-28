@@ -1,6 +1,7 @@
 package com.lib.od;
 
 import com.lib.od.回溯.全排列;
+import com.lib.od.回溯.组合;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -18,15 +19,7 @@ public class ZRunner {
 
 
     public static void main(String[] args) {
-        //new array_merge().mySolution();      //数组合并
-        // new find_duplicate_code().mySolution();  //最长公共子串
-        // new k_grace_array().mySolution();//K优雅子数组
-
-        //new 全排列().permute(new int[]{1,2,3})
-
-        String str = "a.b.c";
-
-        System.out.println(Arrays.stream(str.split("\\.")).collect(Collectors.toList()));
+      new 最多几个直角三角形().officialSolution();
 
     }
 

@@ -1,6 +1,7 @@
 package com.lib.od;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.LinkedList;
 
 /**
@@ -88,7 +89,16 @@ public class 区间交叠问题 extends BaseTest{
     }
 
     @Override
-    protected void mySolution() {
+    protected void mySolution() {//TODO
+        int[][] intervals = new int[][]{};
+        Arrays.sort(intervals, (a, b) -> a[0]-b[0]);
 
+        int left = 0;
+        int right = intervals.length;
+        while (left<right){
+            int[] a = intervals[left];
+            int[] b = intervals[right];
+
+        }
     }
 }

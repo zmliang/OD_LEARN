@@ -9,7 +9,7 @@ import java.util.Arrays;
  * 回溯算法
  *
  */
-public class 等和子数组最小和 extends BaseTest{
+public class 等和子数组最小和 extends BaseTest{//TODO
 
     @Override
     protected void officialSolution() {
@@ -69,6 +69,14 @@ public class 等和子数组最小和 extends BaseTest{
 
     @Override
     protected void mySolution() {
+        int k = 0;
+        int[] nums = new int[]{};
+
+        int total = Arrays.stream(nums).sum();
+
+
 
     }
+
+
 }

@@ -1,7 +1,9 @@
 package com.lib.od;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,7 +23,7 @@ import java.util.Map;
  *
  *
  */
-public class 挑选字符串 extends BaseTest{
+public class 挑选字符串 extends BaseTest{//TODO
 
 
 
@@ -56,6 +58,20 @@ public class 挑选字符串 extends BaseTest{
 
     @Override
     protected void mySolution() {
+        String a = scanner.nextLine();
+        String b = scanner.nextLine();
 
+        Map<Character, List<Integer>> map = new HashMap<>();
+
+        for (int i=0;i<a.length();i++){
+            char c = a.charAt(i);
+            map.put(c,new ArrayList<>());
+            map.get(c).add(i);
+        }
+
+        for (int i=0;i<b.length();i++){
+            char c = b.charAt(i);
+
+        }
     }
 }

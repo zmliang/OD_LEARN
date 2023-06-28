@@ -1,5 +1,7 @@
 package com.lib.od;
 
+import java.util.Map;
+
 /**
  * 题目描述
  * 快递业务范围有N个站点，A站点与B站点可以中转快递，则认为A-B站可达，如果A-B可达，B-C可达，则A-C可达,
@@ -72,6 +74,30 @@ public class 计算快递主站点 extends BaseTest{
 
     @Override
     protected void mySolution() {
+        int[][] matrix = new int[][]{};
 
+        int ret = 0;
+        for (int i=0;i<matrix.length;i++){
+            for (int j=0;j<matrix[0].length;j++){
+                if (matrix[i][j] == 1){
+                    dfs(matrix,i,j);
+                    ret++;
+                }
+            }
+        }
+    }
+
+    private int[][] directions = new int[][]{{0,1},{0,-1},{1,0},{-1,0}};
+
+    void dfs(int[][] matrix, int x,int y){
+        matrix[x][y] = 0;
+        for (int[] direct:directions){
+            int new_x = x+direct[0];
+            int new_y = y+direct[1];
+            if (matrix[new_x][new_y] == 0){
+                continue;
+            }
+            dfs(matrix,new_x,new_y);
+        }
     }
 }

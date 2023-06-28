@@ -1,6 +1,7 @@
 package com.lib.od;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 题目描述
@@ -92,8 +93,38 @@ public class 完美走位 extends BaseTest{
         System.out.println(min_len);
     }
 
+
+    /**
+     * 需要修改3个"A"和1个"D"为剩余两种字符，才能使得s变为完美走位字符串。
+     * 故我们需要找到包含3个"A"和1个"D"的最小子串。
+     *
+     * 因此这个问题就转变为了，找到覆盖cnt_s[ch] - len(s)
+     * 4个的字符ch（ch满足条件cnt_s[ch] > len(s) // 4）的最短子串
+     */
     @Override
     protected void mySolution() {
+
+        String s = "WASDAASD";
+        int avg = s.length()/4;//每个单词要出行avg次才是完美走位
+        Map<Character,Integer> charMap = new HashMap<>();
+        for (char c:s.toCharArray()){
+            charMap.put(c,charMap.getOrDefault(c,0)+1);
+        }
+
+        Map<Character,Integer> difMap = new HashMap<>();
+        for (Character key: charMap.keySet()){
+            int count = charMap.get(key);
+            if (count>avg){
+                difMap.put(key,count-avg);
+            }
+        }
+
+        int left = 0;
+        int right = 0;
+        while (right<s.length()){
+
+
+        }
 
     }
 }

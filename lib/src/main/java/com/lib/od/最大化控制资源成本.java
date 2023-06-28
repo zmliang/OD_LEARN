@@ -1,4 +1,5 @@
 package com.lib.od;
+import java.util.Comparator;
 import java.util.Scanner;
 import java.util.Arrays;
 import java.util.PriorityQueue;
@@ -81,6 +82,25 @@ public class 最大化控制资源成本 extends BaseTest{
 
     @Override
     protected void mySolution() {
+        int[][] ranges = new int[][]{};
+        Arrays.sort(ranges, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] a, int[] b) {
+                return a[0]-b[0];
+            }
+        });
 
+        PriorityQueue<int[]> queue = new PriorityQueue<>((a, b) -> a[0]-b[0]);
+        int maxResult = 0;
+        int curValue = 0;
+        for (int[] r:ranges){
+            while (!queue.isEmpty() && queue.peek()[0]<r[0]){
+                int[] tmp = queue.poll();
+                curValue -=tmp[1];
+            }
+            queue.offer(new int[]{r[1],r[2]});
+            curValue+=r[2];
+            maxResult = Math.max(curValue,maxResult);
+        }
     }
 }
