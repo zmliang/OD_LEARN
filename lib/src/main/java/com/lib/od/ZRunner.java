@@ -29,7 +29,30 @@ public class ZRunner {
 
      // new LeetCodeTest().merge(new int[][]{{1,3},{5,6}});
 
-       new 不含101的数().officialSolution();
+      int n = 5;
+      List<String> operations = new ArrayList<>();
+      int count = 0;
+      int size = 0;
+      boolean inorder = true;
+      for (String operation:operations){
+          if (operation.equals("head")){
+              if (size != 0 && inorder){
+                  inorder = false;
+              }
+              size++;
+          }else if (operation.equals("tail")){
+              size++;
+          }else {
+              if (size == 0){
+                  continue;
+              }
+              if (!inorder){
+                  count++;
+                  inorder =true;
+              }
+              size--;
+          }
+      }
 
     }
 
