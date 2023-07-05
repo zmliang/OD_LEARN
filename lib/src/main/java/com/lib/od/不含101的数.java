@@ -70,8 +70,8 @@ public class 不含101的数 extends BaseTest{//TODO
 
     @Override
     protected void officialSolution() {
-        int L = scanner.nextInt();
-        int R = scanner.nextInt();
+        int L = 3;//scanner.nextInt();
+        int R = 5;//scanner.nextInt();
 
         // 统计区间[L, R]内不含101的数的个数
         int count = countBinaryWithout101(R) - countBinaryWithout101(L - 1);

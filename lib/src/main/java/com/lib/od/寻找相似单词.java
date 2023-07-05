@@ -3,6 +3,7 @@ package com.lib.od;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class 寻找相似单词 extends BaseTest{
 
@@ -45,6 +46,17 @@ public class 寻找相似单词 extends BaseTest{
 
     @Override
     protected void mySolution() {
+        int n = scanner.nextInt();
+
+        String[] words = new String[n];
+        for (int i=0;i<n;i++){
+            words[i] = scanner.nextLine();
+        }
+        String target = scanner.nextLine();
+        List<String> result = new ArrayList<>();
+        for (String word:words){
+            
+        }
 
     }
 }

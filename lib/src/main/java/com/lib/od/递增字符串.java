@@ -27,6 +27,21 @@ public class 递增字符串 extends BaseTest{
 
     @Override
     protected void mySolution() {
+        String str = new String();
+        int countA= 0;
+        for (char c:str.toCharArray()){
+            if (c == 'A'){
+                countA++;
+            }
+        }
+        int leftA = 0;
+        int ret = Integer.MAX_VALUE;
+        for (int i=0;i<str.length();i++){
+            if (str.charAt(i) == 'A'){
+                leftA++;
+            }
+            ret = Math.min(ret,(i+1-leftA+(countA-leftA)));
+        }
 
     }
 }

@@ -37,7 +37,7 @@ import java.util.List;
  */
 public class 对称美学 extends BaseTest{
     // 递归函数，找到第n个字符串的第k个字符
-    public static char find(long n, long k) {
+    public static char find(long n, long k) {//TODO
         // 第1个字符串
         if (n == 1) {
             return 'R';
@@ -83,6 +83,13 @@ public class 对称美学 extends BaseTest{
 
     @Override
     protected void mySolution() {
+        String[] str = new String[]{"R","BR","RBBR","BRRBRBBR","RBBRBRRBBRRBRBBR"};
 
     }
+
+//    String find_(int n,int k){
+//        if (n == 0){
+//            return ""
+//        }
+//    }
 }

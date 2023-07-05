@@ -16,7 +16,7 @@ public class leetCode硬币交换 {
         for (int i=1;i<amount+1;i++){
             dp[i] = Integer.MAX_VALUE;
             for(int j=0;j<len;j++){
-                if (i>coins[j]){
+                if (i>=coins[j]){
                     dp[i] = Math.min(dp[i],dp[i-coins[j]]+1);
                 }
             }

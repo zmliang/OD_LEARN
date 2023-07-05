@@ -1,7 +1,13 @@
 package com.lib.od;
 
+import com.lib.od.binary_tree.BinaryTree;
+import com.lib.od.dynamic_program.单词拆分;
+import com.lib.od.leetcode.LeetCodeTest;
 import com.lib.od.回溯.全排列;
+import com.lib.od.回溯.单词搜索2;
 import com.lib.od.回溯.组合;
+import com.lib.od.字符串.N字型变换;
+import com.lib.od.栈.移掉k位数字;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -19,9 +25,47 @@ public class ZRunner {
 
 
     public static void main(String[] args) {
-      new 最多几个直角三角形().officialSolution();
+      //new 最多几个直角三角形().officialSolution();
+
+     // new LeetCodeTest().merge(new int[][]{{1,3},{5,6}});
+
+       new 不含101的数().officialSolution();
 
     }
+
+
+    public void sort(int[] nums,int start,int end,int[] tmp){
+        if (start >= end){
+            return;
+        }
+        int mid = (end-start)/2;
+        sort(nums,start,mid,tmp);
+        sort(nums,mid+1,end,tmp);
+
+        int start1 = start;
+        int end1 = mid;
+        int start2 = mid+1;
+        int end2 = end;
+        int index = start;
+        while (start1<=end1 && start2<=end2){
+            if (nums[start1]<nums[start2]){
+                tmp[index] = nums[start1];
+                start1++;
+            }else {
+                tmp[index] = nums[start2];
+                start2++;
+            }
+            index++;
+        }
+        while (start1<=end1){
+            tmp[index++] = nums[start1++];
+        }
+        while (start2<=end2){
+            tmp[index++] = nums[start2++];
+        }
+
+    }
+
 
     /**
      * 动态规划，312戳气球

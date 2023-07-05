@@ -20,7 +20,7 @@ public class 叠积木 extends BaseTest{
             bucket.set(used, 0);
         }
         // 把当前积木加入已有的每一层中，看是否能够满足条件
-        for (int i = 0; i < used; i++) {
+        for (int i = 0; i < used; i++) {//TODO
             // 如果当前层和上一层积木长度相同，则不需要重复计算
             if (i > 0 && bucket.get(i).equals(bucket.get(i - 1))) {
                 continue;
@@ -77,6 +77,8 @@ public class 叠积木 extends BaseTest{
 
     @Override
     protected void mySolution() {
+        int[] widths = new int[]{};
+
 
     }
 }

@@ -50,9 +50,22 @@ public class 单词倒序 extends BaseTest{
         System.out.println(res);
     }
 
-    @Override
-    protected void mySolution() {
 
+    public void mySolution() {
+        String words = scanner.nextLine();
+        char[] chars = words.toCharArray();
+        StringBuilder tmp =  new StringBuilder();
+        StringBuilder sb = new StringBuilder();
+        for (int i=0;i< chars.length;i++){
+            char c = chars[i];
+            if (c == ' ' || c == '.' || (c == ',' || c == '?')){
+                sb.append(tmp.reverse().append(c));
+                tmp = new StringBuilder();
+            }else {//字母单词
+                tmp.append(c);
+            }
+        }
+        System.out.println(sb);
     }
 }
 

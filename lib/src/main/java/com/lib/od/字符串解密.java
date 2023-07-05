@@ -1,7 +1,9 @@
 package com.lib.od;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 
 /**
@@ -70,6 +72,17 @@ public class 字符串解密 extends BaseTest{
 
     @Override
     protected void mySolution() {
+        String s1 = scanner.nextLine();
+        String s2 = scanner.nextLine();
+
+        String[] validStrs = s1.split("[0-9a-f]+");
+
+        Map<Character,Integer> s2Map=new HashMap<>();
+        for (char c:s2.toCharArray()){
+            s2Map.put(c,s2Map.getOrDefault(c,0)+1);
+        }
+        int difCount = s2Map.size();
+
 
     }
 }

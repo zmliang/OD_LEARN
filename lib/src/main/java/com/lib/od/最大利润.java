@@ -72,8 +72,27 @@ public class 最大利润 extends BaseTest{
 
     }
 
-    @Override
-    protected void mySolution() {
+
+    public void mySolution() {
+        int number = 3;
+        int day = 3;
+        int[] item = new int[]{4,5,6};//每件商品最大持有数量
+        int[][] item_prices = new int[][]{{1,2,3},{4,3,2},{1,5,2}};//第i件商品每天的价格
+
+        int result = 0;
+        for (int i=0;i<item_prices.length;i++){//第几件商品
+            int[] price = item_prices[i];
+            int count = 0;
+            for (int j=1;j<price.length;j++){//第几天
+                if (price[j]-price[j-1]>0){
+                    count+=price[j]-price[j-1];
+                }
+            }
+            result+=item[i]*count;
+        }
+
+        System.out.println(result);
+
 
     }
 }
