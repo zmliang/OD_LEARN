@@ -3,11 +3,16 @@ package com.lib.od;
 import com.lib.od.binary_tree.BinaryTree;
 import com.lib.od.dynamic_program.单词拆分;
 import com.lib.od.leetcode.LeetCodeTest;
+import com.lib.od.leetcode.手撕代码;
+import com.lib.od.leetcode.猜数字游戏;
 import com.lib.od.回溯.全排列;
 import com.lib.od.回溯.单词搜索2;
 import com.lib.od.回溯.组合;
 import com.lib.od.字符串.N字型变换;
+import com.lib.od.排序.快速排序;
 import com.lib.od.栈.移掉k位数字;
+import com.lib.od.链表.ListNode;
+import com.lib.od.链表.链表翻转;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -19,41 +24,31 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.stream.Collectors;
 
 public class ZRunner {
 
 
     public static void main(String[] args) {
-      //new 最多几个直角三角形().officialSolution();
 
-     // new LeetCodeTest().merge(new int[][]{{1,3},{5,6}});
+        System.out.println(Math.sqrt(9));
 
-      int n = 5;
-      List<String> operations = new ArrayList<>();
-      int count = 0;
-      int size = 0;
-      boolean inorder = true;
-      for (String operation:operations){
-          if (operation.equals("head")){
-              if (size != 0 && inorder){
-                  inorder = false;
-              }
-              size++;
-          }else if (operation.equals("tail")){
-              size++;
-          }else {
-              if (size == 0){
-                  continue;
-              }
-              if (!inorder){
-                  count++;
-                  inorder =true;
-              }
-              size--;
-          }
-      }
+    }
 
+    public static int test(){
+        try {
+            String a = null;
+            System.out.println("this is a try"+a.length());
+        }catch (Exception e){
+            System.out.println("this is a catch");
+            return 0;
+        }finally {
+            System.out.println("this is finally");
+            return 1;
+        }
+        //System.out.println("this is return");
+       // return -1;
     }
 
 

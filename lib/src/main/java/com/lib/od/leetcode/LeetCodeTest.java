@@ -7,9 +7,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class LeetCodeTest {
 
@@ -116,6 +118,46 @@ public class LeetCodeTest {
         result[1] = right;
         return result;
     }
+
+
+    /**
+     * 模拟行走机器人
+     * @param commands
+     * @param obstacles
+     * @return
+     */
+
+    public int robotSim(int[] commands, int[][] obstacles) {
+        //方向数组，分别存储向北、向东、向南、向西(顺时针方向，刚好与题目所示的相同)
+        int[][] dir = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        int d = 0; //记录机器人的方向
+        int curX = 0, curY = 0; //表示当前所在的下标
+        int ans = 0; //记录最大的欧氏距离平方
+        Set<String> obstaclesSet = new HashSet<>(); //存储障碍物，这里用字符串存储，方便对障碍物的x坐标和y坐标进行判断
+        for (int i = 0; i < obstacles.length; i++) {
+            obstaclesSet.add(obstacles[i][0] + "," + obstacles[i][1]); //通过逗号将x和y坐标分隔
+        }
+        for (int i = 0; i < commands.length; i++) {
+            if (commands[i] == -2) { //向左转90度，这里通过取模来实现循环操作
+                d = (d + 3) % 4;
+            }else if (commands[i] == -1) { //向右转90度
+                d = (d + 1) % 4;
+            }else {
+                for (int j = 1; j <= commands[i]; j++) { //每走一步，判断一步
+                    int nextX = curX + dir[d][0];
+                    int nextY = curY + dir[d][1];
+                    if (obstaclesSet.contains(nextX + "," + nextY)) { //走的下一步会遇到障碍物，则退出循环，进行下一条命令
+                        break;
+                    }
+                    curX = nextX; //更新当前的坐标
+                    curY = nextY;
+                }
+                ans = Math.max(ans, curX * curX + curY * curY); //每条命令执行完后，更新最大值
+            }
+        }
+        return ans;
+    }
+
 
 
 

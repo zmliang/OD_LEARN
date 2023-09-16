@@ -1,47 +1,56 @@
 package com.lib.od.binary_tree;
 
 import com.lib.od.BaseTest;
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 
 import java.util.Random;
 import java.util.Stack;
+import java.util.TreeSet;
 
 public class BinaryTree extends BaseTest {
     Random random = new Random();
 
-    public void perOrder(TreeNode root){
+    public TreeNode create(){
+        TreeNode root= new TreeNode();
+        for (int i=0;i<10;i++){
+            root.value = i;
+            TreeNode node = new TreeNode();
+            root.left = node;
+            root = node;
+
+        }
+
+        TreeSet<String> treeSet = new TreeSet<>();
+        treeSet.ceiling("");
+        return null;
+    }
+
+
+    public void preOrder(TreeNode root){
+        if (root == null){
+            return;
+        }
+        System.out.println(root.value);
+        preOrder(root.left);
+        preOrder(root.right);
+    }
+
+    public void preOrder_(TreeNode root){
+        if (root == null){
+            return;
+        }
         Stack<TreeNode> stack = new Stack<>();
-        stack.push(root);
         while (!stack.isEmpty()){
-
+            while (root!=null){
+                System.out.println(root.value);
+                stack.push(root);
+                root = root.left;
+            }
             TreeNode node = stack.pop();
-            if (node.left!=null){
-                stack.push(node.left);
-            }
-
-            if (node.right!=null){
-                stack.push(node.right);
-            }
+            stack.push(node.right);
         }
-
-
-
     }
 
-
-    private TreeNode create(TreeNode root,int depth){
-        if (depth == 10){
-            return root;
-        }
-        root.value = random.nextInt();
-        root.left = new TreeNode();
-        root.right = new TreeNode();
-        create(root.right,depth);
-        return root;
-    }
-
-    private void traseve(TreeNode root){
-
-    }
 
 
     /**
