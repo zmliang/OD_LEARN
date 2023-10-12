@@ -16,3 +16,4 @@ rootProject.name = "OD_LEARN"
 include ':app'
 include ':lib'
 include ':startup'
+include ':opengl'
