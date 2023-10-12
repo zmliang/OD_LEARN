@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 public class LeetCodeTest {
 
@@ -156,6 +157,52 @@ public class LeetCodeTest {
             }
         }
         return ans;
+    }
+
+
+    /**
+     * 字母异位词分组
+     * @param strs
+     * @return
+     */
+    public List<List<String>> groupAnagrams(String[] strs) {
+        List<List<String>> result = new ArrayList<>();
+        Map<String,List<String>> map = new HashMap<>();
+        for (String item:strs){
+            char[] chars = item.toCharArray();
+            Arrays.sort(chars);
+            String key = new String(chars);
+            List<String> i = map.computeIfAbsent(key, k -> new ArrayList<>());
+            i.add(item);
+        }
+        for (Map.Entry<String,List<String>> entry: map.entrySet()){
+            result.add(entry.getValue());
+        }
+        return result;
+    }
+
+
+    /**
+     * 和为K的子数组的个数
+     * @param nums
+     * @param k
+     * @return
+     */
+    public int subarraySum(int[] nums, int k) {
+        int left = 0;
+        int right = 0;
+        int count = 0;
+        int ret = 0;
+        while (left<=right && right< nums.length){
+            count+=nums[right];
+            while (count>k && left<=right){
+                count-=nums[left];
+                left++;
+            }
+            ret++;
+            right++;
+        }
+        return ret;
     }
 
 

@@ -11,6 +11,7 @@ import com.lib.od.回溯.组合;
 import com.lib.od.字符串.N字型变换;
 import com.lib.od.排序.快速排序;
 import com.lib.od.栈.移掉k位数字;
+import com.lib.od.贪心.root;
 import com.lib.od.链表.ListNode;
 import com.lib.od.链表.链表翻转;
 
@@ -32,7 +33,7 @@ public class ZRunner {
 
     public static void main(String[] args) {
 
-        System.out.println(Math.sqrt(9));
+        new root().permute(new int[]{1,2,3});
 
     }
 
