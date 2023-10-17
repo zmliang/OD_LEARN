@@ -70,11 +70,13 @@ public class MainActivity extends Activity {
                 os.flush();
 
 
-                BufferedReader inReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                String tmp = "";
-                while ((tmp = inReader.readLine()) != null) {
-                    // 解析服务器返回的数据，做相应的处理
-                    Log.e("zml",tmp);
+                InputStream is = socket.getInputStream();
+                //定义一个容量范围
+                byte[] bys = new byte[1024];
+                int len;
+                while ((len = is.read(bys))!=-1){
+                    String data = new String(bys,0,len);
+                    Log.e("zml","--> "+data);
                 }
 
 
