@@ -44,7 +44,7 @@ public class MainActivity extends Activity {
             socket = new Socket();
 
             try {
-                InetAddress[] addresses = InetAddress.getAllByName("www.baidu.com");
+                InetAddress[] addresses = InetAddress.getAllByName("www.wanandroid.com");
                 String host = addresses[0].getHostAddress();
                 Log.i("zml","host = "+host);
                 int port = 443;
@@ -57,13 +57,12 @@ public class MainActivity extends Activity {
                 OutputStream os = socket.getOutputStream();
 
                 StringBuffer sb = new StringBuffer();
-                sb.append("GET / HTTP/1.1\r\n");
+                sb.append("GET /article/list/1/json HTTP/1.1\r\n");
                 sb.append("Host: ").append(host).append(":").append(port);
                 sb.append("\r\n");
-                sb.append("Accept: text/html\r\n");
+                sb.append("Accept: */*\r\n");
                 sb.append("Connection: Keep-Alive\r\n");
                 sb.append("\r\n");
-                sb.append("");
 
                 Log.i("zml",sb.toString());
                 os.write(sb.toString().getBytes());
