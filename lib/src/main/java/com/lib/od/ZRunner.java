@@ -33,7 +33,7 @@ public class ZRunner {
 
     public static void main(String[] args) {
 
-        new root().permute(new int[]{1,2,3});
+        //new root().permute(new int[]{1,2,3});
 
     }
 

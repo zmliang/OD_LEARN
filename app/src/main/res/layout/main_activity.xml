@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.zml.tab.SwitchTab
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:text="按钮1"
+            android:layout_width="150dp"
+            android:layout_height="60dp"/>
+        <Button
+            android:text="按钮2"
+            android:layout_width="150dp"
+            android:layout_height="60dp"/>
+        <Button
+            android:text="按钮3"
+            android:layout_width="150dp"
+            android:layout_height="60dp"/>
+        <Button
+            android:text="按钮4"
+            android:layout_width="150dp"
+            android:layout_height="60dp"/>
+
+    </com.zml.tab.SwitchTab>
+
+</FrameLayout>

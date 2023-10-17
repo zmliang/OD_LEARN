@@ -6,6 +6,8 @@ import android.util.Log;
 import com.app.startup.OnProjectListener;
 import com.app.startup.XAppStartUp;
 
+import java.io.File;
+
 public class App extends Application {
 
     @Override
