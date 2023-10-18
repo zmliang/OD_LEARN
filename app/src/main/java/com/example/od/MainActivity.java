@@ -8,19 +8,17 @@ import androidx.annotation.Nullable;
 
 import com.zml.opengl.NativeLib;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.SocketAddress;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.net.ssl.SSLSocketFactory;
+
+import okio.Buffer;
 
 public class MainActivity extends Activity {
 
@@ -73,10 +71,13 @@ public class MainActivity extends Activity {
                 //定义一个容量范围
                 byte[] bys = new byte[1024];
                 int len;
+                Buffer buffer = new Buffer();
                 while ((len = is.read(bys))!=-1){
-                    String data = new String(bys,0,len);
-                    Log.e("zml","--> "+data);
+                    buffer.write(bys);
+//                    String data = new String(bys,0,len);
+//                    Log.e("zml","--> "+data);
                 }
+                Log.e("zml","--> "+buffer.readUtf8());
 
 
             } catch (IOException e) {
@@ -91,4 +92,33 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
     }
+//
+//    private final OkHttpClient client = new OkHttpClient();
+//
+//    public void run() throws Exception {
+//        Request request = new Request.Builder()
+//                .url("https://www.wanandroid.com/article/list/1/json")
+//                .build();
+//
+//        client.newCall(request).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+//
+//            }
+//
+//            @Override
+//            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+//                if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+//                Log.i("zml","\r\n\r\n");
+//                Headers responseHeaders = response.headers();
+//                for (int i = 0; i < responseHeaders.size(); i++) {
+//                    Log.i("zml",responseHeaders.name(i) + ": " + responseHeaders.value(i));
+//                }
+//
+//                Log.i("zml",response.body().string());
+//            }
+//        });
+//    }
+
+
 }
