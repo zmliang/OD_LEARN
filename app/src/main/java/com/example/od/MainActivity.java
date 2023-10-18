@@ -50,7 +50,8 @@ public class MainActivity extends Activity {
                 .url("https://www.wanandroid.com/article/list/1/json")
                 .build();
 
-        client.newCall(request).enqueue(new Callback() {
+        client.newCall(request)
+                .enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
 

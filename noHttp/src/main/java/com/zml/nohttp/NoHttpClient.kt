@@ -1,6 +1,6 @@
 package com.zml.nohttp
 
-class NoHttpClient internal constructor(builder:Builder):INoHttp{
+class NoHttpClient internal constructor(builder:Builder):INoHttp,Call.Factory{
 
     private val dispatcher = Dispatcher()
 
@@ -14,5 +14,13 @@ class NoHttpClient internal constructor(builder:Builder):INoHttp{
         internal var writeTimeout = 10_000
         internal val interceptors: MutableList<Interceptor> = mutableListOf()
 
+
+        fun build():NoHttpClient{
+            return NoHttpClient(this)
+        }
+    }
+
+    override fun newCall(request: Request): Call {
+        return RealCall(this,request)
     }
 }
