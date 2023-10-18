@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.zml.nohttp._test;
 import com.zml.opengl.NativeLib;
 
 import java.io.IOException;
@@ -29,6 +30,8 @@ public class MainActivity extends Activity {
 
         Log.i("ZML","StringFromJNI="+new NativeLib().stringFromJNI());
         setContentView(R.layout.main_activity);
+
+        new _test().test();
 
     }
 
