@@ -15,7 +15,7 @@ class _test {
 
     private val threadPool = Executors.newCachedThreadPool()
     private var socket: Socket? = null
-    public fun test() {
+    fun test() {
         threadPool.execute {
             socket = Socket()
             try {
@@ -48,7 +48,19 @@ class _test {
                 while (source?.read(_buf,1024).also { len=it!! }!=-1L){
 
                 }
-                Log.e("zml", "--> " + _buf.readUtf8())
+
+
+//                Log.e("zml", "" + _buf.readUtf8LineStrict())
+//                Log.e("zml", "" + _buf.readUtf8LineStrict())
+
+                var line:String
+                while (_buf.readUtf8LineStrict().also { line = it }.isNotBlank()){
+                    Log.e("zml", "" + line)
+                }
+
+                Log.e("zml", "" + _buf.readUtf8Line())
+                Log.e("zml", "" + _buf.readUtf8Line())
+                Log.e("zml", "" + _buf.readUtf8Line())
                 /*
                 val `is` = socket?.getInputStream()
                 //定义一个容量范围
@@ -68,7 +80,7 @@ class _test {
 
     fun buildReq(host:String,port:String,path:String):StringBuffer{
         val sb = StringBuffer()
-        sb.append("GET /article/list/1/json HTTP/1.1\r\n")
+        sb.append("GET /").append(path).append(" HTTP/1.1\r\n")
         sb.append("Host: ").append(host).append(":").append(port)
         sb.append("\r\n")
         sb.append("Accept: */*\r\n")
