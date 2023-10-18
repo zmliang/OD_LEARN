@@ -9,16 +9,6 @@ import androidx.annotation.Nullable;
 import com.zml.nohttp._test;
 import com.zml.opengl.NativeLib;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import javax.net.ssl.SSLSocketFactory;
-
 
 public class MainActivity extends Activity {
 
