@@ -14,4 +14,9 @@ class Dispatcher constructor() {
     private fun defaultThreadFactory(threadName:String,daemon:Boolean): ThreadFactory{
         return ThreadFactory { Thread(it,threadName).apply { isDaemon = daemon } }
     }
+
+
+    fun enqueue(call: Call){
+
+    }
 }
