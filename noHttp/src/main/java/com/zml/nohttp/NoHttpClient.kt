@@ -9,6 +9,10 @@ class NoHttpClient internal constructor(builder:Builder):INoHttp,Call.Factory{
     private val interceptors = builder.interceptors
 
     fun dispatcher() = dispatcher
+    fun connectTimeout() = connectTimeout
+    fun readTimeout() = readTimeout
+    fun writeTimeout() = writeTimeout
+    fun interceptors() = interceptors
 
     class Builder constructor(){
         internal var connectTimeout = 10_000

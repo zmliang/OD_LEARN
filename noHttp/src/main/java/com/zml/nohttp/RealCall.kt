@@ -1,5 +1,7 @@
 package com.zml.nohttp
 
+import com.zml.nohttp.interceptors.BridgeInterceptor
+import com.zml.nohttp.interceptors.CallServerInterceptor
 import java.util.concurrent.atomic.AtomicBoolean
 
 class RealCall(
@@ -26,5 +28,18 @@ class RealCall(
 
     override fun isExecuted() {
         TODO("Not yet implemented")
+    }
+
+    fun getResponseWithInterceptorChain():Response{
+        val interceptors = mutableListOf<Interceptor>();
+        interceptors+=client.interceptors()
+        interceptors+=BridgeInterceptor()
+        interceptors+= CallServerInterceptor()
+
+        val chain = RealInterceptorChain(this,interceptors,0,originRequest)
+
+        val response = chain.processed(originRequest)
+
+        return response
     }
 }
