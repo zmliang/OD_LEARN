@@ -4,6 +4,7 @@ import com.zml.nohttp.Outter.Inner
 import org.junit.Test
 
 import org.junit.Assert.*
+import java.io.IOException
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -15,6 +16,21 @@ class ExampleUnitTest {
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
 
-        Outter().callInner()
+
+        val noHttpClient = NoHttpClient.Builder()
+            .build()
+
+        val request = Request.Builder()
+            .build()
+        noHttpClient.newCall(request).enqueue(object :Callback{
+            override fun onFailure(call: Call, e: IOException) {
+
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+
+            }
+
+        })
     }
 }

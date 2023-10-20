@@ -15,7 +15,9 @@ class RealCall(
     }
 
     override fun enqueue(callback: Callback) {
-        client.dispatcher().enqueue(this)
+        check(executed.compareAndSet(false, true)) { "Already Executed" }
+
+        client.dispatcher().enqueue(AsyncCall(callback))
     }
 
     override fun cancel() {
@@ -31,23 +33,31 @@ class RealCall(
     }
 
     fun getResponseWithInterceptorChain():Response{
-        val interceptors = mutableListOf<Interceptor>();
+        val interceptors = mutableListOf<Interceptor>()
         interceptors+=client.interceptors()
         interceptors+=BridgeInterceptor()
         interceptors+= CallServerInterceptor()
 
-        val chain = RealInterceptorChain(this,interceptors,0,originRequest)
+        val chain = RealInterceptorChain(this,interceptors,0,originRequest,client.readTimeout(),client.readTimeout(),client.connectTimeout())
 
         val response = chain.processed(originRequest)
 
         return response
     }
 
-    internal inner class AsyncCall(
+    inner class AsyncCall(
         private val callback:Callback
     ){
 
 
+        val host: String
+            get() = originRequest.url.host
+
+        val request: Request
+            get() = originRequest
+
+        val call: RealCall
+            get() = this@RealCall
 
     }
 }

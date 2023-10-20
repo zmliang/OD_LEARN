@@ -1,11 +1,18 @@
 package com.zml.nohttp
 
+import java.util.ArrayDeque
 import java.util.concurrent.SynchronousQueue
 import java.util.concurrent.ThreadFactory
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 
 class Dispatcher constructor() {
+
+    private val readyAsyncCalls = ArrayDeque<RealCall.AsyncCall>()
+
+    private val runningAsyncCalls = ArrayDeque<RealCall.AsyncCall>()
+
+    private val runningSyncCalls = ArrayDeque<RealCall>()
 
     private val executorService = ThreadPoolExecutor(0, Int.MAX_VALUE, 60, TimeUnit.SECONDS,
         SynchronousQueue(), defaultThreadFactory("noHttp Dispatcher-", false))
@@ -16,7 +23,7 @@ class Dispatcher constructor() {
     }
 
 
-    fun enqueue(call: Call){
+    fun enqueue(call: RealCall.AsyncCall){
 
     }
 }

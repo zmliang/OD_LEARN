@@ -1,5 +1,6 @@
 package com.zml.nohttp
 
+import android.util.Log
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
@@ -8,6 +9,9 @@ class RealInterceptorChain(
     private val interceptors: List<Interceptor>,
     private val index: Int,
     internal val request: Request,
+    private val readTimeout:Int,
+    private val writeTimeout:Int,
+    private val connectTimeout:Int
 ):Interceptor.Chain {
 
     var calls = 0
@@ -15,8 +19,11 @@ class RealInterceptorChain(
     internal fun copy(
         index: Int = this.index,
         request: Request = this.request,
-        call:RealCall = this.call
-    ) = RealInterceptorChain(call, interceptors, index,request)
+        call:RealCall = this.call,
+        readTimeout: Int = this.readTimeout,
+        writeTimeout: Int = this.writeTimeout,
+        connectTimeout: Int = this.connectTimeout
+    ) = RealInterceptorChain(call, interceptors, index,request,readTimeout,writeTimeout,connectTimeout)
 
     override fun request(): Request {
         return request
@@ -24,6 +31,7 @@ class RealInterceptorChain(
 
     @Throws(IOException::class)
     override fun processed(request: Request): Response {
+        Log.i("zml","start realChain proceed")
         if (index>interceptors.size){
             throw IndexOutOfBoundsException("")
         }
@@ -34,11 +42,12 @@ class RealInterceptorChain(
 
         val response = interceptor.intercept(next)
 
+        Log.i("zml","next realChain proceed")
         return response
     }
 
     override fun connection(): Connection {
-
+        return RealConnection()
     }
 
     override fun call(): Call {
@@ -50,7 +59,7 @@ class RealInterceptorChain(
     }
 
     override fun withConnectTimeout(timeout: Int, unit: TimeUnit): Interceptor.Chain {
-
+        return copy(connectTimeout = timeout)
     }
 
     override fun readTimeoutMillis(): Int {
@@ -58,7 +67,7 @@ class RealInterceptorChain(
     }
 
     override fun withReadTimeout(timeout: Int, unit: TimeUnit): Interceptor.Chain {
-
+        return copy(readTimeout = timeout)
     }
 
     override fun writeTimeoutMillis(): Int {
@@ -66,6 +75,6 @@ class RealInterceptorChain(
     }
 
     override fun withWriteTimeout(timeout: Int, unit: TimeUnit): Interceptor.Chain {
-
+        return copy(writeTimeout = timeout)
     }
 }

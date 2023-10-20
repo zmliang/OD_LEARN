@@ -11,6 +11,10 @@ class Response {
 
     open class Builder{
         var request:Request? = null
+
+        constructor(){
+
+        }
         constructor(response: Response){
 
         }

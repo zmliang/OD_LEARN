@@ -7,6 +7,7 @@ class Request {
 
     open class Builder{
 
+        constructor(){}
         constructor(request: Request){
 
         }
