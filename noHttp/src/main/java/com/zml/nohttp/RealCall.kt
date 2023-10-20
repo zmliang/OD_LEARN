@@ -42,4 +42,12 @@ class RealCall(
 
         return response
     }
+
+    internal inner class AsyncCall(
+        private val callback:Callback
+    ){
+
+
+
+    }
 }
