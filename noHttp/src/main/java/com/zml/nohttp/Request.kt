@@ -27,6 +27,12 @@ class Request internal constructor(
             this.body = request.body
         }
 
+        open fun  url(_url:String):Builder{
+            this.url = HttpUrl.Builder()
+                .build()
+            return this
+        }
+
 
         open fun build():Request{
             return Request(

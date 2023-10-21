@@ -21,6 +21,7 @@ class ExampleUnitTest {
             .build()
 
         val request = Request.Builder()
+            .url("_test_url")
             .build()
         noHttpClient.newCall(request).enqueue(object :Callback{
             override fun onFailure(call: Call, e: IOException) {
