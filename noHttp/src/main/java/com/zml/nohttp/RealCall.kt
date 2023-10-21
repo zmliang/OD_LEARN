@@ -21,6 +21,19 @@ class RealCall(
     private val executed = AtomicBoolean()
 
     @Volatile private var canceled = false
+
+    private var exchangeFinder: ExchangeFinder? = null
+    fun enterNetworkInterceptorExchange(request: Request, newExchangeFinder: Boolean){
+        if (newExchangeFinder) {
+            this.exchangeFinder = ExchangeFinder(
+                connectionPool,
+                createAddress(request.url),
+                this,
+               // eventListener
+            )
+        }
+    }
+
     override fun execute(): Response {
         check(executed.compareAndSet(false, true)) { "Already Executed" }
 

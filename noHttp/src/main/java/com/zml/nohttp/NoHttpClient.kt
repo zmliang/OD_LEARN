@@ -1,5 +1,7 @@
 package com.zml.nohttp
 
+import java.util.concurrent.TimeUnit
+
 class NoHttpClient internal constructor(builder:Builder):INoHttp,Call.Factory{
 
     private val dispatcher = Dispatcher()
@@ -10,6 +12,8 @@ class NoHttpClient internal constructor(builder:Builder):INoHttp,Call.Factory{
 
     @get:JvmName("retryOnConnectionFailure") val retryOnConnectionFailure: Boolean =
         builder.retryOnConnectionFailure
+
+    @get:JvmName("pingIntervalMillis") val pingIntervalMillis: Int = builder.pingInterval
 
     fun dispatcher() = dispatcher
     fun connectTimeout() = connectTimeout
@@ -23,9 +27,14 @@ class NoHttpClient internal constructor(builder:Builder):INoHttp,Call.Factory{
         internal var writeTimeout = 10_000
         internal val interceptors: MutableList<Interceptor> = mutableListOf()
         internal var retryOnConnectionFailure = false
+        internal var pingInterval:Int = 0
 
         fun retryOnConnectionFailure(retryOnConnectionFailure: Boolean) = apply {
             this.retryOnConnectionFailure = retryOnConnectionFailure
+        }
+
+        fun pingInterval(interval: Long, unit: TimeUnit) = apply {
+            pingInterval = checkDuration("interval",interval,unit)
         }
 
         fun build():NoHttpClient{
