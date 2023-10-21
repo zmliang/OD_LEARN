@@ -3,6 +3,8 @@ package com.zml.nohttp
 import android.util.Log
 import com.zml.nohttp.interceptors.BridgeInterceptor
 import com.zml.nohttp.interceptors.CallServerInterceptor
+import com.zml.nohttp.interceptors.RetryAndFollowUpInterceptor
+import okio.Timeout
 import java.io.IOException
 import java.io.InterruptedIOException
 import java.util.concurrent.ExecutorService
@@ -17,8 +19,17 @@ class RealCall(
 ):Call {
 
     private val executed = AtomicBoolean()
+
+    @Volatile private var canceled = false
     override fun execute(): Response {
-        TODO("Not yet implemented")
+        check(executed.compareAndSet(false, true)) { "Already Executed" }
+
+        try {
+            client.dispatcher().executed(this)
+            return getResponseWithInterceptorChain()
+        } finally {
+            client.dispatcher().finished(this)
+        }
     }
 
     override fun enqueue(callback: Callback) {
@@ -28,23 +39,30 @@ class RealCall(
     }
 
     override fun cancel() {
-        TODO("Not yet implemented")
+        if (canceled){
+            return
+        }
+        canceled = true
+
     }
 
-    override fun isCanceled() {
-        TODO("Not yet implemented")
+    override fun isCanceled() = canceled
+
+    override fun isExecuted():Boolean {
+        return executed.get()
     }
 
-    override fun isExecuted() {
-        TODO("Not yet implemented")
+    override fun timeout(): Timeout {
+        return Timeout()
     }
 
     fun getResponseWithInterceptorChain():Response{
         val interceptors = mutableListOf<Interceptor>()
         interceptors+=client.interceptors()
         Log.i("zml","interceptors=$interceptors")
-        interceptors+=BridgeInterceptor()
-        interceptors+= CallServerInterceptor()
+        interceptors += RetryAndFollowUpInterceptor(client)
+        interceptors += BridgeInterceptor()
+        interceptors += CallServerInterceptor()
 
         val chain = RealInterceptorChain(this,interceptors,0,originRequest,client.readTimeout(),client.readTimeout(),client.connectTimeout())
 
@@ -94,6 +112,7 @@ class RealCall(
 
         override fun run() {
             try {
+
                 val responde = getResponseWithInterceptorChain()
                 callback.onResponse(call,responde)
 

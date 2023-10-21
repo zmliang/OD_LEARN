@@ -1,5 +1,7 @@
 package com.zml.nohttp
 
+import okio.Timeout
+
 interface Call {
 
     fun execute():Response
@@ -8,9 +10,11 @@ interface Call {
 
     fun cancel()
 
-    fun isCanceled()
+    fun isCanceled():Boolean
 
-    fun isExecuted()
+    fun isExecuted():Boolean
+
+    fun timeout():Timeout
 
     interface Factory{
         fun newCall(request: Request):Call

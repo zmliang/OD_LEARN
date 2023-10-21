@@ -44,6 +44,10 @@ class Dispatcher constructor() {
             promoteAndExecute()
         }
 
+    @Synchronized internal fun executed(call: RealCall) {
+        runningSyncCalls.add(call)
+    }
+
 
     fun enqueue(call: RealCall.AsyncCall){
         synchronized(this){
