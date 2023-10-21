@@ -1,11 +1,11 @@
 package com.zml.nohttp
 
 class HttpUrl(
-    private val scheme:String,
-    private val host:String,
-    private val port:Int,
-    private val fragment:String,
-    private val url:String,
+    val scheme:String,
+    val host:String,
+    val port:Int,
+    val fragment:String,
+    val url:String,
 
 ) {
 
