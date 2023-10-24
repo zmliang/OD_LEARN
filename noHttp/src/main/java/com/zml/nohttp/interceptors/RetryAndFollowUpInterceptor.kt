@@ -37,9 +37,8 @@ class RetryAndFollowUpInterceptor(private val client: NoHttpClient):Interceptor 
                     response = realChain.processed(request)
                     newExchangeFinder = true
                 } catch (e: RouteException) {
-                    // The attempt to connect via a route failed. The request will not have been sent.
                     if (!recover(e.lastConnectException, call, request, requestSendStarted = false)) {
-                        throw e.firstConnectException.withSuppressed(recoveredFailures)
+                        //throw e.firstConnectException.withSuppressed(recoveredFailures)
                     } else {
                         recoveredFailures += e.firstConnectException
                     }
@@ -47,59 +46,62 @@ class RetryAndFollowUpInterceptor(private val client: NoHttpClient):Interceptor 
                     continue
                 } catch (e: IOException) {
 
-                    if (!recover(e, call, request, requestSendStarted = e !is ConnectionShutdownException)) {
-                        throw e.withSuppressed(recoveredFailures)
-                    } else {
-                        recoveredFailures += e
-                    }
+//                    if (!recover(e, call, request, requestSendStarted = e !is ConnectionShutdownException)) {
+//                        throw e.withSuppressed(recoveredFailures)
+//                    } else {
+//                        recoveredFailures += e
+//                    }
                     newExchangeFinder = false
                     continue
                 }
 
                 if (priorResponse != null) {
                     response = response.newBuilder()
-                        .priorResponse(priorResponse.newBuilder()
-                            .body(null)
-                            .build())
-                        .build()
+//                        .priorResponse(priorResponse.newBuilder()
+//                            .body(null)
+                            .build()
+ //                       .build()
                 }
 
-                val exchange = call.interceptorScopedExchange
-                val followUp = followUpRequest(response, exchange)
-
-                if (followUp == null) {
-                    if (exchange != null && exchange.isDuplex) {
-                        call.timeoutEarlyExit()
-                    }
-                    closeActiveExchange = false
-                    return response
-                }
-
-                val followUpBody = followUp.body
-                if (followUpBody != null && followUpBody.isOneShot()) {
-                    closeActiveExchange = false
-                    return response
-                }
-
-                response.body?.closeQuietly()
-
-                if (++followUpCount > MAX_FOLLOW_UPS) {
-                    throw ProtocolException("Too many follow-up requests: $followUpCount")
-                }
-
-                request = followUp
-                priorResponse = response
+//                val exchange = call.interceptorScopedExchange
+//                val followUp = followUpRequest(response, exchange)
+//
+//                if (followUp == null) {
+//                    if (exchange != null && exchange.isDuplex) {
+//                        call.timeoutEarlyExit()
+//                    }
+//                    closeActiveExchange = false
+//                    return response
+//                }
+//
+//                val followUpBody = followUp.body
+//                if (followUpBody != null && followUpBody.isOneShot()) {
+//                    closeActiveExchange = false
+//                    return response
+//                }
+//
+//                response.body?.closeQuietly()
+//
+//                if (++followUpCount > MAX_FOLLOW_UPS) {
+//                    throw ProtocolException("Too many follow-up requests: $followUpCount")
+//                }
+//
+//                request = followUp
+//                priorResponse = response
 
             }finally {
-                call.exitNetworkInterceptorExchange(closeActiveExchange)
+                //call.exitNetworkInterceptorExchange(closeActiveExchange)
             }
         }
     }
 
     private fun requestIsOneShot(e: IOException, userRequest: Request): Boolean {
         val requestBody = userRequest.body
-        return (requestBody != null && requestBody.isOneShot()) ||
+
+        return (requestBody != null ) ||
                 e is FileNotFoundException
+//        return (requestBody != null && requestBody.isOneShot()) ||
+//                e is FileNotFoundException
     }
 
     private fun isRecoverable(e: IOException, requestSendStarted: Boolean): Boolean {
