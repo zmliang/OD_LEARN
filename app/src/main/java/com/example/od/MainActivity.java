@@ -34,22 +34,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main_activity);
 
 
-        NoHttpClient noHttpClient1 = new NoHttpClient.Builder().build();
-        com.zml.nohttp.Request request1 = new com.zml.nohttp.Request.Builder()
-                .url("_TEST")
-                .build();
 
-        noHttpClient1.newCall(request1).enqueue(new com.zml.nohttp.Callback() {
-            @Override
-            public void onFailure(@NonNull com.zml.nohttp.Call call, @NonNull IOException e) {
-                Log.i("zml","call="+call.toString()+"e="+e.toString());
-            }
-
-            @Override
-            public void onResponse(@NonNull com.zml.nohttp.Call call, @NonNull com.zml.nohttp.Response response) throws IOException {
-                Log.i("zml","call="+call.toString()+"; response = "+response.toString());
-            }
-        });
 
     }
 

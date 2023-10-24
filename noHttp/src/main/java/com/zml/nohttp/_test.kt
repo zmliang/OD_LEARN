@@ -2,7 +2,6 @@ package com.zml.nohttp
 
 import android.util.Log
 import okio.Buffer
-import okio.ByteString
 import okio.sink
 import okio.source
 import java.io.IOException
@@ -12,6 +11,25 @@ import java.util.concurrent.Executors
 import javax.net.ssl.SSLSocketFactory
 
 class _test {
+
+
+    fun testSelft(){
+        val noHttpClient1 = NoHttpClient.Builder().build()
+        val request1 = Request.Builder()
+            .url("_TEST")
+            .build()
+
+        noHttpClient1.newCall(request1).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.i("zml", "call=" + call.toString() + "e=" + e.toString())
+            }
+
+            @Throws(IOException::class)
+            override fun onResponse(call: Call, response: Response) {
+                Log.i("zml", "call=$call; response = $response")
+            }
+        })
+    }
 
     private val threadPool = Executors.newCachedThreadPool()
     private var socket: Socket? = null
