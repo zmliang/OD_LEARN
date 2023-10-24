@@ -24,7 +24,7 @@ class TaskRunner {
         )
 
         fun coordinatorNotify(taskRunner: TaskRunner) {
-            taskRunner.notify()
+            //taskRunner.notify()
         }
 
         fun coordinatorWait(taskRunner: TaskRunner, nanos: Long) {

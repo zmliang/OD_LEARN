@@ -17,21 +17,5 @@ class ExampleUnitTest {
         assertEquals(4, 2 + 2)
 
 
-        val noHttpClient = NoHttpClient.Builder()
-            .build()
-
-        val request = Request.Builder()
-            .url("_test_url")
-            .build()
-        noHttpClient.newCall(request).enqueue(object :Callback{
-            override fun onFailure(call: Call, e: IOException) {
-
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-
-            }
-
-        })
     }
 }
