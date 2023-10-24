@@ -25,12 +25,12 @@ class RealCall(
     private var exchangeFinder: ExchangeFinder? = null
     fun enterNetworkInterceptorExchange(request: Request, newExchangeFinder: Boolean){
         if (newExchangeFinder) {
-            this.exchangeFinder = ExchangeFinder(
-                connectionPool,
-                createAddress(request.url),
-                this,
-               // eventListener
-            )
+//            this.exchangeFinder = ExchangeFinder(
+//                connectionPool,
+//                createAddress(request.url),
+//                this,
+//               // eventListener
+//            )
         }
     }
 
