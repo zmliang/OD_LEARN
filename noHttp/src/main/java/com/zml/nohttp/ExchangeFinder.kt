@@ -8,12 +8,12 @@ class ExchangeFinder(
     internal val address: Address,
     private val call: RealCall,
 ) {
-    private var routeSelection: RouteSelector.Selection? = null
-    private var routeSelector: RouteSelector? = null
+    //private var routeSelection: RouteSelector.Selection? = null
+    //private var routeSelector: RouteSelector? = null
     private var refusedStreamCount = 0
     private var connectionShutdownCount = 0
     private var otherFailureCount = 0
-    private var nextRouteToTry: Route? = null
+    //private var nextRouteToTry: Route? = null
 
     fun find(
         client: NoHttpClient,
@@ -30,10 +30,10 @@ class ExchangeFinder(
             )
             return resultConnection.newCodec(client, chain)
         } catch (e: RouteException) {
-            trackFailure(e.lastConnectException)
+            //trackFailure(e.lastConnectException) todo
             throw e
         } catch (e: IOException) {
-            trackFailure(e)
+            //trackFailure(e) todo
             throw RouteException(e)
         }
     }
@@ -56,26 +56,35 @@ class ExchangeFinder(
                 connectionRetryEnabled = connectionRetryEnabled
             )
 
-            // Confirm that the connection is good.
-            if (candidate.isHealthy(doExtensiveHealthChecks)) {
-                return candidate
-            }
 
-            // If it isn't, take it out of the pool.
-            candidate.noNewExchanges()
-
-            // Make sure we have some routes left to try. One example where we may exhaust all the routes
-            // would happen if we made a new connection and it immediately is detected as unhealthy.
-            if (nextRouteToTry != null) continue
-
-            val routesLeft = routeSelection?.hasNext() ?: true
-            if (routesLeft) continue
-
-            val routesSelectionLeft = routeSelector?.hasNext() ?: true
-            if (routesSelectionLeft) continue
+//            if (candidate.isHealthy(doExtensiveHealthChecks)) {
+//                return candidate
+//            }
+//
+//
+//            candidate.noNewExchanges()
+//
+//            if (nextRouteToTry != null) continue
+//
+//            val routesLeft = routeSelection?.hasNext() ?: true
+//            if (routesLeft) continue
+//
+//            val routesSelectionLeft = routeSelector?.hasNext() ?: true
+//            if (routesSelectionLeft) continue
 
             throw IOException("exhausted all routes")
         }
+    }
+
+    fun findConnection(
+        connectTimeout: Int,
+        readTimeout: Int,
+        writeTimeout: Int,
+        pingIntervalMillis: Int,
+        connectionRetryEnabled: Boolean,
+    ):RealConnection{
+
+        return RealConnection()
     }
 
 }

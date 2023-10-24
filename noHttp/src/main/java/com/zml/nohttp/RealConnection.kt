@@ -14,5 +14,10 @@ class RealConnection:Connection {
 
     val calls = mutableListOf<Reference<RealCall>>();
 
+    fun newCodec( client: NoHttpClient,
+                  chain: RealInterceptorChain):ExchangeCodec{
+
+        return Http1Codec(this)
+    }
 
 }
