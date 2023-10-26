@@ -7,10 +7,9 @@
 
 #include "es_context.h"
 #include <jni.h>
+#include <android/asset_manager_jni.h>
 
-typedef struct {
-    GLuint programObject;
-} UserData;
+
 
 class ES3Render : public es_context{
 
@@ -29,14 +28,22 @@ public:
     GLint init();
     ~ES3Render();
 
+    void assetManager(AAssetManager *am);
+
 public:
     static void setJvm(JavaVM *javaVM);
     static JavaVM* getJvm();
 
 private:
+    char* read(const char *srcName);
+
+private:
     int width;
     int height;
 
+    GLuint mProgram;
+
+    AAssetManager *mAssetManager = nullptr;
 
 private:
     ES3Render(){}

@@ -1,6 +1,12 @@
 package com.example.od;
 
+import static android.opengl.GLSurfaceView.RENDERMODE_WHEN_DIRTY;
+
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
+import android.content.pm.ConfigurationInfo;
+import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -20,27 +26,58 @@ import okhttp3.Response;
 
 
 public class MainActivity extends Activity {
+    private final int CONTEXT_CLIENT_VERSION = 3;
 
-
+    private GLSurfaceView mGLSurfaceView;
+    private Render mRenderer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
-        setContentView(R.layout.main_activity);
+        //setContentView(R.layout.main_activity);
 
-        Log.i("ZML","StringFromJNI="+new Render(this).stringFromJNI());
-        Log.e("ZML","After jni call");
+        mGLSurfaceView = new GLSurfaceView(this);
+        mRenderer=new Render(this);
+
+        if (!detectOpenGLES30()){
+            finish();
+            return;
+        }
+
+        // 设置OpenGl ES的版本
+        mGLSurfaceView.setEGLContextClientVersion(CONTEXT_CLIENT_VERSION);
+        // 设置与当前GLSurfaceView绑定的Renderer
+        mGLSurfaceView.setRenderer(mRenderer);
+        // 设置渲染的模式
+        mGLSurfaceView.setRenderMode(RENDERMODE_WHEN_DIRTY);
+
+        setContentView(mGLSurfaceView);
 
     }
 
+
+
+    private boolean detectOpenGLES30() {
+        ActivityManager am = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
+        ConfigurationInfo info = am.getDeviceConfigurationInfo();
+        return (info.reqGlEsVersion >= 0x30000);
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
+        mGLSurfaceView.onResume();
         Log.e("ZML","onResume");
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mGLSurfaceView.onPause();
+    }
+
 
     private final OkHttpClient client = new OkHttpClient.Builder()
             .build();

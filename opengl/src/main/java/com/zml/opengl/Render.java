@@ -30,9 +30,11 @@ public class Render implements GLSurfaceView.Renderer {
 
     native void resize(int w,int h);
 
+    native void create();
+
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        //this.init();
+        this.create();
     }
 
     @Override

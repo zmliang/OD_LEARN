@@ -7,7 +7,46 @@
 
 
 GLint ES3Render::init() {
+    GLuint vertexShader;
+    GLuint fragmentShader;
+    GLint linked;
 
+    char *pvertexShader = read("triangle/vertex");
+    char *pfragmentShader = read("triangle/fragment");
+    vertexShader = loadShader(GL_VERTEX_SHADER,pvertexShader);
+    fragmentShader = loadShader(GL_FRAGMENT_SHADER,pfragmentShader);
+
+    mProgram = glCreateProgram();
+    if (mProgram == 0){
+        return 0;
+    }
+    glAttachShader(mProgram,vertexShader);
+    glAttachShader(mProgram,fragmentShader);
+
+    glLinkProgram(mProgram);
+
+    glGetProgramiv ( mProgram, GL_LINK_STATUS, &linked );
+
+    if (!linked){
+        GLint infoLen = 0;
+
+        glGetProgramiv ( mProgram, GL_INFO_LOG_LENGTH, &infoLen );
+
+        if ( infoLen > 1 )
+        {
+            char *infoLog = (char *)malloc ( sizeof ( char ) * infoLen );
+
+            glGetProgramInfoLog ( mProgram, infoLen, NULL, infoLog );
+            ALOGE("Error linking program:[%s]", infoLog );
+
+            free ( infoLog );
+        }
+
+        glDeleteProgram ( mProgram );
+        return -1;
+    }
+    glClearColor ( 1.0f, 1.0f, 1.0f, 0.0f );
+    return 1;
 }
 
 void ES3Render::size(int w, int h) {
@@ -78,20 +117,42 @@ GLvoid ES3Render::draw()
 
     };
 
-    // Set the viewport
     glViewport ( 0, 0, width, height );
 
-    // Clear the color buffer
     glClear ( GL_COLOR_BUFFER_BIT );
 
-    // Use the program object
-    glUseProgram ( g_programObject );
+    glUseProgram ( mProgram );
 
-    // Load the vertex data
     glVertexAttribPointer ( 0, 3, GL_FLOAT, GL_FALSE, 0, vertices );
     glEnableVertexAttribArray ( 0 );
 
     glDrawArrays ( GL_TRIANGLES, 0, 3 );
+}
+
+
+char *ES3Render::read(const char *srcName) {//"triangle/vertex"
+    AAsset *pAsset = nullptr;
+    char *buffer = nullptr;
+
+    off_t size = -1;
+    int numByte = -1;
+    pAsset = AAssetManager_open(mAssetManager, srcName, AASSET_MODE_UNKNOWN);
+    size = AAsset_getLength(pAsset);
+    ALOGV("size=%d",size);
+
+    buffer = static_cast<char *>(malloc(size + 1));
+    buffer[size] = '\0';
+
+    numByte = AAsset_read(pAsset, buffer, size);
+    ALOGV("numByte=%d, content=[%s]",numByte,buffer);
+    AAsset_close(pAsset);
+
+    return buffer;
+}
+
+
+void ES3Render::assetManager(AAssetManager *am) {
+    this->mAssetManager = am;
 }
 
 
