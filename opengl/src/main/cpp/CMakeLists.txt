@@ -33,7 +33,7 @@ add_library( # Sets the name of the library.
         include/shader.h
         include/AssetShader.h
 
-        opengl.cpp
+        jni_render.cpp
         ES3Render.cpp
         AssetShader.cpp
         )
