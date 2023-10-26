@@ -10,6 +10,11 @@ GLint ES3Render::init() {
 
 }
 
+void ES3Render::size(int w, int h) {
+    this->width = w;
+    this->height = h;
+}
+
 GLuint ES3Render::loadShader(const GLenum type, const char *shaderSrc) {
     GLuint shader;
     GLint compiler;
@@ -66,6 +71,27 @@ GLboolean ES3Render::createWindow(GLint width, GLint height)
 GLvoid ES3Render::draw()
 {
     ALOGE("ES3Render draw");
+    float vertices[] = {
+            0.5f,  0.5f, 0.0f,  // top right
+            0.5f, -0.5f, 0.0f,  // bottom right
+            -0.5f, -0.5f, 0.0f,  // bottom left
+
+    };
+
+    // Set the viewport
+    glViewport ( 0, 0, width, height );
+
+    // Clear the color buffer
+    glClear ( GL_COLOR_BUFFER_BIT );
+
+    // Use the program object
+    glUseProgram ( g_programObject );
+
+    // Load the vertex data
+    glVertexAttribPointer ( 0, 3, GL_FLOAT, GL_FALSE, 0, vertices );
+    glEnableVertexAttribArray ( 0 );
+
+    glDrawArrays ( GL_TRIANGLES, 0, 3 );
 }
 
 

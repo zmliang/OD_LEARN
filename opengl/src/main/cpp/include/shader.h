@@ -5,11 +5,15 @@
 #ifndef OD_LEARN_SHADER_H
 #define OD_LEARN_SHADER_H
 
+#include "../log.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <errno.h>
 
 class shader {
 public:
 
-    virtual char* read() = 0;
+    virtual char* read(const char *srcName) = 0;
 
     virtual bool load() = 0;
 

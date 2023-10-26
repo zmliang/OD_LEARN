@@ -15,7 +15,7 @@ public:
 
     AssetShader(AAssetManager *am);
 
-    char* read();
+    char* read(const char *srcName);
 
     bool load();
 
