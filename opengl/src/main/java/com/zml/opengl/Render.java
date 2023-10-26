@@ -12,7 +12,7 @@ public class Render implements GLSurfaceView.Renderer {
 
 
     static {
-        System.loadLibrary("opengl");
+        System.loadLibrary("gles");
     }
 
     private AssetManager assetManager;
@@ -21,8 +21,6 @@ public class Render implements GLSurfaceView.Renderer {
         this.assetManager = context.getAssets();
         this.init();
     }
-
-    public native String stringFromJNI();
 
     native void init();
 

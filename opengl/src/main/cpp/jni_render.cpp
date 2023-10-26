@@ -6,14 +6,6 @@
 #include "include/ES3Render.h"
 #include "include/AssetShader.h"
 
-extern "C" JNIEXPORT jstring JNICALL
-Java_com_zml_opengl_Render_stringFromJNI(
-        JNIEnv *env,
-        jobject /* this */) {
-    std::string hello = "Hello from C++";
-
-    return env->NewStringUTF(hello.c_str());
-}
 
 extern "C"
 JNIEXPORT void JNICALL
