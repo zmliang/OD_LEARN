@@ -7,9 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.zml.nohttp.NoHttpClient;
-import com.zml.nohttp._test;
-import com.zml.opengl.NativeLib;
+import com.zml.opengl.Render;
 
 import java.io.IOException;
 
@@ -18,7 +16,6 @@ import okhttp3.Callback;
 import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 
@@ -30,11 +27,11 @@ public class MainActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.i("ZML","StringFromJNI="+new NativeLib().stringFromJNI());
+
         setContentView(R.layout.main_activity);
 
-
-
+        Log.i("ZML","StringFromJNI="+new Render(this).stringFromJNI());
+        Log.e("ZML","After jni call");
 
     }
 
@@ -42,6 +39,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.e("ZML","onResume");
     }
 
     private final OkHttpClient client = new OkHttpClient.Builder()

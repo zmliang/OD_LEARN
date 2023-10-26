@@ -6,6 +6,7 @@
 #define OD_LEARN_ES3RENDER_H
 
 #include "es_context.h"
+#include <jni.h>
 
 typedef struct {
     GLuint programObject;
@@ -25,8 +26,14 @@ public:
 
     ~ES3Render();
 
+public:
+    static void setJvm(JavaVM *javaVM);
+
+    static JavaVM* getJvm();
+
 private:
-    UserData *userData;
+    static JavaVM *jvm;
+
 };
 
 

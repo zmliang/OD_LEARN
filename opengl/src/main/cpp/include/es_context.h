@@ -25,6 +25,15 @@ public:
     }
 
 
+protected:
+    GLuint mVBO;
+    GLuint mVAO;
+    GLuint mProgram;
+
+public:
+    static const unsigned int SC_WIDTH = 800;
+    static const unsigned int SC_HEIGHT = 600;
+
 };
 
 

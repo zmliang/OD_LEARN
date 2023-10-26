@@ -30,8 +30,12 @@ add_library( # Sets the name of the library.
         log.h
         include/es_context.h
         include/ES3Render.h
+        include/shader.h
+        include/AssetShader.h
+
         opengl.cpp
         ES3Render.cpp
+        AssetShader.cpp
         )
 
 # Searches for a specified prebuilt library and stores the path as a
