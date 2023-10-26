@@ -4,6 +4,16 @@
 
 #include "include/ES3Render.h"
 
+
+GLint ES3Render::init() {
+
+}
+
+GLuint ES3Render::loadShader(GLenum type, const char *shaderSrc) {
+
+}
+
+
 GLboolean ES3Render::createWindow(GLint width, GLint height)
 {
     ALOGE("createWindow");

@@ -7,6 +7,9 @@
 
 #include "es_context.h"
 
+typedef struct {
+    GLuint programObject;
+} UserData;
 
 class ES3Render : public es_context{
 
@@ -16,12 +19,14 @@ public:
 
     GLvoid draw();
 
+    GLuint loadShader(GLenum type,const char *shaderSrc);
+
+    GLint init();
+
     ~ES3Render();
 
-
 private:
-    GLint a = 0;
-
+    UserData *userData;
 };
 
 
