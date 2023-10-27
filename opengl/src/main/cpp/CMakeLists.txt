@@ -30,9 +30,11 @@ add_library( # Sets the name of the library.
         log.h
         include/render.h
         include/ES3Render.h
+        include/ESContext.h
 
         jni_render.cpp
         ES3Render.cpp
+        ESContext.cpp
         )
 
 # Searches for a specified prebuilt library and stores the path as a

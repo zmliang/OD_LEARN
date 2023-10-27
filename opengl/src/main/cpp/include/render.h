@@ -16,8 +16,6 @@ class render {
 
 public:
 
-    virtual GLboolean createWindow(GLint width,GLint height) = 0;
-
     virtual GLvoid draw() = 0;
 
     virtual ~render(){

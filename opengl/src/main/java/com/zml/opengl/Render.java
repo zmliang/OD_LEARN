@@ -3,13 +3,15 @@ package com.zml.opengl;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.opengl.GLSurfaceView;
+import android.util.Log;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 public class Render implements GLSurfaceView.Renderer {
-    private final String TAG = "native_render";
+    private final String TAG = "ZML_render";
 
+    private long nativeRenderHandleId = -1;
 
     static {
         System.loadLibrary("gles");
@@ -30,6 +32,8 @@ public class Render implements GLSurfaceView.Renderer {
 
     native void create();
 
+    //native void destroy(long handleId);
+
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         this.create();
@@ -44,6 +48,5 @@ public class Render implements GLSurfaceView.Renderer {
     public void onDrawFrame(GL10 gl) {
         this.render();
     }
-
 
 }

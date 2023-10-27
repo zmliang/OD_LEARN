@@ -54,9 +54,9 @@ GLint ES3Render::init() {
     }
 
     float vertices[] = {
-            0.5f,  1.0f, 0.0f,  // top right
-            0.5f, -0.5f, 0.0f,  // bottom right
-            -0.5f, -0.5f, 0.0f,  // bottom left
+            0.0f,  1.0f, 0.0f,  // top right
+            1.0f, -1.0f, 0.0f,  // bottom right
+            -1.0f, -1.0f, 0.0f,  // bottom left
 
     };
 
@@ -120,25 +120,6 @@ GLuint ES3Render::loadShader(const GLenum type, const char *shaderSrc) {
 
     return shader;
 
-}
-
-
-JavaVM* ES3Render::jvm = nullptr;
-
-JavaVM *ES3Render::getJvm() {
-    return jvm;
-}
-
-void ES3Render::setJvm(JavaVM *javaVM) {
-    jvm = javaVM;
-}
-
-
-GLboolean ES3Render::createWindow(GLint width, GLint height)
-{
-    ALOGE("createWindow");
-
-    return GL_TRUE;
 }
 
 GLvoid ES3Render::draw()

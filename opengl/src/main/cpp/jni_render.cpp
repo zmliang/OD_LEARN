@@ -4,7 +4,17 @@
 #include <android/asset_manager_jni.h>
 
 #include "include/ES3Render.h"
+#include "include/ESContext.h"
 
+
+extern "C"
+ES3Render* getSelf(JNIEnv* &env, jobject &thiz){
+    jclass jcls = env->GetObjectClass(thiz);
+    jfieldID jfd = env->GetFieldID(jcls,"nativeRenderHandleId", "J");
+    jlong value = env->GetLongField(thiz, jfd);
+
+    return reinterpret_cast<ES3Render *>(value);
+}
 
 
 extern "C"
@@ -23,7 +33,12 @@ Java_com_zml_opengl_Render_init(JNIEnv *env, jobject thiz) {
     if (assetManager == nullptr) {
         ALOGE("asset manager is nullptr");
     }
-    ES3Render::self()->assetManager(assetManager);
+
+    jfieldID jf_hid = env->GetFieldID(jcls,"nativeRenderHandleId", "J");
+    ES3Render* instance = ES3Render::self();
+    env->SetLongField(thiz, jf_hid, reinterpret_cast<jlong>(instance));
+
+    instance->assetManager(assetManager);
 
 //    if (detached) {
 //        ES3Render::getJvm()->DetachCurrentThread();
@@ -32,25 +47,27 @@ Java_com_zml_opengl_Render_init(JNIEnv *env, jobject thiz) {
 }
 
 
+
+
 extern "C"
 jint JNI_OnLoad(JavaVM *vm, void *reserved) {
-    ES3Render::setJvm(vm);
+    ESContext::setJvm(vm);
     return JNI_VERSION_1_4;
 }
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_zml_opengl_Render_render(JNIEnv *env, jobject thiz) {
 
-    ES3Render::self()->draw();
+    getSelf(env,thiz)->draw();
 
 }
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_zml_opengl_Render_resize(JNIEnv *env, jobject thiz, jint w, jint h) {
-    ES3Render::self()->size(w,h);
+    getSelf(env,thiz)->size(w,h);
 }
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_zml_opengl_Render_create(JNIEnv *env, jobject thiz) {
-    ES3Render::self()->init();
+    getSelf(env,thiz)->init();
 }

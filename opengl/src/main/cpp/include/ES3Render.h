@@ -14,7 +14,7 @@
 class ES3Render : public render{
 
 public:
-    static ES3Render* self()
+    static ES3Render* self()//线程安全单例
     {
         static ES3Render inst_;
         return &inst_;
@@ -22,7 +22,6 @@ public:
 
 public:
     void size(int w,int h);
-    GLboolean createWindow(GLint width,GLint height);
     GLvoid draw();
     GLuint loadShader(GLenum type,const char *shaderSrc);
     GLint init();
@@ -30,9 +29,6 @@ public:
 
     void assetManager(AAssetManager *am);
 
-public:
-    static void setJvm(JavaVM *javaVM);
-    static JavaVM* getJvm();
 
 private:
     char* read(const char *srcName);
@@ -47,7 +43,7 @@ private:
 
 private:
     ES3Render(){}
-    static JavaVM *jvm;
+
 
 };
 
