@@ -13,6 +13,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.od.view.MyGLSurfaceView;
 import com.zml.opengl.Render;
 
 import java.io.IOException;
@@ -28,7 +29,7 @@ import okhttp3.Response;
 public class MainActivity extends Activity {
     private final int CONTEXT_CLIENT_VERSION = 3;
 
-    private GLSurfaceView mGLSurfaceView;
+    private MyGLSurfaceView mGLSurfaceView;
     private Render mRenderer;
 
     @Override
@@ -38,7 +39,7 @@ public class MainActivity extends Activity {
 
         //setContentView(R.layout.main_activity);
 
-        mGLSurfaceView = new GLSurfaceView(this);
+        mGLSurfaceView = MyGLSurfaceView.create(this);
         mRenderer=new Render(this);
 
         if (!detectOpenGLES30()){
@@ -54,6 +55,8 @@ public class MainActivity extends Activity {
         mGLSurfaceView.setRenderMode(RENDERMODE_WHEN_DIRTY);
 
         setContentView(mGLSurfaceView);
+
+        mGLSurfaceView.loopRender();
 
     }
 
