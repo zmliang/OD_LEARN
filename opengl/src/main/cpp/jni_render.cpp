@@ -4,7 +4,7 @@
 #include <android/asset_manager_jni.h>
 
 #include "include/ES3Render.h"
-#include "include/AssetShader.h"
+
 
 
 extern "C"

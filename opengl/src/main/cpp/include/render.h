@@ -2,8 +2,8 @@
 // Created by zml on 2023/10/25.
 //
 
-#ifndef OD_LEARN_ES_CONTEXT_H
-#define OD_LEARN_ES_CONTEXT_H
+#ifndef OD_LEARN_RENDER_H
+#define OD_LEARN_RENDER_H
 
 #include <string>
 #include <GLES3/gl3.h>
@@ -12,7 +12,7 @@
 
 #include "../log.h"
 
-class es_context {
+class render {
 
 public:
 
@@ -20,8 +20,8 @@ public:
 
     virtual GLvoid draw() = 0;
 
-    virtual ~es_context(){
-        ALOGE("es_context base destructor");
+    virtual ~render(){
+        ALOGE("render base destructor");
         glDeleteProgram(mProgram);
         glDeleteVertexArrays(1, &mVAO);
         glDeleteBuffers(1, &mVBO);
@@ -37,4 +37,4 @@ protected:
 };
 
 
-#endif //OD_LEARN_ES_CONTEXT_H
+#endif //OD_LEARN_RENDER_H

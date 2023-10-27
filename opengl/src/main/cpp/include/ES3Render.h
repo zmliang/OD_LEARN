@@ -5,13 +5,13 @@
 #ifndef OD_LEARN_ES3RENDER_H
 #define OD_LEARN_ES3RENDER_H
 
-#include "es_context.h"
+#include "render.h"
 #include <jni.h>
 #include <android/asset_manager_jni.h>
 
 
 
-class ES3Render : public es_context{
+class ES3Render : public render{
 
 public:
     static ES3Render* self()
