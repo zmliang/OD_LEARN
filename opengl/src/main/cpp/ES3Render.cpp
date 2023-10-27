@@ -29,6 +29,8 @@ GLint ES3Render::init() {
 
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
+    free(pvertexShader);
+    free(pfragmentShader);
 
     glGetProgramiv ( mProgram, GL_LINK_STATUS, &linked );
 
@@ -177,13 +179,13 @@ char *ES3Render::read(const char *srcName) {//"triangle/vertex"
     int numByte = -1;
     pAsset = AAssetManager_open(mAssetManager, srcName, AASSET_MODE_UNKNOWN);
     size = AAsset_getLength(pAsset);
-    ALOGV("size=%d",size);
+    //ALOGV("size=%d",size);
 
     buffer = static_cast<char *>(malloc(size + 1));
     buffer[size] = '\0';
 
     numByte = AAsset_read(pAsset, buffer, size);
-    ALOGV("numByte=%d, content=[%s]",numByte,buffer);
+    //ALOGV("numByte=%d, content=[%s]",numByte,buffer);
     AAsset_close(pAsset);
 
     return buffer;
