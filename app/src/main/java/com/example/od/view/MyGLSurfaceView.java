@@ -38,6 +38,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
     static final class InnerThread extends Thread{
         final int REQ_RENDER = 0X01;
         final int TIMEOUT_SEC = 2*1000;
+
+        final int DURATION = 50;
         static Handler handler;
         CountDownLatch countDownLatch = new CountDownLatch(1);
 
@@ -71,7 +73,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
                 if (countDownLatch.getCount()!=0){
                     countDownLatch.await(TIMEOUT_SEC, TimeUnit.MILLISECONDS);
                 }
-                handler.sendEmptyMessageDelayed(REQ_RENDER,500);
+                handler.sendEmptyMessageDelayed(REQ_RENDER,DURATION);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
