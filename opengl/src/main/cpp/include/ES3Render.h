@@ -6,18 +6,17 @@
 #define OD_LEARN_ES3RENDER_H
 
 #include "render.h"
-#include <jni.h>
-#include <android/asset_manager_jni.h>
+
 
 
 
 class ES3Render : public render{
 
 public:
-    static ES3Render* self()//线程安全单例
+    static std::unique_ptr<ES3Render> instance()//线程安全单例
     {
-        static ES3Render inst_;
-        return &inst_;
+        std::unique_ptr<ES3Render> ptr(new ES3Render());
+        return ptr;
     }
 
 public:
@@ -41,7 +40,7 @@ private:
 
     AAssetManager *mAssetManager = nullptr;
 
-private:
+public:
     ES3Render(){}
 
 

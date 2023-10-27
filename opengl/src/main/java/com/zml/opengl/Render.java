@@ -32,7 +32,7 @@ public class Render implements GLSurfaceView.Renderer {
 
     native void create();
 
-    //native void destroy(long handleId);
+    native void destroy(long id);
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
@@ -47,6 +47,10 @@ public class Render implements GLSurfaceView.Renderer {
     @Override
     public void onDrawFrame(GL10 gl) {
         this.render();
+    }
+
+    public void destroy(){
+        this.destroy(this.nativeRenderHandleId);
     }
 
 }

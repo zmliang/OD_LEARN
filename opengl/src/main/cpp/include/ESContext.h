@@ -6,8 +6,14 @@
 #define OD_LEARN_ESCONTEXT_H
 
 #include <jni.h>
+#include "ES3Render.h"
 
 class ESContext {
+
+public:
+
+    render* createRender();
+
 
 public:
     static ESContext* self()//线程安全单例

@@ -16,3 +16,7 @@ void ESContext::setJvm(JavaVM *javaVM) {
     jvm = javaVM;
 }
 
+
+render* ESContext::createRender() {
+    return new ES3Render();
+}
