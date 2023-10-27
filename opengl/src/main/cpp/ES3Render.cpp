@@ -54,29 +54,36 @@ GLint ES3Render::init() {
     }
 
     float vertices[] = {
-            0.0f,  1.0f, 0.0f,  // top right
-            1.0f, -1.0f, 0.0f,  // bottom right
-            -1.0f, -1.0f, 0.0f,  // bottom left
-
+            0.5f,  0.5f, 0.0f,  // top right
+            0.5f, -0.5f, 0.0f,  // bottom right
+            -0.5f, -0.5f, 0.0f,  // bottom left
+            -0.5f,  0.5f, 0.0f   // top left
     };
+
+    unsigned int indices[] = {  // note that we start from 0!
+            0, 1, 3,  // first Triangle
+            1, 2, 3   // second Triangle
+    };
+
+    unsigned int  mEBO;
 
     glGenVertexArrays(1,&mVAO);
     glGenBuffers(1,&mVBO);
+    glGenBuffers(1,&mEBO);
 
     glBindVertexArray(mVAO);
 
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,mEBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices),indices,GL_STATIC_DRAW);
+
+    //1:复制顶点数组到缓冲中，供openGL使用
     glBindBuffer(GL_ARRAY_BUFFER,mVBO);
-
-    glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),
-                 vertices,GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,3*sizeof(float),
-                          (void*)0);
-
+    glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
+    //2:设置顶点属性指针，并启用
+    glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,3*sizeof(float),(void*)0);
     glEnableVertexAttribArray(0);
 
     glBindBuffer(GL_ARRAY_BUFFER,0);//解绑
-
     glBindVertexArray(0);//解绑
 
    // glClearColor ( 1.0f, 1.0f, 1.0f, 0.0f );
@@ -148,7 +155,10 @@ GLvoid ES3Render::draw()
 
     glUseProgram(mProgram);
     glBindVertexArray(mVAO);
-    glDrawArrays(GL_TRIANGLES,0,3);
+
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+    //glDrawArrays(GL_TRIANGLES,0,3);
 }
 
 
