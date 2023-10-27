@@ -22,6 +22,9 @@ public:
 
     virtual ~es_context(){
         ALOGE("es_context base destructor");
+        glDeleteProgram(mProgram);
+        glDeleteVertexArrays(1, &mVAO);
+        glDeleteBuffers(1, &mVBO);
     }
 
 
@@ -30,9 +33,6 @@ protected:
     GLuint mVAO;
     GLuint mProgram;
 
-public:
-    static const unsigned int SC_WIDTH = 800;
-    static const unsigned int SC_HEIGHT = 600;
 
 };
 

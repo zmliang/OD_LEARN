@@ -18,12 +18,17 @@ GLint ES3Render::init() {
 
     mProgram = glCreateProgram();
     if (mProgram == 0){
+        glDeleteShader(vertexShader);
+        glDeleteShader(fragmentShader);
         return 0;
     }
     glAttachShader(mProgram,vertexShader);
     glAttachShader(mProgram,fragmentShader);
 
     glLinkProgram(mProgram);
+
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
 
     glGetProgramiv ( mProgram, GL_LINK_STATUS, &linked );
 
@@ -45,7 +50,34 @@ GLint ES3Render::init() {
         glDeleteProgram ( mProgram );
         return -1;
     }
-    glClearColor ( 1.0f, 1.0f, 1.0f, 0.0f );
+
+    float vertices[] = {
+            0.5f,  1.0f, 0.0f,  // top right
+            0.5f, -0.5f, 0.0f,  // bottom right
+            -0.5f, -0.5f, 0.0f,  // bottom left
+
+    };
+
+    glGenVertexArrays(1,&mVAO);
+    glGenBuffers(1,&mVBO);
+
+    glBindVertexArray(mVAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER,mVBO);
+
+    glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),
+                 vertices,GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,3*sizeof(float),
+                          (void*)0);
+
+    glEnableVertexAttribArray(0);
+
+    glBindBuffer(GL_ARRAY_BUFFER,0);//解绑
+
+    glBindVertexArray(0);//解绑
+
+   // glClearColor ( 1.0f, 1.0f, 1.0f, 0.0f );
     return 1;
 }
 
@@ -109,24 +141,31 @@ GLboolean ES3Render::createWindow(GLint width, GLint height)
 
 GLvoid ES3Render::draw()
 {
-    ALOGE("ES3Render draw");
-    float vertices[] = {
-            0.5f,  0.5f, 0.0f,  // top right
-            0.5f, -0.5f, 0.0f,  // bottom right
-            -0.5f, -0.5f, 0.0f,  // bottom left
-
-    };
+    ALOGE("ES3Render draw:%d,%d",width,height);
+//    float vertices[] = {
+//            0.5f,  0.5f, 0.0f,  // top right
+//            0.5f, -0.5f, 0.0f,  // bottom right
+//            -0.5f, -0.5f, 0.0f,  // bottom left
+//
+//    };
 
     glViewport ( 0, 0, width, height );
 
-    glClear ( GL_COLOR_BUFFER_BIT );
+//    glClear ( GL_COLOR_BUFFER_BIT );
+//
+//    glUseProgram ( mProgram );
+//
+//    glVertexAttribPointer ( 0, 3, GL_FLOAT, GL_FALSE, 0, vertices );
+//    glEnableVertexAttribArray ( 0 );
+//
+//    glDrawArrays ( GL_TRIANGLES, 0, 3 );
 
-    glUseProgram ( mProgram );
+    glClearColor(0.4f,0.2f,0.2f,1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
 
-    glVertexAttribPointer ( 0, 3, GL_FLOAT, GL_FALSE, 0, vertices );
-    glEnableVertexAttribArray ( 0 );
-
-    glDrawArrays ( GL_TRIANGLES, 0, 3 );
+    glUseProgram(mProgram);
+    glBindVertexArray(mVAO);
+    glDrawArrays(GL_TRIANGLES,0,3);
 }
 
 
