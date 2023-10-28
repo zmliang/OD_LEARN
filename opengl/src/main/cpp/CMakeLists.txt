@@ -33,6 +33,7 @@ add_library( # Sets the name of the library.
         include/ESContext.h
         include/RenderLoop.h
         loop/loop.h
+        loop/message_queue.h
         loop/message.h
 
 

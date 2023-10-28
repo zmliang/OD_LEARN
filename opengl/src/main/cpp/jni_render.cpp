@@ -92,5 +92,5 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_com_zml_opengl_Render_testLoop(JNIEnv *env, jobject thiz) {
     RenderLoop* renderLoop = new RenderLoop() ;
-    renderLoop->postMessageDelay(5,6000);
+    renderLoop->postMessageDelay(5,2000);
 }

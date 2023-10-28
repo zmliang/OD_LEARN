@@ -11,7 +11,7 @@
 #include <mutex>
 #include <condition_variable>
 
-#include "message.h"
+#include "message_queue.h"
 
 
 template<typename T>
@@ -55,7 +55,7 @@ public:
     }
 
     void postMessageDelay(T message,std::chrono::milliseconds delay = std::chrono::milliseconds(0)){
-        _message.push(message,delay);
+        _messageQueue.push(message,delay);
     }
 
     void postMessageDelay(T message,long delay){
@@ -71,7 +71,7 @@ protected:
     void loop(){
         while (this->running){
             T msg;
-            int status = this->_message.pop(msg);
+            int status = this->_messageQueue.pop(msg);
             //ALOGE("pop message status is %d",status);
             if (status == 0){
                 this->handleMessage(msg);
@@ -80,7 +80,7 @@ protected:
         }
     }
 
-    Message<T> _message;
+    MessageQueue<T> _messageQueue;
 
     std::thread work;
 
