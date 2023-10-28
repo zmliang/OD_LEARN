@@ -3,6 +3,7 @@
 //
 
 #include "include/ES3Render.h"
+#include <ctime>
 
 
 
@@ -129,9 +130,10 @@ GLuint ES3Render::loadShader(const GLenum type, const char *shaderSrc) {
 
 }
 
-GLvoid ES3Render::draw()
-{
-    ALOGE("ES3Render draw:%d,%d",width,height);
+void ES3Render::loop() {
+    while (true){
+
+        ALOGE("ES3Render draw:%d,%d",width,height);
 //    float vertices[] = {
 //            0.5f,  0.5f, 0.0f,  // top right
 //            0.5f, -0.5f, 0.0f,  // bottom right
@@ -139,7 +141,7 @@ GLvoid ES3Render::draw()
 //
 //    };
 
-    glViewport ( 0, 0, width, height );
+        glViewport ( 0, 0, width, height );
 
 //    glClear ( GL_COLOR_BUFFER_BIT );
 //
@@ -150,15 +152,29 @@ GLvoid ES3Render::draw()
 //
 //    glDrawArrays ( GL_TRIANGLES, 0, 3 );
 
-    glClearColor(0.4f,0.2f,0.2f,1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+        glClearColor(0.4f,0.2f,0.2f,1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
 
-    glUseProgram(mProgram);
-    glBindVertexArray(mVAO);
+        glUseProgram(mProgram);
 
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        //更新uniform颜色
+        std::time_t t = std::time(0);
+        float greenVal = sin(t)/2.0f+0.5f;
+        int colorLocation = glGetUniformLocation(mProgram,"ourColor");
+        glUniform4f(colorLocation,0.0f,greenVal,1.0f,1.0f);
 
-    //glDrawArrays(GL_TRIANGLES,0,3);
+        glBindVertexArray(mVAO);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+        if (!loopFlag){
+            break;
+        }
+    }
+}
+
+GLvoid ES3Render::draw()
+{
+   loop();
 }
 
 

@@ -5,6 +5,7 @@
 
 #include "include/render.h"
 #include "include/ESContext.h"
+#include "loop/loop.h"
 
 
 extern "C"

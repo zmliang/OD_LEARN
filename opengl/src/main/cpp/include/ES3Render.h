@@ -6,8 +6,7 @@
 #define OD_LEARN_ES3RENDER_H
 
 #include "render.h"
-
-
+#include <atomic>
 
 
 class ES3Render : public render{
@@ -31,6 +30,7 @@ public:
 
 private:
     char* read(const char *srcName);
+    void loop();
 
 private:
     int width;
@@ -40,8 +40,13 @@ private:
 
     AAssetManager *mAssetManager = nullptr;
 
+    std::atomic<bool> loopFlag;
+
+
 public:
-    ES3Render(){}
+    ES3Render(): loopFlag(false){
+
+    }
 
 
 };

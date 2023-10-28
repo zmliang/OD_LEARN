@@ -39,7 +39,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
         final int REQ_RENDER = 0X01;
         final int TIMEOUT_SEC = 2*1000;
 
-        final int DURATION = 50;
+        final int DURATION = 5;
         static Handler handler;
         CountDownLatch countDownLatch = new CountDownLatch(1);
 

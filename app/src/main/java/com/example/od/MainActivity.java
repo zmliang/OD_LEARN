@@ -56,7 +56,7 @@ public class MainActivity extends Activity {
 
         setContentView(mGLSurfaceView);
 
-        mGLSurfaceView.loopRender();
+        //mGLSurfaceView.loopRender();
 
     }
 
