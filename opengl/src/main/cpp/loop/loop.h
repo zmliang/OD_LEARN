@@ -84,7 +84,7 @@ protected:
 
     std::thread work;
 
-    atomic<bool> running;
+    bool running = false;
 
 
 
