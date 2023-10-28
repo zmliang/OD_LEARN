@@ -10,6 +10,10 @@
 #include <condition_variable>
 #include "../log.h"
 
+
+
+
+
 using namespace std;
 
 template<class T>
@@ -23,7 +27,6 @@ public:
     ~Message(){}
 
     void push(T msg,chrono::milliseconds delay = chrono::milliseconds(0)){
-        ALOGE("延迟了%d",delay);
         std::unique_lock <std::mutex> lock(mMutex);
         mPriorityQueue.push(make_pair(chrono::steady_clock::now()+delay,msg));
         conditionVariable.notify_one();

@@ -31,6 +31,7 @@ public:
         }
     }
     void quite(){
+
         running = false;
     }
 
@@ -41,7 +42,7 @@ public:
             return;
         }
         work = std::thread(callback, this);
-        work.detach();
+        //work.detach();
         running = true;
     }
 
@@ -83,7 +84,7 @@ protected:
 
     std::thread work;
 
-    bool running;
+    atomic<bool> running;
 
 
 
