@@ -11,6 +11,6 @@ RenderLoop::RenderLoop() {
 
 
 void RenderLoop::handleMessage(int message) {
-    ALOGV("Render loop handler message is what=%d",message);
+    ALOGE("Render loop handler message what is %d",message);
     this->quite();
 }

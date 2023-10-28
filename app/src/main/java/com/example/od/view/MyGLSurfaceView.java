@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -24,7 +25,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
     public static MyGLSurfaceView create(Context context){
 
-        return new MyGLSurfaceView(context);
+        MyGLSurfaceView instance = new MyGLSurfaceView(context);
+        return instance;
     }
 
     public MyGLSurfaceView(Context context) {
@@ -52,6 +54,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
                 public void handleMessage(@NonNull Message msg) {
                     switch (msg.what){
                         case REQ_RENDER:
+                            //Log.e("ZML","调用了requestRender方法");
                             InnerThread.this.weakReference.get().requestRender();
                             InnerThread.this.sendRenderMessage();
                             break;
@@ -74,7 +77,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
                     countDownLatch.await(TIMEOUT_SEC, TimeUnit.MILLISECONDS);
                 }
                 handler.sendEmptyMessageDelayed(REQ_RENDER,DURATION);
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

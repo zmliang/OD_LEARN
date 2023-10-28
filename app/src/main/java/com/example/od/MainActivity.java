@@ -1,5 +1,6 @@
 package com.example.od;
 
+import static android.opengl.GLSurfaceView.RENDERMODE_CONTINUOUSLY;
 import static android.opengl.GLSurfaceView.RENDERMODE_WHEN_DIRTY;
 
 import android.app.Activity;
@@ -52,14 +53,11 @@ public class MainActivity extends Activity {
         // 设置与当前GLSurfaceView绑定的Renderer
         mGLSurfaceView.setRenderer(mRenderer);
         // 设置渲染的模式
-        mGLSurfaceView.setRenderMode(RENDERMODE_WHEN_DIRTY);
+        mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
 
         setContentView(mGLSurfaceView);
+        mGLSurfaceView.loopRender();
 
-        //mGLSurfaceView.loopRender();
-
-
-        mRenderer.testLoop();
 
     }
 
