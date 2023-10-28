@@ -132,10 +132,10 @@ GLuint ES3Render::loadShader(const GLenum type, const char *shaderSrc) {
 
 }
 
-void ES3Render::loop() {
+void ES3Render::loop(float greenVal) {
     //while (true){
 
-        ALOGE("ES3Render draw:%d,%d",width,height);
+        //ALOGE("ES3Render draw:%d,%d",width,height);
 //    float vertices[] = {
 //            0.5f,  0.5f, 0.0f,  // top right
 //            0.5f, -0.5f, 0.0f,  // bottom right
@@ -154,13 +154,13 @@ void ES3Render::loop() {
 
     // 清除颜色缓冲
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
     glUseProgram(mProgram);
 
     //更新uniform颜色
-    std::time_t t = std::time(0);
-    float greenVal = sin(t)/2.0f+0.5f;
+    //std::time_t t = std::time(0);
+    //float greenVal = sin(t)/2.0f+0.5f;
     int colorLocation = glGetUniformLocation(mProgram,"ourColor");
     glUniform4f(colorLocation,0.0f,greenVal,1.0f,1.0f);
 
@@ -175,9 +175,9 @@ void ES3Render::loop() {
 //    }
 }
 
-GLvoid ES3Render::draw()
+GLvoid ES3Render::draw(float greenVal)
 {
-   loop();
+   loop(greenVal);
 }
 
 

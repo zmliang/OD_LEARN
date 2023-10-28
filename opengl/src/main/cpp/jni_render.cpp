@@ -57,9 +57,9 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved) {
 }
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_zml_opengl_Render_render(JNIEnv *env, jobject thiz) {
+Java_com_zml_opengl_Render_render(JNIEnv *env, jobject thiz,jfloat green) {
 
-    getSelf(env,thiz)->draw();
+    getSelf(env,thiz)->draw(green);
 
 }
 extern "C"

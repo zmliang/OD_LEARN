@@ -18,7 +18,7 @@ class render {
 
 public:
 
-    virtual GLvoid draw() = 0;
+    virtual GLvoid draw(float greenVal) = 0;
 
     virtual void size(int w,int h) = 0;
     virtual GLint init() = 0;

@@ -24,9 +24,15 @@ public class Render implements GLSurfaceView.Renderer {
         this.init();
     }
 
+    float greenValue;
+
+    public void setGreenValue(float greenValue) {
+        this.greenValue = greenValue;
+    }
+
     native void init();
 
-    native void render();
+    native void render(float green);
 
     native void resize(int w,int h);
 
@@ -48,7 +54,8 @@ public class Render implements GLSurfaceView.Renderer {
 
     @Override
     public void onDrawFrame(GL10 gl) {
-        this.render();
+        //Log.e("ZML","onDrawFrame");
+        this.render(greenValue);
     }
 
     public void destroy(){

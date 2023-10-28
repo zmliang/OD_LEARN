@@ -10,16 +10,20 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.zml.opengl.Render;
+
 import java.lang.ref.WeakReference;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 public class MyGLSurfaceView extends GLSurfaceView {
 
+    Render _render;
 
     private InnerThread innerThread = new InnerThread(this);
 
-    public void loopRender(){
+    public void loopRender(Render renderer){
+        _render = renderer;
         innerThread.loop();
     }
 
@@ -55,6 +59,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
                     switch (msg.what){
                         case REQ_RENDER:
                             //Log.e("ZML","调用了requestRender方法");
+                            InnerThread.this.weakReference.get()._render.setGreenValue((float) (Math.sin(System.currentTimeMillis())/2.0f+0.5f));
                             InnerThread.this.weakReference.get().requestRender();
                             InnerThread.this.sendRenderMessage();
                             break;

@@ -20,7 +20,7 @@ public:
 
 public:
     void size(int w,int h);
-    GLvoid draw();
+    GLvoid draw(float greenVal);
     GLuint loadShader(GLenum type,const char *shaderSrc);
     GLint init();
     ~ES3Render();
@@ -30,7 +30,7 @@ public:
 
 private:
     char* read(const char *srcName);
-    void loop();
+    void loop(float greenVal);
 
 private:
     int width;
