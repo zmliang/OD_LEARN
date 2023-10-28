@@ -5,7 +5,7 @@
 
 #include "include/render.h"
 #include "include/ESContext.h"
-#include "loop/loop.h"
+#include "include/RenderLoop.h"
 
 
 extern "C"
@@ -87,4 +87,10 @@ Java_com_zml_opengl_Render_destroy(JNIEnv *env, jobject thiz,jlong jid) {
         ptr = 0;
     }
 
+}
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_zml_opengl_Render_testLoop(JNIEnv *env, jobject thiz) {
+    RenderLoop* renderLoop = new RenderLoop() ;
+    renderLoop->postMessageDelay(5,6000);
 }

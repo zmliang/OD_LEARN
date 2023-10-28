@@ -58,6 +58,9 @@ public class MainActivity extends Activity {
 
         //mGLSurfaceView.loopRender();
 
+
+        mRenderer.testLoop();
+
     }
 
 

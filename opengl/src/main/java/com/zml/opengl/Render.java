@@ -34,6 +34,8 @@ public class Render implements GLSurfaceView.Renderer {
 
     native void destroy(long id);
 
+    public native void testLoop();
+
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         this.create();

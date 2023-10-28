@@ -8,43 +8,83 @@
 #include <thread>
 #include <semaphore>
 #include <sys/types.h>
+#include <mutex>
+#include <condition_variable>
 
-typedef struct LoopMessage{
-    int what;
-    void* object;
-    LoopMessage* next;
-    bool quit;
-} Message;
+#include "message.h"
 
+
+template<typename T>
 class Looper {
 
 public:
-    Looper();
+
+    Looper(){
+        this->start();
+    }
     Looper&operator=(const Looper&)=delete;
     Looper( Looper&)=delete;
 
-    virtual ~Looper();
+    virtual ~Looper(){
+        if (running){
+            quite();
+        }
+    }
+    void quite(){
+        running = false;
+    }
 
-    void post(int what,bool flush= false);
-    void post(int what,void *obj, bool flush= false);
+    virtual void handleMessage(T message) = 0;
 
-    void quite();
+    void start(){
+        if (running){
+            return;
+        }
+        work = std::thread(callback, this);
+        work.detach();
+        running = true;
+    }
 
-    void handleMessage(Message* message);
+    bool isRunning(){
+        return running;
+    }
 
-private:
-    void addMessage(Message* msg,bool flush= false);
+    void postMessage(T message){
+        this->postMessageDelay(message);
+    }
 
-    static void callback(Looper* p);
+    void postMessageDelay(T message,std::chrono::milliseconds delay = std::chrono::milliseconds(0)){
+        _message.push(message,delay);
+    }
 
-    void loop();
+    void postMessageDelay(T message,long delay){
+        this->postMessageDelay(message,std::chrono::milliseconds(delay));
+    }
 
-    Message *header;
+protected:
+
+    static void callback(Looper* p){
+        p->loop();
+    }
+
+    void loop(){
+        while (this->running){
+            T msg;
+            int status = this->_message.pop(msg);
+            //ALOGE("pop message status is %d",status);
+            if (status == 0){
+                this->handleMessage(msg);
+                continue;
+            }
+        }
+    }
+
+    Message<T> _message;
 
     std::thread work;
-    sem_t headerWriteSemt;
-    sem_t headerDataAvail;
+
     bool running;
+
 
 
 };

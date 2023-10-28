@@ -31,12 +31,15 @@ add_library( # Sets the name of the library.
         include/render.h
         include/ES3Render.h
         include/ESContext.h
+        include/RenderLoop.h
         loop/loop.h
+        loop/message.h
+
 
         jni_render.cpp
         ES3Render.cpp
         ESContext.cpp
-        loop/loop.cpp
+        RenderLoop.cpp
         )
 
 # Searches for a specified prebuilt library and stores the path as a
