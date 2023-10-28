@@ -72,7 +72,7 @@ protected:
         while (this->running){
             T msg;
             int status = this->_messageQueue.pop(msg);
-            //ALOGE("pop message status is %d",status);
+            ALOGE("pop message status is %d",status);
             if (status == 0){
                 this->handleMessage(msg);
                 continue;
