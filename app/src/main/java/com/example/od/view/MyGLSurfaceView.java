@@ -1,10 +1,13 @@
 package com.example.od.view;
 
 import android.content.Context;
+import android.opengl.GLES10;
+import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -45,7 +48,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
         final int REQ_RENDER = 0X01;
         final int TIMEOUT_SEC = 2*1000;
 
-        final int DURATION = 5;
+        final int DURATION = 1;
         static Handler handler;
         CountDownLatch countDownLatch = new CountDownLatch(1);
 
@@ -58,8 +61,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
                 public void handleMessage(@NonNull Message msg) {
                     switch (msg.what){
                         case REQ_RENDER:
-                            //Log.e("ZML","调用了requestRender方法");
-                            InnerThread.this.weakReference.get()._render.setGreenValue((float) (Math.sin(System.currentTimeMillis())/2.0f+0.5f));
+                            InnerThread.this.weakReference.get()._render.setGreenValue((float) (Math.sin(Float.valueOf((System.currentTimeMillis())/1000))/2.0f+0.5f));
                             InnerThread.this.weakReference.get().requestRender();
                             InnerThread.this.sendRenderMessage();
                             break;

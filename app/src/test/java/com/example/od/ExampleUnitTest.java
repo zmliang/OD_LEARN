@@ -4,6 +4,10 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import android.util.Log;
+
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Scanner;
 
 /**
@@ -15,6 +19,13 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
+
+        long a = System.currentTimeMillis();
+        double f = Float.valueOf(a/1000);
+        DecimalFormat df = new DecimalFormat("#.00000");
+        System.out.println("f =="+String.valueOf(a));
+        System.out.println("ff=="+df.format(f));
+
     }
 
 
