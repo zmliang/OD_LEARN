@@ -107,7 +107,19 @@ GLint TriangleRender::init() {
 
 
     //load texture....
-    loadTexture();
+    stbi_set_flip_vertically_on_load(true);
+    loadTexture(mTexture,"image/container.jpg", false);
+
+    loadTexture(mTexture2,"image/awesomeface.png", true);
+
+
+    // tell opengl for each sampler to which texture unit it belongs to (only has to be done once)
+    // -------------------------------------------------------------------------------------------
+    glUseProgram(mProgram); // don't forget to activate/use the shader before setting uniforms!
+    // either set it manually like so:
+    glUniform1i(glGetUniformLocation(mProgram, "texture1"), 0);
+    // or set it via the texture class
+    glUniform1i(glGetUniformLocation(mProgram, "texture2"), 1);
 
     return 1;
 }
@@ -118,8 +130,11 @@ GLvoid TriangleRender::draw(float greenVal) {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
-    // bind Texture
+    // 绑定纹理
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, mTexture);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, mTexture2);
 
     glUseProgram(mProgram);
 
@@ -128,32 +143,28 @@ GLvoid TriangleRender::draw(float greenVal) {
 
 }
 
-void TriangleRender::loadTexture() {
-    glGenTextures(1,&mTexture);
-    glBindTexture(GL_TEXTURE_2D,mTexture);
+void TriangleRender::loadTexture(GLuint &texture_id,const char* src_name,bool useRgba) {
+    glGenTextures(1,&texture_id);
+    glBindTexture(GL_TEXTURE_2D,texture_id);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     // set texture filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     // load image, create texture and generate mipmaps
     int width, height, nrChannels;
-    // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
-
-
 
     unsigned char* fileData;
     off_t assetLength;
-    const char* src_name = "image/container.jpg";
-    ESContext::self()->loadTexture(src_name,fileData,assetLength);
 
+    ESContext::self()->loadTexture(src_name,fileData,assetLength);
 
     // stb_image 的方法，从内存中加载图片
     unsigned char *data = stbi_load_from_memory(fileData, assetLength, &width, &height, &nrChannels, 0);
     //unsigned char *data = stbi_load(FileSystem::getPath("resources/textures/container.jpg").c_str(), &width, &height, &nrChannels, 0);
     if (data){
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, useRgba ? GL_RGBA : GL_RGB, width, height, 0, useRgba ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
     }else{
         ALOGE("Failed to load texture");

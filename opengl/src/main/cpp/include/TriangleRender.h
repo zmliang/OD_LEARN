@@ -19,7 +19,11 @@ public:
     GLint init();
     ~TriangleRender(){};
 
-    void loadTexture();
+    void loadTexture(GLuint &texture_id,const char* src_name,bool useRgba);
+
+
+private:
+    GLuint mTexture2;
 
 };
 
