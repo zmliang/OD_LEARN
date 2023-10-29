@@ -20,7 +20,11 @@ project("gles")
 #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fno-rtti -fno-exceptions -Wall")
 
-include_directories("${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/loop")
+include_directories("${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/loop ")
+
+
+add_subdirectory(glm)
+add_library(glm::glm ALIAS glm)
 
 add_library( # Sets the name of the library.
         gles

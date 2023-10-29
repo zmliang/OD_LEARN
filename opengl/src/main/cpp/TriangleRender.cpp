@@ -4,6 +4,10 @@
 
 #include "include/TriangleRender.h"
 
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
+
 void TriangleRender::size(int w, int h) {
     this->width = w;
     this->height = h;
