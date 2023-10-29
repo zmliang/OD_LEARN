@@ -7,16 +7,10 @@
 
 #include "render.h"
 #include <atomic>
+#include "ESContext.h"
 
 
 class ES3Render : public render{
-
-public:
-    static std::unique_ptr<ES3Render> instance()//线程安全单例
-    {
-        std::unique_ptr<ES3Render> ptr(new ES3Render());
-        return ptr;
-    }
 
 public:
     void size(int w,int h);
@@ -24,30 +18,6 @@ public:
     GLuint loadShader(GLenum type,const char *shaderSrc);
     GLint init();
     ~ES3Render();
-
-    void assetManager(AAssetManager *am);
-
-
-private:
-    char* read(const char *srcName);
-    void loop(float greenVal);
-
-private:
-    int width;
-    int height;
-
-    GLuint mProgram;
-
-    AAssetManager *mAssetManager = nullptr;
-
-    std::atomic<bool> loopFlag;
-
-
-public:
-    ES3Render(): loopFlag(false){
-
-    }
-
 
 };
 

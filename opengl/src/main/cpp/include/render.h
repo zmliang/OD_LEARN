@@ -23,7 +23,6 @@ public:
     virtual void size(int w,int h) = 0;
     virtual GLint init() = 0;
 
-    virtual void assetManager(AAssetManager *am) = 0;
 
     virtual ~render(){
         ALOGE("render base destructor");
@@ -37,6 +36,9 @@ protected:
     GLuint mVBO;
     GLuint mVAO;
     GLuint mProgram;
+
+    int width;
+    int height;
 
 
 };

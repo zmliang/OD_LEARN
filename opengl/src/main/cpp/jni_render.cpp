@@ -34,12 +34,12 @@ Java_com_zml_opengl_Render_init(JNIEnv *env, jobject thiz) {
     if (assetManager == nullptr) {
         ALOGE("asset manager is nullptr");
     }
+    ESContext::self()->setAssetManager(assetManager);
 
     jfieldID jf_hid = env->GetFieldID(jcls,"nativeRenderHandleId", "J");
     render* instance = ESContext::self()->createRender();
     env->SetLongField(thiz, jf_hid, reinterpret_cast<jlong>(instance));
 
-    instance->assetManager(assetManager);
 
 //    if (detached) {
 //        ES3Render::getJvm()->DetachCurrentThread();
@@ -79,12 +79,12 @@ Java_com_zml_opengl_Render_destroy(JNIEnv *env, jobject thiz,jlong jid) {
 
     jclass jcls = env->GetObjectClass(thiz);
     jfieldID jf_hid = env->GetFieldID(jcls,"nativeRenderHandleId", "J");
-    render* instance = ESContext::self()->createRender();
+    //render* instance = ESContext::self()->createRender();
     env->SetLongField(thiz, jf_hid, (jlong)-1);
 
     if (ptr){
         delete ptr;
-        ptr = 0;
+        ptr = nullptr;
     }
 
 }

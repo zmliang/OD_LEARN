@@ -26,9 +26,15 @@ public:
     static void setJvm(JavaVM *javaVM);
     static JavaVM* getJvm();
 
+    void setAssetManager(AAssetManager* &assetmanager);
+
+    char* &readShaderSrcFromAsset(const char *srcName);
+
 private:
     ESContext(){};
     static JavaVM *jvm;
+
+    AAssetManager *mAssetManager = nullptr;
 
 
 };

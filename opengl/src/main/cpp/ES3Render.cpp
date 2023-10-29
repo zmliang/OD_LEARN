@@ -12,8 +12,9 @@ GLint ES3Render::init() {
     GLuint fragmentShader;
     GLint linked;
 
-    char *pvertexShader = read("triangle/vertex");
-    char *pfragmentShader = read("triangle/fragment");
+    char *pvertexShader = ESContext::self()->readShaderSrcFromAsset("triangle/vertex");
+    char *pfragmentShader = ESContext::self()->readShaderSrcFromAsset("triangle/fragment");
+
     vertexShader = loadShader(GL_VERTEX_SHADER,pvertexShader);
     fragmentShader = loadShader(GL_FRAGMENT_SHADER,pfragmentShader);
 
@@ -132,26 +133,51 @@ GLuint ES3Render::loadShader(const GLenum type, const char *shaderSrc) {
 
 }
 
-void ES3Render::loop(float greenVal) {
-    //while (true){
+//void ES3Render::loop(float greenVal) {
+//    //while (true){
+//
+//        //ALOGE("ES3Render draw:%d,%d",width,height);
+////    float vertices[] = {
+////            0.5f,  0.5f, 0.0f,  // top right
+////            0.5f, -0.5f, 0.0f,  // bottom right
+////            -0.5f, -0.5f, 0.0f,  // bottom left
+////
+////    };
+//
+////    glClear ( GL_COLOR_BUFFER_BIT );
+////
+////    glUseProgram ( mProgram );
+////
+////    glVertexAttribPointer ( 0, 3, GL_FLOAT, GL_FALSE, 0, vertices );
+////    glEnableVertexAttribArray ( 0 );
+////
+////    glDrawArrays ( GL_TRIANGLES, 0, 3 );
+//
+//    // 清除颜色缓冲
+//    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+//    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+//
+//    glUseProgram(mProgram);
+//
+//    //更新uniform颜色
+//    //std::time_t t = std::time(0);
+//    //float greenVal = sin(t)/2.0f+0.5f;
+//    int colorLocation = glGetUniformLocation(mProgram,"ourColor");
+//    glUniform4f(colorLocation,0.0f,greenVal,1.0f,1.0f);
+//
+//    glBindVertexArray(mVAO);
+//    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+//
+//
+//
+////        if (!loopFlag){
+////            break;
+////        }
+////    }
+//}
 
-        //ALOGE("ES3Render draw:%d,%d",width,height);
-//    float vertices[] = {
-//            0.5f,  0.5f, 0.0f,  // top right
-//            0.5f, -0.5f, 0.0f,  // bottom right
-//            -0.5f, -0.5f, 0.0f,  // bottom left
-//
-//    };
-
-//    glClear ( GL_COLOR_BUFFER_BIT );
-//
-//    glUseProgram ( mProgram );
-//
-//    glVertexAttribPointer ( 0, 3, GL_FLOAT, GL_FALSE, 0, vertices );
-//    glEnableVertexAttribArray ( 0 );
-//
-//    glDrawArrays ( GL_TRIANGLES, 0, 3 );
-
+GLvoid ES3Render::draw(float greenVal)
+{
     // 清除颜色缓冲
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -166,44 +192,6 @@ void ES3Render::loop(float greenVal) {
 
     glBindVertexArray(mVAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-
-
-//        if (!loopFlag){
-//            break;
-//        }
-//    }
-}
-
-GLvoid ES3Render::draw(float greenVal)
-{
-   loop(greenVal);
-}
-
-
-char *ES3Render::read(const char *srcName) {//"triangle/vertex"
-    AAsset *pAsset = nullptr;
-    char *buffer = nullptr;
-
-    off_t size = -1;
-    int numByte = -1;
-    pAsset = AAssetManager_open(mAssetManager, srcName, AASSET_MODE_UNKNOWN);
-    size = AAsset_getLength(pAsset);
-    //ALOGV("size=%d",size);
-
-    buffer = static_cast<char *>(malloc(size + 1));
-    buffer[size] = '\0';
-
-    numByte = AAsset_read(pAsset, buffer, size);
-    //ALOGV("numByte=%d, content=[%s]",numByte,buffer);
-    AAsset_close(pAsset);
-
-    return buffer;
-}
-
-
-void ES3Render::assetManager(AAssetManager *am) {
-    this->mAssetManager = am;
 }
 
 
