@@ -53,3 +53,17 @@ void ESContext::loadTexture(const char* &srcName,unsigned char* &fileData,off_t 
         // 得到文件对应的 Buffer
         fileData = (unsigned char *) AAsset_getBuffer(pathAsset);
 }
+
+float ESContext::getDeltaTime() {
+    double time = getTime();
+    float delta = (float) (time - lastTime);
+    //lastTime = time;
+    //timeCount += delta;
+    return delta;
+}
+
+float ESContext::getTime() {
+    long long duration = std::chrono::steady_clock::now().time_since_epoch().count(); // steady_clock can get maching running to now duration, accuracy to 1 ns
+
+    return (duration /1000000000.0);
+}

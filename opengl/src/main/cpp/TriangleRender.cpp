@@ -8,6 +8,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
+
 void TriangleRender::size(int w, int h) {
     this->width = w;
     this->height = h;
@@ -136,7 +137,7 @@ GLint TriangleRender::init() {
 }
 
 GLvoid TriangleRender::draw(float greenVal) {
-
+    ALOGE("ESContext::self()->getDeltaTime()==%f",ESContext::self()->getDeltaTime());
     // 清除颜色缓冲
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -146,6 +147,11 @@ GLvoid TriangleRender::draw(float greenVal) {
     glBindTexture(GL_TEXTURE_2D, mTexture);
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, mTexture2);
+
+    glm::mat4 trans = glm::mat4(1.0f);//glm使用的版本是9.8，初始化的时候需要显示指定单位矩阵
+    trans = glm::rotate(trans, ESContext::self()->getDeltaTime(), glm::vec3(0.0, 0.0, 1.0));
+    glUniformMatrix4fv( glGetUniformLocation(mProgram, "transform"), 1, GL_FALSE, glm::value_ptr(trans));
+
 
     glUseProgram(mProgram);
 

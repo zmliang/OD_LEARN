@@ -33,9 +33,17 @@ public:
 
     void readShaderSrcFromAsset(const char *srcName,char* &buffer);
 
+    float getDeltaTime();
+
+    float getTime();
+
 private:
-    ESContext(){};
+    ESContext(){
+        lastTime = getTime();
+    };
     static JavaVM *jvm;
+
+    double lastTime ;
 
     AAssetManager *mAssetManager = nullptr;
 

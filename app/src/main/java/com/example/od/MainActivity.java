@@ -56,10 +56,9 @@ public class MainActivity extends Activity {
         mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
 
         setContentView(mGLSurfaceView);
-        mGLSurfaceView.loopRender(mRenderer);
+        //mGLSurfaceView.loopRender(mRenderer);
 
-        long t = System.currentTimeMillis();
-        Log.e("ZML","t = "+t+";  sin=="+(Math.sin(t)/2.0f+0.5f));
+        Log.e("ZML","System.nanoTime() / 1000000000.0 === "+(System.nanoTime() / 1000000000.0));
 
     }
 
