@@ -125,6 +125,12 @@ GLint TriangleRender::init() {
     // or set it via the texture class
     glUniform1i(glGetUniformLocation(mProgram, "texture2"), 1);
 
+//矩阵变换
+    glm::mat4 trans;
+    //trans = glm::rotate(trans, glm::radians(1.0f), glm::vec3(0.0, 0.0, 1.0));
+    trans = glm::scale(trans, glm::vec3(1.0, 1.0, 1.0));
+    glUniformMatrix4fv( glGetUniformLocation(mProgram, "transform"), 1, GL_FALSE, glm::value_ptr(trans));
+
     return 1;
 }
 
