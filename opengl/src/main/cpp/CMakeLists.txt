@@ -20,6 +20,8 @@ project("gles")
 #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fno-rtti -fno-exceptions -Wall")
 
+include_directories("${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/loop")
+
 add_library( # Sets the name of the library.
         gles
 
@@ -28,13 +30,7 @@ add_library( # Sets the name of the library.
 
         # Provides a relative path to your source file(s).
         log.h
-        include/render.h
-        include/ES3Render.h
-        include/ESContext.h
-        include/RenderLoop.h
-        loop/loop.h
-        loop/message_queue.h
-        loop/message.h
+
 
 
         jni_render.cpp

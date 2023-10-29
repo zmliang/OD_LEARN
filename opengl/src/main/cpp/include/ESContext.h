@@ -7,6 +7,7 @@
 
 #include <jni.h>
 #include "ES3Render.h"
+#include "TriangleRender.h"
 
 class ESContext {
 
