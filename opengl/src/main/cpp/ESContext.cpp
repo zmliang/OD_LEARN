@@ -26,9 +26,9 @@ void ESContext::setAssetManager(AAssetManager* &assetmanager) {
     this->mAssetManager = assetmanager;
 }
 
-char *&ESContext::readShaderSrcFromAsset(const char *srcName) {
+void ESContext::readShaderSrcFromAsset(const char *srcName,char* &buffer) {
     AAsset *pAsset = nullptr;
-    char *buffer = nullptr;
+    //char *buffer = nullptr;
 
     off_t size = -1;
     int numByte = -1;
@@ -43,5 +43,13 @@ char *&ESContext::readShaderSrcFromAsset(const char *srcName) {
     ALOGV("numByte=%d",numByte);
     AAsset_close(pAsset);
 
-    return buffer;
+}
+
+void ESContext::loadTexture(const char* &srcName,unsigned char* &fileData,off_t &assetLength) {
+    // 打开 Asset 文件夹下的文件
+        AAsset *pathAsset = AAssetManager_open(mAssetManager, srcName, AASSET_MODE_UNKNOWN);
+        // 得到文件的长度
+        assetLength = AAsset_getLength(pathAsset);
+        // 得到文件对应的 Buffer
+        fileData = (unsigned char *) AAsset_getBuffer(pathAsset);
 }

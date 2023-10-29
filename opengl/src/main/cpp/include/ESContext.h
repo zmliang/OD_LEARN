@@ -29,7 +29,9 @@ public:
 
     void setAssetManager(AAssetManager* &assetmanager);
 
-    char* &readShaderSrcFromAsset(const char *srcName);
+    void loadTexture(const char* &srcName,unsigned char* &fileData,off_t &assetLength);
+
+    void readShaderSrcFromAsset(const char *srcName,char* &buffer);
 
 private:
     ESContext(){};

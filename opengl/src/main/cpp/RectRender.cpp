@@ -12,8 +12,10 @@ GLint RectRender::init() {
     GLuint fragmentShader;
     GLint linked;
 
-    char *pvertexShader = ESContext::self()->readShaderSrcFromAsset("triangle/vertex");
-    char *pfragmentShader = ESContext::self()->readShaderSrcFromAsset("triangle/fragment");
+    char *pvertexShader;
+    ESContext::self()->readShaderSrcFromAsset("triangle/vertex",pvertexShader);
+    char *pfragmentShader;
+    ESContext::self()->readShaderSrcFromAsset("triangle/fragment",pfragmentShader);
 
     vertexShader = loadShader(GL_VERTEX_SHADER,pvertexShader);
     fragmentShader = loadShader(GL_FRAGMENT_SHADER,pfragmentShader);
@@ -66,8 +68,6 @@ GLint RectRender::init() {
             0, 1, 3,  // first Triangle
             1, 2, 3   // second Triangle
     };
-
-    unsigned int  mEBO;
 
     glGenVertexArrays(1,&mVAO);
     glGenBuffers(1,&mVBO);

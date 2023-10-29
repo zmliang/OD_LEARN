@@ -7,6 +7,7 @@
 
 #include "render.h"
 #include "ESContext.h"
+#include "stb_image.h"
 
 
 class TriangleRender : public render{
@@ -16,7 +17,9 @@ public:
     GLvoid draw(float greenVal);
 
     GLint init();
-    ~TriangleRender(){}
+    ~TriangleRender(){};
+
+    void loadTexture();
 
 };
 

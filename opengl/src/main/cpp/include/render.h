@@ -68,6 +68,8 @@ protected:
 
     GLuint mVBO;
     GLuint mVAO;
+    GLuint mEBO;
+    GLuint mTexture;
     GLuint mProgram;
 
     int width;
