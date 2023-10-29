@@ -1,13 +1,17 @@
 //
-// Created by zml on 2023/10/25.
+// Created by 索二爷 on 2023/10/29.
 //
 
-#include "include/ES3Render.h"
-#include <ctime>
+#include "include/TriangleRender.h"
 
+void TriangleRender::size(int w, int h) {
+    this->width = w;
+    this->height = h;
 
+    glViewport ( 0, 0, width, height );
+}
 
-GLint ES3Render::init() {
+GLint TriangleRender::init() {
     GLuint vertexShader;
     GLuint fragmentShader;
     GLint linked;
@@ -88,63 +92,12 @@ GLint ES3Render::init() {
     glBindBuffer(GL_ARRAY_BUFFER,0);//解绑
     glBindVertexArray(0);//解绑
 
-   // glClearColor ( 1.0f, 1.0f, 1.0f, 0.0f );
+    // glClearColor ( 1.0f, 1.0f, 1.0f, 0.0f );
     return 1;
 }
 
-void ES3Render::size(int w, int h) {
-    this->width = w;
-    this->height = h;
+GLvoid TriangleRender::draw(float greenVal) {
 
-    glViewport ( 0, 0, width, height );
-}
-
-
-//void ES3Render::loop(float greenVal) {
-//    //while (true){
-//
-//        //ALOGE("ES3Render draw:%d,%d",width,height);
-////    float vertices[] = {
-////            0.5f,  0.5f, 0.0f,  // top right
-////            0.5f, -0.5f, 0.0f,  // bottom right
-////            -0.5f, -0.5f, 0.0f,  // bottom left
-////
-////    };
-//
-////    glClear ( GL_COLOR_BUFFER_BIT );
-////
-////    glUseProgram ( mProgram );
-////
-////    glVertexAttribPointer ( 0, 3, GL_FLOAT, GL_FALSE, 0, vertices );
-////    glEnableVertexAttribArray ( 0 );
-////
-////    glDrawArrays ( GL_TRIANGLES, 0, 3 );
-//
-//    // 清除颜色缓冲
-//    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-//    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-//
-//    glUseProgram(mProgram);
-//
-//    //更新uniform颜色
-//    //std::time_t t = std::time(0);
-//    //float greenVal = sin(t)/2.0f+0.5f;
-//    int colorLocation = glGetUniformLocation(mProgram,"ourColor");
-//    glUniform4f(colorLocation,0.0f,greenVal,1.0f,1.0f);
-//
-//    glBindVertexArray(mVAO);
-//    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-//
-//
-//
-////        if (!loopFlag){
-////            break;
-////        }
-////    }
-//}
-
-GLvoid ES3Render::draw(float greenVal)
-{
     // 清除颜色缓冲
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -161,7 +114,3 @@ GLvoid ES3Render::draw(float greenVal)
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
-
-ES3Render::~ES3Render() {
-
-}

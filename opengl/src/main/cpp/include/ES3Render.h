@@ -15,7 +15,6 @@ class ES3Render : public render{
 public:
     void size(int w,int h);
     GLvoid draw(float greenVal);
-    GLuint loadShader(GLenum type,const char *shaderSrc);
     GLint init();
     ~ES3Render();
 

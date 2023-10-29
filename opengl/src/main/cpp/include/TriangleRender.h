@@ -12,18 +12,10 @@
 class TriangleRender : public render{
 
 public:
-    void size(int w,int h){
+    void size(int w,int h);
+    GLvoid draw(float greenVal);
 
-    }
-    GLvoid draw(float greenVal){
-
-    }
-    GLuint loadShader(GLenum type,const char *shaderSrc){
-
-    }
-    GLint init(){
-
-    }
+    GLint init();
     ~TriangleRender(){}
 
 };
