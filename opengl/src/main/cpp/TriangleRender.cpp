@@ -126,9 +126,10 @@ GLint TriangleRender::init() {
     glUniform1i(glGetUniformLocation(mProgram, "texture2"), 1);
 
 //矩阵变换
-    glm::mat4 trans;
-    //trans = glm::rotate(trans, glm::radians(1.0f), glm::vec3(0.0, 0.0, 1.0));
-    trans = glm::scale(trans, glm::vec3(1.0, 1.0, 1.0));
+    //glm::mat4 trans;
+    glm::mat4 trans = glm::mat4(1.0f);//glm使用的版本是9.8，初始化的时候需要显示指定单位矩阵
+    trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
+    trans = glm::scale(trans, glm::vec3(1.0, 1.5, 1.0));
     glUniformMatrix4fv( glGetUniformLocation(mProgram, "transform"), 1, GL_FALSE, glm::value_ptr(trans));
 
     return 1;
