@@ -23,9 +23,9 @@ JNIEXPORT void JNICALL
 Java_com_zml_opengl_Render_init(JNIEnv *env, jobject thiz) {
     jclass jcls = env->GetObjectClass(thiz);
 
-//    bool detached = ES3Render::getJvm()->GetEnv((void **) &env, JNI_VERSION_1_6) == JNI_EDETACHED;
+//    bool detached = RectRender::getJvm()->GetEnv((void **) &env, JNI_VERSION_1_6) == JNI_EDETACHED;
 //    if (detached) {
-//        ES3Render::getJvm()->AttachCurrentThread(&env, nullptr);
+//        RectRender::getJvm()->AttachCurrentThread(&env, nullptr);
 //    }
 
     jfieldID jfid = env->GetFieldID(jcls, "assetManager", "Landroid/content/res/AssetManager;");
@@ -42,7 +42,7 @@ Java_com_zml_opengl_Render_init(JNIEnv *env, jobject thiz) {
 
 
 //    if (detached) {
-//        ES3Render::getJvm()->DetachCurrentThread();
+//        RectRender::getJvm()->DetachCurrentThread();
 //    }
 
 }

@@ -2,12 +2,12 @@
 // Created by zml on 2023/10/25.
 //
 
-#include "include/ES3Render.h"
+#include "include/RectRender.h"
 #include <ctime>
 
 
 
-GLint ES3Render::init() {
+GLint RectRender::init() {
     GLuint vertexShader;
     GLuint fragmentShader;
     GLint linked;
@@ -92,7 +92,7 @@ GLint ES3Render::init() {
     return 1;
 }
 
-void ES3Render::size(int w, int h) {
+void RectRender::size(int w, int h) {
     this->width = w;
     this->height = h;
 
@@ -100,10 +100,10 @@ void ES3Render::size(int w, int h) {
 }
 
 
-//void ES3Render::loop(float greenVal) {
+//void RectRender::loop(float greenVal) {
 //    //while (true){
 //
-//        //ALOGE("ES3Render draw:%d,%d",width,height);
+//        //ALOGE("RectRender draw:%d,%d",width,height);
 ////    float vertices[] = {
 ////            0.5f,  0.5f, 0.0f,  // top right
 ////            0.5f, -0.5f, 0.0f,  // bottom right
@@ -143,7 +143,7 @@ void ES3Render::size(int w, int h) {
 ////    }
 //}
 
-GLvoid ES3Render::draw(float greenVal)
+GLvoid RectRender::draw(float greenVal)
 {
     // 清除颜色缓冲
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -162,6 +162,6 @@ GLvoid ES3Render::draw(float greenVal)
 }
 
 
-ES3Render::~ES3Render() {
+RectRender::~RectRender() {
 
 }

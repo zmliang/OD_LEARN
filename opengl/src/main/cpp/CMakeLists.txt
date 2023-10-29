@@ -34,7 +34,7 @@ add_library( # Sets the name of the library.
 
 
         jni_render.cpp
-        ES3Render.cpp
+        RectRender.cpp
         ESContext.cpp
         RenderLoop.cpp
         TriangleRender.cpp

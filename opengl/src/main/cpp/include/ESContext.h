@@ -6,7 +6,7 @@
 #define OD_LEARN_ESCONTEXT_H
 
 #include <jni.h>
-#include "ES3Render.h"
+#include "RectRender.h"
 #include "TriangleRender.h"
 
 class ESContext {

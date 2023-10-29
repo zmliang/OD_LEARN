@@ -2,23 +2,23 @@
 // Created by zml on 2023/10/25.
 //
 
-#ifndef OD_LEARN_ES3RENDER_H
-#define OD_LEARN_ES3RENDER_H
+#ifndef OD_LEARN_RECTRENDER_H
+#define OD_LEARN_RECTRENDER_H
 
 #include "render.h"
 #include <atomic>
 #include "ESContext.h"
 
 
-class ES3Render : public render{
+class RectRender : public render{
 
 public:
     void size(int w,int h);
     GLvoid draw(float greenVal);
     GLint init();
-    ~ES3Render();
+    ~RectRender();
 
 };
 
 
-#endif //OD_LEARN_ES3RENDER_H
+#endif //OD_LEARN_RECTRENDER_H
