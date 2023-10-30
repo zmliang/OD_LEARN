@@ -126,21 +126,12 @@ GLint CubeRender::init() {
     // or set it via the texture class
     glUniform1i(glGetUniformLocation(mProgram, "texture2"), 1);
 
-//矩阵变换
-    //glm::mat4 trans;
-    glm::mat4 trans = glm::mat4(1.0f);//glm使用的版本是9.8，初始化的时候需要显示指定单位矩阵
-    trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
-    trans = glm::scale(trans, glm::vec3(1.0, 1.5, 1.0));
-    glUniformMatrix4fv( glGetUniformLocation(mProgram, "transform"), 1, GL_FALSE, glm::value_ptr(trans));
-
 
     //透视投影，就是使物体有远近大小的效果
     //创建了一个定义了可视空间的大平截头体
     //第一个参数fov它表示的是视野(Field of View)，并且设置了观察空间的大小
     //第二个参数设置了宽高比，由视口的宽除以高所得
     //第三和第四个参数设置了平截头体的近和远平面。我们通常设置近距离为0.1f，而远距离设为100.0f
-    glm::mat4 proj = glm::perspective(glm::radians(45.0f),
-                                      (float)width/(float)height, 0.1f, 100.0f);
 
     return 1;
 }
@@ -157,10 +148,24 @@ GLvoid CubeRender::draw(float greenVal) {
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, mTexture2);
 
-    glm::mat4 trans = glm::mat4(1.0f);//glm使用的版本是9.8，初始化的时候需要显示指定单位矩阵
-    trans = glm::rotate(trans, ESContext::self()->getDeltaTime(), glm::vec3(0.0, 0.0, 1.0));
-    glUniformMatrix4fv( glGetUniformLocation(mProgram, "transform"), 1, GL_FALSE, glm::value_ptr(trans));
+    //矩阵 开始
+    glm::mat4 model = glm::mat4(1.0f);//模型矩阵
+    glm::mat4 view = glm::mat4(1.0f);//观察矩阵
+    glm::mat4 projection = glm::mat4(1.0f);//透视矩阵
 
+    model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    view  = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+    projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
+
+    int modelLoc = glGetUniformLocation(mProgram, "model");
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+
+    int viewLoc = glGetUniformLocation(mProgram, "view");
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+
+    int projLoc = glGetUniformLocation(mProgram, "projection");
+    glUniformMatrix4fv(projLoc, 1, GL_FALSE, &projection[0][0]);
+    //矩阵 结束
 
     glUseProgram(mProgram);
 
