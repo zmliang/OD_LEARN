@@ -8,6 +8,7 @@
 #include <jni.h>
 #include "RectRender.h"
 #include "TriangleRender.h"
+#include "CubeRender.h"
 
 class ESContext {
 

@@ -1,23 +1,22 @@
 //
-// Created by 索二爷 on 2023/10/29.
+// Created by zml on 2023/10/30.
 //
 
-#ifndef OD_LEARN_TRIANGLERENDER_H
-#define OD_LEARN_TRIANGLERENDER_H
+#ifndef OD_LEARN_CUBERENDER_H
+#define OD_LEARN_CUBERENDER_H
 
 #include "render.h"
 #include "ESContext.h"
 
 
-
-class TriangleRender : public render{
+class CubeRender : public render{
 
 public:
     void size(int w,int h);
     GLvoid draw(float greenVal);
 
     GLint init();
-    ~TriangleRender(){};
+    ~CubeRender(){};
 
     void loadTexture(GLuint &texture_id,const char* src_name,bool useRgba);
 
@@ -28,4 +27,4 @@ private:
 };
 
 
-#endif //OD_LEARN_TRIANGLERENDER_H
+#endif //OD_LEARN_CUBERENDER_H

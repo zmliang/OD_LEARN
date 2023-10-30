@@ -11,6 +11,7 @@
 #include <EGL/eglext.h>
 #include <jni.h>
 #include <android/asset_manager_jni.h>
+#include "stb_image.h"
 
 #include "../log.h"
 
