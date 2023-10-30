@@ -17,6 +17,7 @@ void CubeRender::size(int w, int h) {
 }
 
 GLint CubeRender::init() {
+    glEnable(GL_DEPTH_TEST);
     GLuint vertexShader;
     GLuint fragmentShader;
     GLint linked;
@@ -68,22 +69,69 @@ GLint CubeRender::init() {
         return -1;
     }
 
-    float vertices[] = {
-            // positions          // colors           // texture coords
-            0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
-            0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
-            -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
-            -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left
-    };
+//    float vertices[] = {
+//            // positions          // colors           // texture coords
+//            0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
+//            0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
+//            -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
+//            -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left
+//    };
 
+//当使用glDrawElements进行绘制时，需要使用顶点位置数据，
+//而使用glDrawArrays时，不需要这个
     unsigned int indices[] = {  // note that we start from 0!
             0, 1, 3,  // first Triangle
             1, 2, 3   // second Triangle
     };
 
+    float vertices[] = {
+            //顶点                 //颜色              //纹理坐标
+            -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,   0.0f, 0.0f,
+            0.5f, -0.5f, -0.5f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,
+            0.5f,  0.5f, -0.5f,   0.0f, 0.0f, 1.0f,   1.0f, 1.0f,
+            0.5f,  0.5f, -0.5f,   1.0f, 1.0f, 0.0f,   1.0f, 1.0f,
+            -0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,   0.0f, 1.0f,
+            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0.0f,   0.0f, 0.0f,
+
+            -0.5f, -0.5f,  0.5f, 0.0f, 1.0f, 0.0f,    0.0f, 0.0f,
+            0.5f, -0.5f,  0.5f,  0.0f, 1.0f, 0.0f,    1.0f, 0.0f,
+            0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 0.0f,    1.0f, 1.0f,
+            0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 0.0f,    1.0f, 1.0f,
+            -0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 0.0f,   0.0f, 1.0f,
+            -0.5f, -0.5f,  0.5f,  0.0f, 1.0f, 0.0f,   0.0f, 0.0f,
+
+            -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f,   1.0f, 0.0f,
+            -0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,   1.0f, 1.0f,
+            -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,   0.0f, 1.0f,
+            -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,   0.0f, 1.0f,
+            -0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.0f,   0.0f, 0.0f,
+            -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f,   1.0f, 0.0f,
+
+            0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f,    1.0f, 0.0f,
+            0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,    1.0f, 1.0f,
+            0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,    0.0f, 1.0f,
+            0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,    0.0f, 1.0f,
+            0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.0f,    0.0f, 0.0f,
+            0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f,    1.0f, 0.0f,
+
+            -0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,    0.0f, 1.0f,
+            0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,    1.0f, 1.0f,
+            0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.0f,    1.0f, 0.0f,
+            0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.0f,    1.0f, 0.0f,
+            -0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.0f,   0.0f, 0.0f,
+            -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,   0.0f, 1.0f,
+
+            -0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,   0.0f, 1.0f,
+            0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,    1.0f, 1.0f,
+            0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f,    1.0f, 0.0f,
+            0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f,    1.0f, 0.0f,
+            -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f,   0.0f, 0.0f,
+            -0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,   0.0f, 1.0f
+    };
+
     glGenVertexArrays(1,&mVAO);
     glGenBuffers(1,&mVBO);
-    glGenBuffers(1,&mEBO);
+    //glGenBuffers(1,&mEBO);
 
     glBindVertexArray(mVAO);
 
@@ -91,8 +139,8 @@ GLint CubeRender::init() {
     glBindBuffer(GL_ARRAY_BUFFER,mVBO);
     glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEBO);
+    //glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 
     //位置 属性
@@ -175,7 +223,8 @@ GLvoid CubeRender::draw(float greenVal) {
     glUseProgram(mProgram);
 
     glBindVertexArray(mVAO);
-    glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT,0);
+    //glDrawElements(GL_TRIANGLES,36,GL_UNSIGNED_INT,0);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
 
 }
 
