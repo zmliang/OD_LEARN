@@ -167,6 +167,11 @@ GLvoid CubeRender::draw(float greenVal) {
     glUniformMatrix4fv(projLoc, 1, GL_FALSE, &projection[0][0]);
     //矩阵 结束
 
+    glm::mat4 trans = glm::mat4(1.0f);//glm使用的版本是9.8，初始化的时候需要显示指定单位矩阵
+    trans = glm::rotate(trans, ESContext::self()->getDeltaTime(), glm::vec3(0.0, 0.0, 1.0));
+    glUniformMatrix4fv( glGetUniformLocation(mProgram, "transform"), 1, GL_FALSE, glm::value_ptr(trans));
+
+
     glUseProgram(mProgram);
 
     glBindVertexArray(mVAO);

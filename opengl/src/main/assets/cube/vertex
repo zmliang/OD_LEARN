@@ -10,9 +10,11 @@ uniform mat4 model;//模型矩阵
 uniform mat4 view;//观察矩阵
 uniform mat4 projection;//透视矩阵
 
+uniform mat4 transform;
+
 void main()
 {
-	gl_Position = projection * view * model * vec4(aPos, 1.0);
+	gl_Position = projection * view * model * transform * vec4(aPos, 1.0);
 	ourColor = aColor;
 	TexCoord = vec2(aTexCoord.x, 1.0-aTexCoord.y);
 }
