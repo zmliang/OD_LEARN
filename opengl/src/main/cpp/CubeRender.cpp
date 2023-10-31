@@ -207,6 +207,7 @@ GLvoid CubeRender::draw(float greenVal) {
 
 //    int modelLoc = glGetUniformLocation(mProgram, "model");
 //    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+    this->cameraPos(view);
 
     int viewLoc = glGetUniformLocation(mProgram, "view");
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
@@ -223,33 +224,9 @@ GLvoid CubeRender::draw(float greenVal) {
 
     //==================
 
-    glm::vec3 cubePositions[] = {
-            glm::vec3( 0.0f,  0.0f,  0.0f),
-            glm::vec3( 2.0f,  5.0f, -15.0f),
-            glm::vec3(-1.5f, -2.2f, -2.5f),
-            glm::vec3(-3.8f, -2.0f, -12.3f),
-            glm::vec3( 2.4f, -0.4f, -3.5f),
-            glm::vec3(-1.7f,  3.0f, -7.5f),
-            glm::vec3( 1.3f, -2.0f, -2.5f),
-            glm::vec3( 1.5f,  2.0f, -2.5f),
-            glm::vec3( 1.5f,  0.2f, -1.5f),
-            glm::vec3(-1.3f,  1.0f, -1.5f)
-    };
     glBindVertexArray(mVAO);
 
-    for(unsigned int i = 0; i < 10; i++)
-    {
-        glm::mat4 model=glm::mat4(1.0f);
-        model = glm::translate(model, cubePositions[i]);
-        float angle = 20.0f * i;
-        model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-
-        int modelLoc = glGetUniformLocation(mProgram, "model");
-        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-    }
-
+    this->drawChildCube();
 
     //glBindVertexArray(mVAO);
     //glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT,0);
@@ -285,4 +262,47 @@ void CubeRender::loadTexture(GLuint &texture_id,const char* src_name,bool useRgb
     }
     stbi_image_free(data);
 
+}
+
+void CubeRender::cameraPos(glm::mat4 &view) {
+    glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+    glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget);//两个向量减，就是方向
+
+    glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+    glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection));
+
+    glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
+
+    float radius = 10.0f;
+    float camX = sin(ESContext::self()->getDeltaTime()) * radius;
+    float camZ = cos(ESContext::self()->getDeltaTime()) * radius;
+    view = glm::lookAt(glm::vec3(camX, 0.0, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
+}
+
+void CubeRender::drawChildCube() {
+    glm::vec3 cubePositions[] = {
+            glm::vec3( 0.0f,  0.0f,  0.0f),
+            glm::vec3( 2.0f,  5.0f, -15.0f),
+            glm::vec3(-1.5f, -2.2f, -2.5f),
+            glm::vec3(-3.8f, -2.0f, -12.3f),
+            glm::vec3( 2.4f, -0.4f, -3.5f),
+            glm::vec3(-1.7f,  3.0f, -7.5f),
+            glm::vec3( 1.3f, -2.0f, -2.5f),
+            glm::vec3( 1.5f,  2.0f, -2.5f),
+            glm::vec3( 1.5f,  0.2f, -1.5f),
+            glm::vec3(-1.3f,  1.0f, -1.5f)
+    };
+    for(unsigned int i = 0; i < 10; i++)
+    {
+        glm::mat4 model=glm::mat4(1.0f);
+        model = glm::translate(model, cubePositions[i]);
+        float angle = 20.0f * i;
+        model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+
+        int modelLoc = glGetUniformLocation(mProgram, "model");
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    }
 }

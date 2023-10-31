@@ -24,6 +24,12 @@ public:
 
 
 private:
+
+    //摄像机的位置，随时间转动
+    void cameraPos(glm::mat4 &view);
+
+    void drawChildCube();
+
     GLuint mTexture2;
 
 };
