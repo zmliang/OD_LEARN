@@ -4,9 +4,7 @@
 
 #include "include/CubeRender.h"
 
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtc/type_ptr.hpp"
+
 
 
 void CubeRender::size(int w, int h) {
@@ -85,7 +83,7 @@ GLint CubeRender::init() {
     };
 
     float vertices[] = {
-            //顶点                 //颜色              //纹理坐标
+            //顶点                                  //颜色                          //纹理坐标
             -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,   0.0f, 0.0f,
             0.5f, -0.5f, -0.5f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,
             0.5f,  0.5f, -0.5f,   0.0f, 0.0f, 1.0f,   1.0f, 1.0f,
@@ -196,17 +194,20 @@ GLvoid CubeRender::draw(float greenVal) {
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, mTexture2);
 
+
+    glUseProgram(mProgram);
+
     //矩阵 开始
-    glm::mat4 model = glm::mat4(1.0f);//模型矩阵
+    //glm::mat4 model = glm::mat4(1.0f);//模型矩阵
     glm::mat4 view = glm::mat4(1.0f);//观察矩阵
     glm::mat4 projection = glm::mat4(1.0f);//透视矩阵
 
-    model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    //model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
     view  = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
     projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
 
-    int modelLoc = glGetUniformLocation(mProgram, "model");
-    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+//    int modelLoc = glGetUniformLocation(mProgram, "model");
+//    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
     int viewLoc = glGetUniformLocation(mProgram, "view");
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
@@ -220,10 +221,39 @@ GLvoid CubeRender::draw(float greenVal) {
     glUniformMatrix4fv( glGetUniformLocation(mProgram, "transform"), 1, GL_FALSE, glm::value_ptr(trans));
 
 
-    glUseProgram(mProgram);
 
+    //==================
+
+    glm::vec3 cubePositions[] = {
+            glm::vec3( 0.0f,  0.0f,  0.0f),
+            glm::vec3( 2.0f,  5.0f, -15.0f),
+            glm::vec3(-1.5f, -2.2f, -2.5f),
+            glm::vec3(-3.8f, -2.0f, -12.3f),
+            glm::vec3( 2.4f, -0.4f, -3.5f),
+            glm::vec3(-1.7f,  3.0f, -7.5f),
+            glm::vec3( 1.3f, -2.0f, -2.5f),
+            glm::vec3( 1.5f,  2.0f, -2.5f),
+            glm::vec3( 1.5f,  0.2f, -1.5f),
+            glm::vec3(-1.3f,  1.0f, -1.5f)
+    };
     glBindVertexArray(mVAO);
-    //glDrawElements(GL_TRIANGLES,36,GL_UNSIGNED_INT,0);
+
+    for(unsigned int i = 0; i < 0; i++)
+    {
+        glm::mat4 model;
+        model = glm::translate(model, cubePositions[i]);
+        float angle = 20.0f * i;
+        model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+
+        int modelLoc = glGetUniformLocation(mProgram, "model");
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    }
+
+
+    //glBindVertexArray(mVAO);
+    //glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT,0);
     glDrawArrays(GL_TRIANGLES, 0, 36);
 
 }
