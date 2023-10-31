@@ -4,7 +4,7 @@ set(jnilibs "${CMAKE_SOURCE_DIR}/../jniLibs")
 
 project("gles")
 
-include_directories("${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/loop ${PROJECT_SOURCE_DIR}/freetype_2_10")
+include_directories("${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/loop ${CMAKE_SOURCE_DIR}/freetype")
 
 add_subdirectory(glm)
 add_library(glm::glm ALIAS glm)
@@ -36,8 +36,9 @@ set_target_properties(freetype PROPERTIES IMPORTED_LOCATION ${jnilibs}/${ANDROID
 
 target_link_libraries(
         gles
-        freetype
+
         ${log-lib}
+        freetype
         EGL
         GLESv3
         android
