@@ -2,7 +2,7 @@
 // Created by zml on 2023/10/30.
 //
 
-#include "include/CubeRender.h"
+#include "inc/CubeRender.h"
 
 
 void CubeRender::size(int w, int h) {

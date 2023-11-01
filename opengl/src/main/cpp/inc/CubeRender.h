@@ -14,6 +14,7 @@
 
 
 
+
 class CubeRender : public render{
 
 public:
@@ -21,7 +22,8 @@ public:
     GLvoid draw(float greenVal);
 
     GLint init();
-    ~CubeRender(){};
+    ~CubeRender(){
+    };
 
     void loadTexture(GLuint &texture_id,const char* src_name,bool useRgba);
 

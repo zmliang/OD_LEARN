@@ -5,9 +5,9 @@
 
 #include <android/asset_manager_jni.h>
 
-#include "include/render.h"
-#include "include/ESContext.h"
-#include "include/RenderLoop.h"
+#include "inc/render.h"
+#include "inc/ESContext.h"
+#include "inc/RenderLoop.h"
 
 
 extern "C"

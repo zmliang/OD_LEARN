@@ -4,7 +4,7 @@ set(jnilibs "${CMAKE_SOURCE_DIR}/../jniLibs")
 
 project("gles")
 
-include_directories("${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/loop ${CMAKE_SOURCE_DIR}/freetype")
+include_directories("${CMAKE_SOURCE_DIR}/inc ${CMAKE_SOURCE_DIR}/loop ${CMAKE_SOURCE_DIR}/freetype")
 
 add_subdirectory(glm)
 add_library(glm::glm ALIAS glm)

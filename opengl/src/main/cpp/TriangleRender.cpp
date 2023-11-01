@@ -2,7 +2,7 @@
 // Created by 索二爷 on 2023/10/29.
 //
 
-#include "include/TriangleRender.h"
+#include "inc/TriangleRender.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
