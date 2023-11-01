@@ -12,8 +12,6 @@
 #include "../glm/gtc/type_ptr.hpp"
 
 
-#include "../freetype/ft2build.h"
-#include FT_FREETYPE_H
 
 
 class CubeRender : public render{
