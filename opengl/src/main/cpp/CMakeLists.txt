@@ -4,10 +4,20 @@ set(jnilibs "${CMAKE_SOURCE_DIR}/../jniLibs")
 
 project("gles")
 
-include_directories("${CMAKE_SOURCE_DIR}/inc ${CMAKE_SOURCE_DIR}/loop ${CMAKE_SOURCE_DIR}/freetype")
+#include_directories("${CMAKE_SOURCE_DIR}/inc ${CMAKE_SOURCE_DIR}/loop ${CMAKE_SOURCE_DIR}/freetype")
 
-add_subdirectory(glm)
-add_library(glm::glm ALIAS glm)
+#add_subdirectory(glm)
+#add_library(glm::glm ALIAS glm)
+
+#直接用include_directories字目录，使用上面add_add_subdirectory+include_directories
+#会报找不到第三方库的头文件
+include_directories(
+        inc
+        loop
+        freetype
+        glm
+)
+
 
 add_library(
         gles
