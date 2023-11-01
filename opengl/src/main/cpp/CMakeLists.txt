@@ -18,20 +18,15 @@ include_directories(
         glm
 )
 
+file(GLOB cpp_files
+        ${CMAKE_SOURCE_DIR}/*.cpp
+       )
 
 add_library(
         gles
-
         SHARED
-
         log.h
-
-        jni_render.cpp
-        RectRender.cpp
-        ESContext.cpp
-        RenderLoop.cpp
-        TriangleRender.cpp
-        CubeRender.cpp
+        ${cpp_files}
 )
 
 

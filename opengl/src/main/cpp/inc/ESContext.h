@@ -9,6 +9,7 @@
 #include "RectRender.h"
 #include "TriangleRender.h"
 #include "CubeRender.h"
+#include "TextRender.h"
 
 class ESContext {
 
