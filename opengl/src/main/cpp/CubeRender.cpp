@@ -3,7 +3,7 @@
 //
 
 #include "include/CubeRender.h"
-
+#include "freetype/freetype/freetype.h"
 
 
 void CubeRender::size(int w, int h) {
