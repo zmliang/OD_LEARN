@@ -6,6 +6,16 @@
 
 
 
+TextRender::TextRender() {
+    if (FT_Init_FreeType(&ft)){
+        ALOGE("ERROR::FREETYPE: Could not init FreeType Library");
+    }
+//    if (FT_New_Face(ft, "fonts/arial.ttf", 0, &face)){
+//        ALOGE("ERROR::FREETYPE: Failed to load font");
+//    }
+}
+
+
 GLint TextRender::init() {
     GLuint vertexShader;
     GLuint fragmentShader;

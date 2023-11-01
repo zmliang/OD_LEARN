@@ -8,15 +8,24 @@
 #include "render.h"
 #include "ESContext.h"
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
 class TextRender : public render{
 
 public:
+
+    TextRender();
+
     void size(int w,int h);
     GLvoid draw(float greenVal);
     GLint init();
 
     ~TextRender();
 
+private:
+    FT_Library ft;
+    FT_Face face;
 
 };
 
