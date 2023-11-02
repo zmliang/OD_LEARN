@@ -10,24 +10,72 @@ TextRender::TextRender() {
     if (FT_Init_FreeType(&ft)){
         ALOGE("ERROR::FREETYPE: Could not init FreeType Library");
     }
-//    if (FT_New_Face(ft, "fonts/arial.ttf", 0, &face)){
-//        ALOGE("ERROR::FREETYPE: Failed to load font");
-//    }
+
+    const char *font_file = "font/AriaIn.ttf";
+    unsigned char* buffer;
+    off_t assetLength;
+
+    ESContext::self()->load(font_file,buffer,assetLength);
+
+    if (FT_New_Memory_Face(ft, buffer, assetLength,0, &face)){
+        ALOGE("ERROR::FREETYPE: Failed to load font");
+    }
+
+    //设置字体大小，TODO 宽度值设为0表示我们要从字体面通过给定的高度中动态计算出字形的宽度
+    FT_Set_Pixel_Sizes(face,0,48);
+
+}
+
+void TextRender::mapCharacter() {
+    for (int i = 0; i < 128; ++i) {
+        if (FT_Load_Char(face,i,FT_LOAD_RENDER)){
+            ALOGE("ERROR::FREETYTPE: Failed to load Glyph");
+            continue;
+        }
+        GLuint texture;
+        glGenTextures(1,&texture);
+        glBindTexture(GL_TEXTURE_2D,texture);
+
+        glTexImage2D(
+                GL_TEXTURE_2D,
+                0,
+                GL_RED,
+                face->glyph->bitmap.width,
+                face->glyph->bitmap.rows,
+                0,
+                GL_RED,
+                GL_UNSIGNED_BYTE,
+                face->glyph->bitmap.buffer
+        );
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        CHARACTER _c = {
+                texture,
+                glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
+                glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
+                static_cast<GLuint>(face->glyph->advance.x)
+        };
+        this->mCharacters.insert(std::pair<GLchar, CHARACTER>(i, _c));
+
+    }
+    FT_Done_Face(face);
+    FT_Done_FreeType(ft);
 }
 
 
 GLint TextRender::init() {
-    GLuint vertexShader;
-    GLuint fragmentShader;
     GLint linked;
 
     char *pvertexShader;
     ESContext::self()->readShaderSrcFromAsset("text/vertex",pvertexShader);
     char *pfragmentShader;
     ESContext::self()->readShaderSrcFromAsset("text/fragment",pfragmentShader);
-
-    vertexShader = loadShader(GL_VERTEX_SHADER,pvertexShader);
-    fragmentShader = loadShader(GL_FRAGMENT_SHADER,pfragmentShader);
+    GLuint vertexShader = loadShader(GL_VERTEX_SHADER,pvertexShader);
+    GLuint fragmentShader = loadShader(GL_FRAGMENT_SHADER,pfragmentShader);
 
     mProgram = glCreateProgram();
     if (mProgram == 0){
@@ -66,38 +114,25 @@ GLint TextRender::init() {
         return -1;
     }
 
-    float vertices[] = {
-            0.5f,  0.5f, 0.0f,  // top right
-            0.5f, -0.5f, 0.0f,  // bottom right
-            -0.5f, -0.5f, 0.0f,  // bottom left
-            -0.5f,  0.5f, 0.0f   // top left
-    };
+    glUseProgram(mProgram);
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(width), 0.0f, static_cast<GLfloat>(height));
+    glUniformMatrix4fv(glGetUniformLocation(mProgram,"projection"),1,GL_FALSE,glm::value_ptr(projection));
 
-    unsigned int indices[] = {  // note that we start from 0!
-            0, 1, 3,  // first Triangle
-            1, 2, 3   // second Triangle
-    };
+    // Disable byte-alignment restriction
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-    glGenVertexArrays(1,&mVAO);
-    glGenBuffers(1,&mVBO);
-    glGenBuffers(1,&mEBO);
+    mapCharacter();
 
+    // Configure VAO/VBO for texture quads
+    glGenVertexArrays(1, &mVAO);
+    glGenBuffers(1, &mVBO);
     glBindVertexArray(mVAO);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,mEBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices),indices,GL_STATIC_DRAW);
-
-    //1:复制顶点数组到缓冲中，供openGL使用
-    glBindBuffer(GL_ARRAY_BUFFER,mVBO);
-    glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
-    //2:设置顶点属性指针，并启用
-    glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,3*sizeof(float),(void*)0);
+    glBindBuffer(GL_ARRAY_BUFFER, mVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
     glEnableVertexAttribArray(0);
-
-    glBindBuffer(GL_ARRAY_BUFFER,0);//解绑
-    glBindVertexArray(0);//解绑
-
-    // glClearColor ( 1.0f, 1.0f, 1.0f, 0.0f );
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
     return 1;
 }
 
@@ -121,6 +156,11 @@ GLvoid TextRender::draw(float greenVal)
 
     glBindVertexArray(mVAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+}
+
+void
+TextRender::doRender(const std::string txt, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color) {
+
 }
 
 

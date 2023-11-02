@@ -1,10 +1,15 @@
 #version 300 es
 precision mediump float;
-out vec4 FragColor;
 
-uniform vec4 ourColor; // 在OpenGL程序代码中设定这个变量
+in vec2 TexCoords;
+
+out vec4 color;
+
+uniform sampler2D text;     //文本内容
+uniform vec3 textColor;     //文本颜色
 
 void main()
 {
-   FragColor = ourColor;//vec4(1.0f, 0.5f, 0.2f, 1.0f);
+   vec4 sampled = vec4(1.0, 1.0, 1.0, texture(text, TexCoords).r);
+   color = vec4(textColor, 1.0) * sampled;
 }

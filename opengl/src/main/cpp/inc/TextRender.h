@@ -7,12 +7,22 @@
 
 #include "render.h"
 #include "ESContext.h"
+#include <map>
+#include <string>
+#include <iostream>
 
 extern "C"{
 #include <ft2build.h>
 #include FT_FREETYPE_H
 }
 
+
+typedef struct{
+    GLuint _textureId;
+    glm::ivec2 size;//字符的宽高
+    glm::ivec2 bearing;//距离基准线左边/上边的距离
+    GLuint advance;//水平方向上，两个字符原点之间的距离
+} CHARACTER;
 
 class TextRender : public render{
 
@@ -27,9 +37,16 @@ public:
     ~TextRender();
 
 private:
+    void mapCharacter();
+
+    void doRender(const std::string txt,GLfloat x,GLfloat y,GLfloat scale,glm::vec3 color);
+
+private:
+
+
     FT_Library ft;
     FT_Face face;
-
+    std::map<GLchar,CHARACTER> mCharacters;
 };
 
 

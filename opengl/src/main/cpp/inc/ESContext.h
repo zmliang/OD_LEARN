@@ -31,7 +31,7 @@ public:
 
     void setAssetManager(AAssetManager* &assetmanager);
 
-    void loadTexture(const char* &srcName,unsigned char* &fileData,off_t &assetLength);
+    void load(const char* &srcName,unsigned char* &fileData,off_t &assetLength);
 
     void readShaderSrcFromAsset(const char *srcName,char* &buffer);
 

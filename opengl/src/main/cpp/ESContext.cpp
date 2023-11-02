@@ -45,7 +45,7 @@ void ESContext::readShaderSrcFromAsset(const char *srcName,char* &buffer) {
 
 }
 
-void ESContext::loadTexture(const char* &srcName,unsigned char* &fileData,off_t &assetLength) {
+void ESContext::load(const char* &srcName,unsigned char* &fileData,off_t &assetLength) {
     // 打开 Asset 文件夹下的文件
         AAsset *pathAsset = AAssetManager_open(mAssetManager, srcName, AASSET_MODE_UNKNOWN);
         // 得到文件的长度

@@ -247,7 +247,7 @@ void CubeRender::loadTexture(GLuint &texture_id,const char* src_name,bool useRgb
     unsigned char* fileData;
     off_t assetLength;
 
-    ESContext::self()->loadTexture(src_name,fileData,assetLength);
+    ESContext::self()->load(src_name,fileData,assetLength);
 
     // stb_image 的方法，从内存中加载图片
     unsigned char *data = stbi_load_from_memory(fileData, assetLength, &width, &height, &nrChannels, 0);
