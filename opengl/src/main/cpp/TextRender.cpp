@@ -11,7 +11,7 @@ TextRender::TextRender() {
         ALOGE("ERROR::FREETYPE: Could not init FreeType Library");
     }
 
-    const char *font_file = "font/AriaIn.ttf";
+    const char *font_file = "font/Arialn.ttf";
     unsigned char* buffer;
     off_t assetLength;
 
@@ -22,12 +22,12 @@ TextRender::TextRender() {
     }
 
     //设置字体大小，TODO 宽度值设为0表示我们要从字体面通过给定的高度中动态计算出字形的宽度
-    FT_Set_Pixel_Sizes(face,0,48);
+    FT_Set_Pixel_Sizes(face,0,24);
 
 }
 
 void TextRender::mapCharacter() {
-    for (int i = 0; i < 128; ++i) {
+    for (GLubyte i = 0; i < 128; ++i) {
         if (FT_Load_Char(face,i,FT_LOAD_RENDER)){
             ALOGE("ERROR::FREETYTPE: Failed to load Glyph");
             continue;
@@ -52,7 +52,7 @@ void TextRender::mapCharacter() {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
+        ALOGE("___texture==%d",texture);
         CHARACTER _c = {
                 texture,
                 glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
@@ -62,12 +62,18 @@ void TextRender::mapCharacter() {
         this->mCharacters.insert(std::pair<GLchar, CHARACTER>(i, _c));
 
     }
+    glBindTexture(GL_TEXTURE_2D, 0);
     FT_Done_Face(face);
     FT_Done_FreeType(ft);
 }
 
 
 GLint TextRender::init() {
+    // Set OpenGL options
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     GLint linked;
 
     char *pvertexShader;
@@ -133,6 +139,9 @@ GLint TextRender::init() {
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+
+
+
     return 1;
 }
 
@@ -146,21 +155,58 @@ void TextRender::size(int w, int h) {
 GLvoid TextRender::draw(float greenVal)
 {
     // 清除颜色缓冲
+    // Clear the colorbuffer
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT);
 
     glUseProgram(mProgram);
+    doRender("A",25.0f,25.0f,1.0f,glm::vec3(.05,0.5,0.5));
 
-    int colorLocation = glGetUniformLocation(mProgram,"ourColor");
-    glUniform4f(colorLocation,0.0f,0.5f,1.0f,1.0f);
-
-    glBindVertexArray(mVAO);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+//    int colorLocation = glGetUniformLocation(mProgram,"ourColor");
+//    glUniform4f(colorLocation,0.0f,0.5f,1.0f,1.0f);
+//
+//    glBindVertexArray(mVAO);
+//    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
-void
-TextRender::doRender(const std::string txt, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color) {
+void TextRender::doRender(const std::string txt, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color) {
+    glUniform3f(glGetUniformLocation(mProgram, "textColor"), color.x, color.y, color.z);
+    glActiveTexture(GL_TEXTURE0);
+    glBindVertexArray(mVAO);
 
+    std::string::const_iterator c;
+    for (c = txt.begin(); c != txt.end(); c++) {
+
+        CHARACTER character = mCharacters[*c];
+
+        ALOGE("txt=%c, texture_id=%d",*c,character._textureId);
+        GLfloat xpos = x + character.bearing.x * scale;
+        GLfloat ypos = y - (character.size.y - character.bearing.y) * scale;
+
+        GLfloat w = character.size.x * scale;
+        GLfloat h = character.size.y * scale;
+
+        GLfloat vertices[6][4] = {
+                {xpos,     ypos + h, 0.0, 0.0},
+                {xpos,     ypos,     0.0, 1.0},
+                {xpos + w, ypos,     1.0, 1.0},
+
+                {xpos,     ypos + h, 0.0, 0.0},
+                {xpos + w, ypos,     1.0, 1.0},
+                {xpos + w, ypos + h, 1.0, 0.0}
+
+        };
+        glBindTexture(GL_TEXTURE_2D, character._textureId);
+        glBindBuffer(GL_ARRAY_BUFFER, mVBO);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+
+        x += (character.advance >> 6) * scale; // Bitshift
+    }
+    glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 

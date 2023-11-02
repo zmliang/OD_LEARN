@@ -10,6 +10,9 @@
 #include <map>
 #include <string>
 #include <iostream>
+#include "../glm/glm.hpp"
+#include "../glm/gtc/matrix_transform.hpp"
+#include "../glm/gtc/type_ptr.hpp"
 
 extern "C"{
 #include <ft2build.h>
