@@ -11,7 +11,7 @@ TextRender::TextRender() {
         ALOGE("ERROR::FREETYPE: Could not init FreeType Library");
     }
 
-    const char *font_file = "font/Arialn.ttf";
+    const char *font_file = "font/jianti.ttf";
     unsigned char* buffer;
     off_t assetLength;
 
@@ -27,15 +27,14 @@ TextRender::TextRender() {
 }
 
 void TextRender::mapCharacter() {
-    for (GLubyte i = 0; i < 128; ++i) {
-        if (FT_Load_Char(face,i,FT_LOAD_RENDER)){
+    for (GLubyte c = 0; c < 128; ++c) {
+        if (FT_Load_Char(face,c,FT_LOAD_RENDER)){
             ALOGE("ERROR::FREETYTPE: Failed to load Glyph");
             continue;
         }
         GLuint texture;
         glGenTextures(1,&texture);
-        glBindTexture(GL_TEXTURE_2D,texture);
-
+        glBindTexture(GL_TEXTURE_2D, texture);
         glTexImage2D(
                 GL_TEXTURE_2D,
                 0,
@@ -52,14 +51,14 @@ void TextRender::mapCharacter() {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        ALOGE("___texture==%d",texture);
+
         CHARACTER _c = {
                 texture,
                 glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
                 glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
                 static_cast<GLuint>(face->glyph->advance.x)
         };
-        this->mCharacters.insert(std::pair<GLchar, CHARACTER>(i, _c));
+        this->mCharacters.insert(std::pair<GLchar, CHARACTER>(c, _c));
 
     }
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -120,16 +119,16 @@ GLint TextRender::init() {
         return -1;
     }
 
-    glUseProgram(mProgram);
     glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(width), 0.0f, static_cast<GLfloat>(height));
-    glUniformMatrix4fv(glGetUniformLocation(mProgram,"projection"),1,GL_FALSE,glm::value_ptr(projection));
+    glUseProgram(mProgram);
+    glUniformMatrix4fv(glGetUniformLocation(mProgram, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
     // Disable byte-alignment restriction
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
     mapCharacter();
 
-    // Configure VAO/VBO for texture quads
+// Configure VAO/VBO for texture quads
     glGenVertexArrays(1, &mVAO);
     glGenBuffers(1, &mVBO);
     glBindVertexArray(mVAO);
@@ -140,6 +139,8 @@ GLint TextRender::init() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
+    //glUseProgram(mProgram);
+    //glUniform1i(glGetUniformLocation(mProgram, "text"), 0);
 
 
     return 1;
@@ -160,7 +161,7 @@ GLvoid TextRender::draw(float greenVal)
     glClear(GL_COLOR_BUFFER_BIT);
 
     glUseProgram(mProgram);
-    doRender("A",25.0f,25.0f,1.0f,glm::vec3(.05,0.5,0.5));
+    doRender("This is program",25.0f,25.0f,1.0f,glm::vec3(.05,0.8f,0.2f));
 
 //    int colorLocation = glGetUniformLocation(mProgram,"ourColor");
 //    glUniform4f(colorLocation,0.0f,0.5f,1.0f,1.0f);
