@@ -8,8 +8,11 @@
 #include "render.h"
 #include "ESContext.h"
 
+extern "C"{
 #include <ft2build.h>
 #include FT_FREETYPE_H
+}
+
 
 class TextRender : public render{
 
