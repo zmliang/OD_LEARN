@@ -53,7 +53,7 @@ public class MainActivity extends Activity {
         // 设置与当前GLSurfaceView绑定的Renderer
         mGLSurfaceView.setRenderer(mRenderer);
         // 设置渲染的模式
-        mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
+        mGLSurfaceView.setRenderMode(RENDERMODE_WHEN_DIRTY);
 
         setContentView(mGLSurfaceView);
         //mGLSurfaceView.loopRender(mRenderer);

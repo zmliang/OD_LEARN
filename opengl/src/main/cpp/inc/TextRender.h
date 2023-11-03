@@ -46,7 +46,7 @@ private:
 
 private:
 
-
+    GLint _textureLoc ;
     FT_Library ft;
     FT_Face face;
     std::map<GLchar,CHARACTER> mCharacters;
