@@ -34,8 +34,9 @@ add_library(
         jni_render.cpp
         RectRender.cpp
         RenderLoop.cpp
-        TextRender.cpp
+        TextRender.cpp  #文本渲染，一直没有渲染出来字体，不知道问题出在哪
         TriangleRender.cpp
+        Lighting.cpp
 )
 
 
