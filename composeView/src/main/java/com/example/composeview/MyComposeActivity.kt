@@ -4,19 +4,50 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 class MyComposeActivity : ComponentActivity() {
+
+    private val next = mutableStateOf("name")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
-            Text(text = "A long time ago")
+            Row {
+                messageBox()
+                HelloContent()
+            }
 
-            messageBox()
+
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HelloContent() {
+
+    Column(modifier = Modifier.padding(16.dp)) {
+        var name by remember { mutableStateOf("") }
+        Text(
+            text = "Hello! $name",
+            modifier = Modifier.padding(bottom = 8.dp),
+            style = MaterialTheme.typography.headlineLarge
+        )
+        OutlinedTextField(
+            value = name,
+            onValueChange = { name = it },
+            label = { Text("Name") }
+        )
     }
 }
 
