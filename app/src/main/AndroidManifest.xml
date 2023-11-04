@@ -27,6 +27,11 @@
 
         </activity>
 
+        <activity android:name="com.example.composeview.MyComposeActivity"
+            android:exported="true">
+
+        </activity>
+
     </application>
 
 </manifest>

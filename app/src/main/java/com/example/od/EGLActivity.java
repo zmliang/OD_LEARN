@@ -1,24 +1,15 @@
 package com.example.od;
 
-import static android.opengl.GLSurfaceView.RENDERMODE_CONTINUOUSLY;
-import static android.opengl.GLSurfaceView.RENDERMODE_WHEN_DIRTY;
-
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ConfigurationInfo;
-import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.composeview.MyComposeActivity;
 import com.example.od.view.MyGLSurfaceView;
 import com.zml.opengl.Render;
 
@@ -32,23 +23,39 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 
-public class MainActivity extends Activity {
+public class EGLActivity extends Activity {
     private final int CONTEXT_CLIENT_VERSION = 3;
 
-    @SuppressLint("MissingInflatedId")
+    private MyGLSurfaceView mGLSurfaceView;
+    private Render mRenderer;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         setContentView(R.layout.main_activity);
 
-        ((Button)findViewById(R.id.go_compose)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, MyComposeActivity.class));
+//        mGLSurfaceView = MyGLSurfaceView.create(this);
+//        mRenderer=new Render(this);
+//
+//        if (!detectOpenGLES30()){
+//            finish();
+//            return;
+//        }
+//
+//        // 设置OpenGl ES的版本
+//        mGLSurfaceView.setEGLContextClientVersion(CONTEXT_CLIENT_VERSION);
+//        // 设置与当前GLSurfaceView绑定的Renderer
+//        mGLSurfaceView.setRenderer(mRenderer);
+//        // 设置渲染的模式
+//        mGLSurfaceView.setRenderMode(RENDERMODE_WHEN_DIRTY);
+//
+//        setContentView(mGLSurfaceView);
+        //mGLSurfaceView.loopRender(mRenderer);
 
-            }
-        });
+        Log.e("ZML","System.nanoTime() / 1000000000.0 === "+(System.nanoTime() / 1000000000.0));
+
     }
 
 
@@ -62,12 +69,14 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        mGLSurfaceView.onResume();
         Log.e("ZML","onResume");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        mGLSurfaceView.onPause();
     }
 
 
