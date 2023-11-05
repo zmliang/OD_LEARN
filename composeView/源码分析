@@ -1,0 +1,9 @@
+1:setContent里检查decorView是否为null，decorView是ComposeView,继承自android 的viewgroup
+
+        2:调用composeView的setContent方法
+
+3:在setContent方法里
+    3.1：把我们可组合方法放在mutableStateOf生成的对象的value里
+    3.2：然后创建Composition对象，对于compose来说，它是渲染树，树上的节点是LayoutNode
+
+4:

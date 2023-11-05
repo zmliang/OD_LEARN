@@ -22,12 +22,10 @@ class MyComposeActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            Row {
+            Column {
                 messageBox()
                 HelloContent()
             }
-
-
         }
     }
 }
