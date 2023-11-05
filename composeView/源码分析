@@ -16,5 +16,22 @@
     composition 代表的是一颗渲染树，
     Composition 通过 LayoutNode 完成 measure/layout/draw 的过程最终将 UI 显示到屏幕上。
     Composition 依靠 Composable 函数的执行来创建以及更新，即所谓的组合和重组。
+    每当recomposition发生时，都会触发applier对NodeTree进行刷新
+
+
+Composeable的生命周期
+    每次调用Composeable函数的时候，都会生成一个Composeable实例，每个Composeable实例都有自己的
+    生命周期；
+    Composeable渲染每一帧分为三个阶段：
+        组合---生成ui树
+        布局---测量树中每个元素的大小和位置
+        绘制---将树中每个元素绘制到ui画布上
+
+状态声明在哪compose不关心，状态读取的位置会影响重组时执行 Composable 函数的范围
+    尽量延迟状态的读取使得 Compose 可以略过更多的阶段。
+
+
+Modifier是链式调用的，且设置的顺序很重要
+
 
 
