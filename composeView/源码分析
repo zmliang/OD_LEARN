@@ -1,9 +1,20 @@
-1:setContent里检查decorView是否为null，decorView是ComposeView,继承自android 的viewgroup
+1:setContent里检查decorView是否为null，decorView是ComposeView,继承自android 的ViewGroup
 
-        2:调用composeView的setContent方法
+2:调用composeView的setContent方法
 
 3:在setContent方法里
     3.1：把我们可组合方法放在mutableStateOf生成的对象的value里
     3.2：然后创建Composition对象，对于compose来说，它是渲染树，树上的节点是LayoutNode
 
-4:
+4:AbstractComposeView里调用方法setContent设置composition对象，
+    4.1: doSetContent里创建composition对象，代码如下
+    val original = Composition(UiApplier(owner.root), parent)
+    参数UiApplier和parent，parent就是ReCompose对象
+    owner是AndroidComposeView对象，它的root是什么？就是LayoutNode；
+
+所以通过以上代码，分支知道：
+    composition 代表的是一颗渲染树，
+    Composition 通过 LayoutNode 完成 measure/layout/draw 的过程最终将 UI 显示到屏幕上。
+    Composition 依靠 Composable 函数的执行来创建以及更新，即所谓的组合和重组。
+
+
