@@ -1,8 +1,10 @@
 package com.example.composeview
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,8 +22,18 @@ import com.example.composeview.pages.Assets
 import com.example.composeview.pages.Discover
 import com.example.composeview.pages.Home
 import com.example.composeview.pages.Me
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class MyComposeActivity : ComponentActivity() {
+class MyComposeActivity : AppCompatActivity() {
+
+    private val scope = CoroutineScope(SupervisorJob()+Dispatchers.Main)
 
     private val next = mutableStateOf("name")
 
@@ -30,6 +42,39 @@ class MyComposeActivity : ComponentActivity() {
         setContent {
             App()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        scope.launch {
+            Log.i("ZML","global scope start")
+            test1()
+            test2()
+
+            var deferred:Deferred<String>
+            withContext(Dispatchers.IO){
+                deferred =async {
+                    Log.i("ZML","线程名="+Thread.currentThread().name)
+                    delay(10000)
+                    "大傻叉"
+                }
+            }
+
+            val result = deferred.await()
+
+            Log.i("ZML","this is in global scope==$result")
+        }
+        Log.i("ZML","=========================")
+    }
+
+    suspend fun test1(){
+        delay(10000)
+        Log.i("ZML","this is test1")
+    }
+
+    suspend fun test2(){
+        delay(10000)
+        Log.i("ZML","this is test2")
     }
 }
 

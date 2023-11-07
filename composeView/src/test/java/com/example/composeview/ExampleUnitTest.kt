@@ -1,7 +1,12 @@
 package com.example.composeview
 
+import android.provider.Settings.Global
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.Snapshot
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -15,21 +20,31 @@ class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
+        println("========= start ===============")
+        GlobalScope.launch {
+            println("global scope start")
+            test1()
+            test2()
 
-        val state = mutableStateOf("1")
+            val deferred =async {
+                delay(1000)
+                "大傻叉"
+            }
 
-        val snapshot = Snapshot.takeSnapshot()
+            val result = deferred.await()
 
-        state.value = "2"
-        println("state.value=${state.value}")
-
-        snapshot.enter {
-            println("snapshot state.value=${state.value}")
+            println("this is in global scope==$result")
         }
+        println("=========================")
+    }
 
-        println("after state.value=${state.value}")
 
-        snapshot.dispose()
 
+    suspend fun test1(){
+        println("this is test1")
+    }
+
+    suspend fun test2(){
+        println("this is test2")
     }
 }
