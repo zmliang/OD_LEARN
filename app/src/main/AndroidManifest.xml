@@ -27,7 +27,7 @@
 
         </activity>
 
-        <activity android:name="com.example.composeview.MyComposeActivity"
+        <activity android:name="com.pos.ui.MyComposeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

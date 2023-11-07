@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace 'com.example.composeview'
+    namespace 'com.pos'
     compileSdk 33
 
     defaultConfig {
