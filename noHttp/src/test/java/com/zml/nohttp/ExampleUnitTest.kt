@@ -18,7 +18,6 @@ import java.io.IOException
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
 
         GlobalScope.launch {
             withContext(Dispatchers.IO){
