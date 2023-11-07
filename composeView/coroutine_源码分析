@@ -1,0 +1,68 @@
+launch：CoroutineScope类的扩展方法，用于启动一个协程；
+    它返回一个job对象，用于控制协程
+
+    方法内创建StandaloneCoroutine对象，继承自AbstractCoroutine;
+
+    --继承自AbstractCoroutine##start方法
+    --CoroutineStart.invoke 在该方法中，根据launch当时的启动类型，做不同的处理。
+    以DEFAULT为例：调用了我们协程代码块的block.startCoroutineCancellable方法
+
+    --startCoroutineCancellable(receiver: R, completion: Continuation<T>)是suspend方法的扩展方法，
+    completion  是AbstractCoroutine对象，
+    receiver    是StandaloneCoroutine对象
+
+//链式调用开始
+    --第一步 createCoroutineUnintercepted方法会创建协程体类的实例，它是suspend方法的扩展函数，通过判断
+        if(this is BaseContinuationImpl){
+            create(receiver, probeCompletion)//这个调用的就是suspend方法生成的类里面的create方法.
+        }
+    --第二步 interceptor方法：该方法在ContinuationImpl类中，ContinuationImpl继承了BaseContinuationImpl
+        intercepted
+                    ?: (context[ContinuationInterceptor]?.interceptContinuation(this) ?: this)
+                        .also { intercepted = it }
+        上面代码的意思是如果未经过拦截器调用，则使用上下文中的拦截器进行拦截
+        上下文context设置的拦截器是在launch的时候就存储好了的；newCoroutineContext方法里设置了Dispatchers.Default
+
+
+    --经过拦截器之后返回了DispatchedContinuation对象，它接收两个参数，一个是调度器，一个是协程体对象实例
+
+
+    --第三步 resumeCancellableWith()：最终调用DispatcherContinuation的代码如下：
+         dispatcher.dispatch(context, this)；因为DispatcherContinuation实现了Runnable()接口，所以可以直接放进去this
+         实现Runnable接口的是它的父类DispatchedTask;
+         run方法的执行大概是：
+         val delegate = delegate as DispatchedContinuation<T>
+         //取出原始协程体类
+         val continuation = delegate.continuation
+         //上下文
+         val context = continuation.context
+         //获取状态
+         val state = takeState()
+         withCoroutineContext(context, delegate.countOrElement) {
+            ...
+            //协程体代码执行
+            continuation.resume(getSuccessfulResult(state))
+         }
+
+         continuation.resume(getSuccessfulResult(state))调用的是BaseContinuationImpl类的resumeWith方法
+        内部有一个无限循环，假设我们协程体内没有挂起函数，那么将会循环执行 invokeSuspend()方法直到结束，
+        方法内部通过状态机依次执行。那么当遇到挂起函数的时候,也就是方法返回 COROUTINE_SUSPENDED 挂起标识
+        ，将直接 return 退出循环，同时协程体代码也会退出，因为退出的是协程体，并不会造成线程阻塞。
+        那后面未执行的代码怎么办呢？因为之前状态机在方法执行前将 label 置为某一个状态，当挂起函数恢复执行的时候，
+        会继续向下执行剩余代码。接下来分析一下协程是如何恢复的
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
