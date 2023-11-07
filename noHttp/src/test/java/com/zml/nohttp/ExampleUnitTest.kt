@@ -1,6 +1,10 @@
 package com.zml.nohttp
 
 import com.zml.nohttp.Outter.Inner
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -16,6 +20,11 @@ class ExampleUnitTest {
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
 
+        GlobalScope.launch {
+            withContext(Dispatchers.IO){
+                println("这是个携程中运行的代码块")
+            }
+        }
 
     }
 }
