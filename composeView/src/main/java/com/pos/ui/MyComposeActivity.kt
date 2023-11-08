@@ -20,10 +20,13 @@ import com.pos.ui.pages.Assets
 import com.pos.ui.pages.Discover
 import com.pos.ui.pages.Home
 import com.pos.ui.pages.Me
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 
+
+@AndroidEntryPoint
 class MyComposeActivity : AppCompatActivity() {
 
     private val scope = CoroutineScope(SupervisorJob()+Dispatchers.Main)
@@ -33,7 +36,7 @@ class MyComposeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            App()
+            mainApp()
         }
     }
 }

@@ -1,5 +1,11 @@
 plugins {
     id 'com.android.application'
+
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -26,6 +32,29 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+
+    android {
+        buildFeatures {
+            compose true
+        }
+
+        composeOptions {
+            kotlinCompilerExtensionVersion = "1.4.0"
+        }
+    }
+
+    kotlin {
+        jvmToolchain(8)
+    }
+
+    kapt {
+        correctErrorTypes true
+    }
 }
 
 dependencies {
@@ -43,6 +72,15 @@ dependencies {
 
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
+
+    //Dagger Hilt
+    implementation "com.google.dagger:hilt-android:2.44"
+    //implementation "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03"
+    //kapt "androidx.hilt:hilt-compiler:1.1.0"
+    implementation "androidx.activity:activity-ktx:1.8.0"
+
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+    kapt "com.google.dagger:hilt-compiler:2.44"
 
 
 }
