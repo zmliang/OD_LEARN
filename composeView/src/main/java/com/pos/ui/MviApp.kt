@@ -1,35 +1,26 @@
 package com.pos.ui
 
-import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemColors
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph
-import androidx.navigation.NavGraphBuilder
+import androidx.compose.ui.unit.dp
+import androidx.core.graphics.toColorInt
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.pos.route.Route
-import com.pos.route.Route.MainScreen
 import com.pos.theme.MviTheme
-import com.pos.ui.page.MainViewModel
-import com.pos.ui.page.mainScreen
 import com.pos.ui.pages.Assets
 import com.pos.ui.pages.Discover
 import com.pos.ui.pages.Home
@@ -39,30 +30,43 @@ import com.pos.ui.pages.Me
 @Composable
 fun mainApp() {
     val navController = rememberNavController()
-    var selected by remember { mutableStateOf(0) }
+    var selected by remember { mutableIntStateOf(0) }
     var items = remember { BottomBarItem.values() }
 
 
     MviTheme {
         Scaffold(
             bottomBar = {
-                NavigationBar {
+                NavigationBar(
+                    modifier = Modifier.height(60.dp),
+                    containerColor = Color.White,
+                    tonalElevation = 5.dp,
+                    //contentColor = Color("#5D37FF".toColorInt())
+                ) {
                     items.forEach {
                         NavigationBarItem(
+                            alwaysShowLabel = true,
                             label = { it.label },
                             selected = selected == it.ordinal,
                             onClick = {
                                 selected = it.ordinal
                                 navController.navigate(it.route)
                             },
-                            icon = it.icon
+                            icon = it.icon,
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = Color("#5D37FF".toColorInt()),
+                                selectedTextColor = Color("#5D37FF".toColorInt()),
+                                //indicatorColor = Color("#5D37FF".toColorInt()),
+                                unselectedIconColor = Color("#141416".toColorInt()),
+                                unselectedTextColor = Color("#141416".toColorInt()),
+                            )
                         )
                     }
                 }
             },
         ) {
             NavHost(
-                modifier=Modifier.padding(it),
+                modifier = Modifier.padding(it),
                 navController = navController,
                 startDestination = BottomBarItem.HOME.route
             ) {
@@ -70,16 +74,16 @@ fun mainApp() {
 //                    val viewModel = hiltViewModel<MainViewModel>()
 //                    mainScreen(viewModel = viewModel)
 //                }
-                composable(BottomBarItem.HOME.route){
+                composable(BottomBarItem.HOME.route) {
                     Home()
                 }
-                composable(BottomBarItem.ASSET.route){
+                composable(BottomBarItem.ASSET.route) {
                     Assets()
                 }
-                composable(BottomBarItem.DISCOVER.route){
+                composable(BottomBarItem.DISCOVER.route) {
                     Discover()
                 }
-                composable(BottomBarItem.ME.route){
+                composable(BottomBarItem.ME.route) {
                     Me()
                 }
             }
