@@ -8,11 +8,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 
 enum class BottomBarItem(
+    val route:String,
     val label: String,
     val icon: @Composable () -> Unit,
 ) {
-    HOME("首页", { Icon(imageVector = androidx.compose.material.icons.Icons.Filled.Home, contentDescription = "") }),
-    ASSET("资产", { Icon(imageVector = androidx.compose.material.icons.Icons.Filled.Face, contentDescription = "") }),
-    DISCOVER("发现", { Icon(imageVector = androidx.compose.material.icons.Icons.Filled.Person, contentDescription = "") }),
-    ME("我的", { Icon(imageVector = androidx.compose.material.icons.Icons.Filled.Lock, contentDescription = "") }),
+    HOME("HOME","首页", { Icon(imageVector = androidx.compose.material.icons.Icons.Filled.Home, contentDescription = "") }),
+    ASSET("ASSET","资产", { Icon(imageVector = androidx.compose.material.icons.Icons.Filled.Face, contentDescription = "") }),
+    DISCOVER("DISCOVER","发现", { Icon(imageVector = androidx.compose.material.icons.Icons.Filled.Person, contentDescription = "") }),
+    ME("PROFILE","我的", { Icon(imageVector = androidx.compose.material.icons.Icons.Filled.Lock, contentDescription = "") }),
 }

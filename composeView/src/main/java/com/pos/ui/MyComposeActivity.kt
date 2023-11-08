@@ -1,7 +1,12 @@
 package com.pos.ui
 
+import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
+import android.view.Window
+import android.view.WindowInsets
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -16,6 +21,8 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import com.pos.ui.pages.Assets
 import com.pos.ui.pages.Discover
 import com.pos.ui.pages.Home
