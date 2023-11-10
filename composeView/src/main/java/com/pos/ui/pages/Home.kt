@@ -1,9 +1,10 @@
 package com.pos.ui.pages
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import com.pos.ui.widget.InfiniteCarousel
 
 @Composable
 fun Home(){
-    Text(text = "这是首页")
+
+    InfiniteCarousel()
 }
