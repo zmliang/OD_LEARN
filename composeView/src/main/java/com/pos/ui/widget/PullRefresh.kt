@@ -3,6 +3,7 @@ package com.pos.ui.widget
 
 import android.util.Log
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.VectorConverter
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.MutatePriority
@@ -15,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -71,7 +73,7 @@ private class PullRefreshConnection(
 ): NestedScrollConnection{
     override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
         Log.i("zml","onPreScroll=$available")
-        if (source == NestedScrollSource.Drag && available.y<0){
+        if (source == NestedScrollSource.Drag ){
             state.updateOffsetDelta(available.y)
             return if (state.isSwipeInProgress) Offset(x=0f,y=available.y) else Offset.Zero
         }
@@ -84,7 +86,7 @@ private class PullRefreshConnection(
         source: NestedScrollSource
     ): Offset {
         Log.i("zml","onPostScroll,available=$available, consumed=$consumed")
-        if (source == NestedScrollSource.Drag && available.y > 0) {
+        if (source == NestedScrollSource.Drag ) {
             state.updateOffsetDelta(available.y)
             return Offset(x = 0f, y = available.y)
         } else {
@@ -139,6 +141,10 @@ fun PullRefresh(
     content:@Composable () -> Unit
 ){
 
+    // 注意，可滚动的Compose中嵌套可滚动项，需要设置高度/量算规则以帮助量算，否则量算时遇到无限高度的可滚动项目会崩溃
+    var springStiff by remember { mutableFloatStateOf(Spring.StiffnessLow) }
+    var springDamp by remember { mutableFloatStateOf(Spring.DampingRatioLowBouncy) }
+    var dragP by remember { mutableFloatStateOf(50f) }
     subComposePullRefresh(indicator = loadingIndicator) { height ->
         val smartSwipeRefreshNestedScrollConnection = remember(state, height) {
             PullRefreshConnection(state, height)

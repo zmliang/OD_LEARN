@@ -1,6 +1,7 @@
 package com.pos.ui.pages
 
 import android.util.Log
+import androidx.compose.animation.core.Spring
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.OverscrollEffect
 import androidx.compose.foundation.background
@@ -17,12 +18,17 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.overscroll
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -37,6 +43,8 @@ import com.pos.ui.widget.PullRefresh
 import com.pos.ui.widget.Resident
 import com.pos.ui.widget.Token
 import com.pos.ui.widget.TokenList
+import com.pos.ui.widget.overScrollVertical
+import com.pos.ui.widget.parabolaScrollEasing
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -49,10 +57,6 @@ fun Home() {
         Token("BTC", "ICON", "CONTRACT", "DEXCONTRACT", null, null),
         Token("BTC", "ICON", "CONTRACT", "DEXCONTRACT", null, null),
     )
-
-
-
-
 
 
 
@@ -69,6 +73,7 @@ fun Home() {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
+
         ) {
 
             item {
@@ -90,6 +95,28 @@ fun Home() {
             allTokens(tokens)
 
         }
+    }
+
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+class CusOverScroll @ExperimentalFoundationApi
+constructor(override val effectModifier: Modifier, override val isInProgress: Boolean) :OverscrollEffect{
+    @ExperimentalFoundationApi
+    override suspend fun applyToFling(
+        velocity: Velocity,
+        performFling: suspend (Velocity) -> Velocity
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    @ExperimentalFoundationApi
+    override fun applyToScroll(
+        delta: Offset,
+        source: NestedScrollSource,
+        performScroll: (Offset) -> Offset
+    ): Offset {
+        TODO("Not yet implemented")
     }
 
 }
