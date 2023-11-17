@@ -3,7 +3,7 @@
 //
 
 #include "inc/TextRender.h"
-
+#include "freetype/ftglyph.h"
 
 
 TextRender::TextRender() {
@@ -21,34 +21,59 @@ TextRender::TextRender() {
         ALOGE("ERROR::FREETYPE: Failed to load font");
     }
 
-    //设置字体大小，TODO 宽度值设为0表示我们要从字体面通过给定的高度中动态计算出字形的宽度
-// Set size to load glyphs as
-    FT_Set_Pixel_Sizes(face, 0, 48);
 
-    // Disable byte-alignment restriction
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 }
 
 void TextRender::mapCharacter() {
+
+    //设置字体大小，TODO 宽度值设为0表示我们要从字体面通过给定的高度中动态计算出字形的宽度
+// Set size to load glyphs as
+    FT_Set_Pixel_Sizes(face, 0, 48);
+    FT_Select_Charmap(face, ft_encoding_unicode);
+    // Disable byte-alignment restriction
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
     for (GLubyte c = 0; c < 128; c++) {
-        if (FT_Load_Char(face, c, FT_LOAD_RENDER)){
-            ALOGE("ERROR::FREETYTPE: Failed to load Glyph");
+
+
+        //int index =  FT_Get_Char_Index(face,unicodeArr[i]);
+        if (FT_Load_Glyph(face, FT_Get_Char_Index(face, c), FT_LOAD_DEFAULT)) {
+            ALOGE("Failed to load Glyph");
             continue;
         }
+
+        FT_Glyph glyph;
+        FT_Get_Glyph(face->glyph, &glyph);
+
+        //Convert the glyph to a bitmap.
+        FT_Glyph_To_Bitmap(&glyph, ft_render_mode_normal, 0, 1);
+        FT_BitmapGlyph bitmap_glyph = (FT_BitmapGlyph) glyph;
+
+        //This reference will make accessing the bitmap easier
+        FT_Bitmap &bitmap = bitmap_glyph->bitmap;
+
+
+
+//        if (FT_Load_Char(face, c, FT_LOAD_RENDER)){
+//            ALOGE("ERROR::FREETYTPE: Failed to load Glyph");
+//            continue;
+//        }
+
+
         GLuint texture;
         glGenTextures(1,&texture);
         glBindTexture(GL_TEXTURE_2D, texture);
         glTexImage2D(
                 GL_TEXTURE_2D,
                 0,
-                GL_RED,
-                face->glyph->bitmap.width,
-                face->glyph->bitmap.rows,
+                GL_LUMINANCE,
+                bitmap.width,
+                bitmap.rows,
                 0,
-                GL_RED,
+                GL_LUMINANCE,
                 GL_UNSIGNED_BYTE,
-                face->glyph->bitmap.buffer
+                bitmap.buffer
         );
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -58,9 +83,9 @@ void TextRender::mapCharacter() {
 
         CHARACTER _c = {
                 texture,
-                glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
+                glm::ivec2(bitmap.width, bitmap.rows),
                 glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-                static_cast<GLuint>(face->glyph->advance.x)
+                static_cast<GLuint>((glyph->advance.x / 65536) << 6)
         };
         mCharacters.insert(std::pair<GLchar, CHARACTER>(c, _c));
     }
