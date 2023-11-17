@@ -55,7 +55,7 @@ void TextRender::mapCharacter() {
 
 
 
-//        if (FT_Load_Char(face, c, FT_LOAD_RENDER)){
+//        if (FT_Load_Char(face, c, FT_LOAD_DEFAULT)){
 //            ALOGE("ERROR::FREETYTPE: Failed to load Glyph");
 //            continue;
 //        }
@@ -67,11 +67,11 @@ void TextRender::mapCharacter() {
         glTexImage2D(
                 GL_TEXTURE_2D,
                 0,
-                GL_LUMINANCE,
+                GL_RED,
                 bitmap.width,
                 bitmap.rows,
                 0,
-                GL_LUMINANCE,
+                GL_RED,
                 GL_UNSIGNED_BYTE,
                 bitmap.buffer
         );
@@ -85,7 +85,7 @@ void TextRender::mapCharacter() {
                 texture,
                 glm::ivec2(bitmap.width, bitmap.rows),
                 glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-                static_cast<GLuint>((glyph->advance.x / 65536) << 6)
+                static_cast<GLuint>((face->glyph->advance.x ) )
         };
         mCharacters.insert(std::pair<GLchar, CHARACTER>(c, _c));
     }
