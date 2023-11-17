@@ -44,6 +44,14 @@ public class MainActivity extends Activity {
 
             }
         });
+        ((Button)findViewById(R.id.go_opengl)).setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, EGLActivity.class));
+
+            }
+        });
     }
 
 

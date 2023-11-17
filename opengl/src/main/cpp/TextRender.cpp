@@ -7,22 +7,26 @@
 
 
 TextRender::TextRender() {
-//    if (FT_Init_FreeType(&ft)){
-//        ALOGE("ERROR::FREETYPE: Could not init FreeType Library");
-//    }
-//
-//    const char *font_file = "font/jianti.ttf";
-//    unsigned char* buffer;
-//    off_t assetLength;
-//
-//    ESContext::self()->load(font_file,buffer,assetLength);
-//
-//    if (FT_New_Memory_Face(ft, buffer, assetLength,0, &face)){
-//        ALOGE("ERROR::FREETYPE: Failed to load font");
-//    }
-//
-//    //设置字体大小，TODO 宽度值设为0表示我们要从字体面通过给定的高度中动态计算出字形的宽度
-//    FT_Set_Pixel_Sizes(face,0,24);
+    if (FT_Init_FreeType(&ft)){
+        ALOGE("ERROR::FREETYPE: Could not init FreeType Library");
+    }
+
+    const char *font_file = "font/Antonio-Bold.ttf";
+    unsigned char* buffer;
+    off_t assetLength;
+
+    ESContext::self()->load(font_file,buffer,assetLength);
+
+    if (FT_New_Memory_Face(ft, buffer, assetLength,0, &face)){
+        ALOGE("ERROR::FREETYPE: Failed to load font");
+    }
+
+    //设置字体大小，TODO 宽度值设为0表示我们要从字体面通过给定的高度中动态计算出字形的宽度
+// Set size to load glyphs as
+    FT_Set_Pixel_Sizes(face, 0, 48);
+
+    // Disable byte-alignment restriction
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 }
 
@@ -67,10 +71,17 @@ void TextRender::mapCharacter() {
 
 
 GLint TextRender::init() {
-    // Set OpenGL options
-    glEnable(GL_CULL_FACE);
+    ALOGE("onInit =  width=%d, height=%d",width,height);
+//    // Set OpenGL options
+//    //glEnable(GL_CULL_FACE);
+//    glEnable(GL_BLEND);
+//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+
     glEnable(GL_BLEND);
+    glEnable(GL_CULL_FACE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    //glDisable(GL_DEPTH_TEST);
 
     GLint linked;
 
@@ -92,19 +103,12 @@ GLint TextRender::init() {
 
     glLinkProgram(mProgram);
 
-    glm::mat4 projection = glm::mat4(1.0f);//透视矩阵
-    projection = glm::ortho(0.0f, static_cast<GLfloat>(width), 0.0f, static_cast<GLfloat>(height));
+//    _textureLoc  = glGetUniformLocation(mProgram, "text");
 
-    glUseProgram(mProgram);
-    glUniformMatrix4fv(glGetUniformLocation(mProgram, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-
-
-    _textureLoc  = glGetUniformLocation(mProgram, "text");
-
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-    free(pvertexShader);
-    free(pfragmentShader);
+   // glDeleteShader(vertexShader);
+   // glDeleteShader(fragmentShader);
+   // free(pvertexShader);
+   // free(pfragmentShader);
 
     glGetProgramiv ( mProgram, GL_LINK_STATUS, &linked );
 
@@ -127,28 +131,27 @@ GLint TextRender::init() {
         return -1;
     }
 
-    if (FT_Init_FreeType(&ft)){
-        ALOGE("ERROR::FREETYPE: Could not init FreeType Library");
-    }
+//    if (FT_Init_FreeType(&ft)){
+//        ALOGE("ERROR::FREETYPE: Could not init FreeType Library");
+//    }
+//
+//    const char *font_file = "font/jianti.ttf";
+//    unsigned char* buffer;
+//    off_t assetLength;
+//
+//    ESContext::self()->load(font_file,buffer,assetLength);
+//
+//    if (FT_New_Memory_Face(ft, buffer, assetLength,0, &face)){
+//        ALOGE("ERROR::FREETYPE: Failed to load font");
+//        return -1;
+//    }
 
-    const char *font_file = "font/jianti.ttf";
-    unsigned char* buffer;
-    off_t assetLength;
-
-    ESContext::self()->load(font_file,buffer,assetLength);
-
-    if (FT_New_Memory_Face(ft, buffer, assetLength,0, &face)){
-        ALOGE("ERROR::FREETYPE: Failed to load font");
-        return -1;
-    }
-
-    //设置字体大小，TODO 宽度值设为0表示我们要从字体面通过给定的高度中动态计算出字形的宽度
-    FT_Set_Pixel_Sizes(face, 0, 36);
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+//    //设置字体大小，TODO 宽度值设为0表示我们要从字体面通过给定的高度中动态计算出字形的宽度
+//    FT_Set_Pixel_Sizes(face, 0, 48);
+//    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
     mapCharacter();
 
-// Configure VAO/VBO for texture quads
     glGenVertexArrays(1, &mVAO);
     glGenBuffers(1, &mVBO);
     glBindVertexArray(mVAO);
@@ -170,6 +173,8 @@ void TextRender::size(int w, int h) {
     this->width = w;
     this->height = h;
 
+    ALOGE("onSize =  width=%d, height=%d",width,height);
+
     glViewport ( 0, 0, width, height );
 }
 
@@ -179,9 +184,12 @@ GLvoid TextRender::draw(float greenVal)
     // Clear the colorbuffer
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(width), 0.0f, static_cast<GLfloat>(height));
+    //glUseProgram(mProgram);
+    glUniformMatrix4fv(glGetUniformLocation(mProgram, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
     glUseProgram(mProgram);
-    doRender("This is program",-0.9f, 0.2f, 1.0f, glm::vec3(0.8, 0.1f, 0.1f));
+    doRender("This is program",20.0f, 570.0f, 2.0f, glm::vec3(0.8, 0.1f, 0.1f));
 
 //    int colorLocation = glGetUniformLocation(mProgram,"ourColor");
 //    glUniform4f(colorLocation,0.0f,0.5f,1.0f,1.0f);
@@ -192,30 +200,28 @@ GLvoid TextRender::draw(float greenVal)
 
 void TextRender::doRender(const std::string txt, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color) {
     glUniform3f(glGetUniformLocation(mProgram, "textColor"), color.x, color.y, color.z);
-    //glActiveTexture(GL_TEXTURE0);
+    glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(mVAO);
 
-    x *= width;
-    y *= height;
+    //x *= width;
+    //y *= height;
 
     std::string::const_iterator c;
     for (c = txt.begin(); c != txt.end(); c++) {
 
         CHARACTER character = mCharacters[*c];
 
-        //ALOGE("txt=%c, texture_id=%d",*c,character._textureId);
-
         GLfloat xpos = x + character.bearing.x * scale;
         GLfloat ypos = y - (character.size.y - character.bearing.y) * scale;
 
-        xpos /= width;
-        ypos /= height;
+        //xpos /= width;
+        //ypos /= height;
 
         GLfloat w = character.size.x * scale;
         GLfloat h = character.size.y * scale;
 
-        w /= width;
-        h /= height;
+       // w /= width;
+       // h /= height;
 
 /*
         float xpos = x + character.bearing.x * scale;
@@ -227,21 +233,19 @@ void TextRender::doRender(const std::string txt, GLfloat x, GLfloat y, GLfloat s
         //ALOGE("XPOS = %f; YPOS=%f; width=%f; height=%f",xpos,ypos,w,h);
 
         GLfloat vertices[6][4] = {
-                {xpos,     ypos + h, 0.0f, 0.0f},
-                {xpos,     ypos,     0.0f, 1.0f},
-                {xpos + w, ypos,     1.0f, 1.0f},
+                {xpos,     ypos + h, 0.0, 0.0},
+                {xpos,     ypos,     0.0, 1.0},
+                {xpos + w, ypos,     1.0, 1.0},
 
-                {xpos,     ypos + h, 0.0f, 0.0f},
-                {xpos + w, ypos,     1.0f, 1.0f},
-                {xpos + w, ypos + h, 1.0f, 0.0f}
+                {xpos,     ypos + h, 0.0, 0.0},
+                {xpos + w, ypos,     1.0, 1.0},
+                {xpos + w, ypos + h, 1.0, 0.0}
 
         };
 
         //绑定纹理图片
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, character._textureId);
-
-        glUniform1i(_textureLoc, 0);
 
         glBindBuffer(GL_ARRAY_BUFFER, mVBO);
         glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);

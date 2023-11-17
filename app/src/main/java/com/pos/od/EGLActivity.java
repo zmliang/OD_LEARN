@@ -1,5 +1,7 @@
 package com.pos.od;
 
+import static android.opengl.GLSurfaceView.RENDERMODE_WHEN_DIRTY;
+
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
@@ -34,26 +36,25 @@ public class EGLActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+      //  setContentView(R.layout.main_activity);
 
-        setContentView(R.layout.main_activity);
+        mGLSurfaceView = MyGLSurfaceView.create(this);
+        mRenderer=new Render(this);
 
-//        mGLSurfaceView = MyGLSurfaceView.create(this);
-//        mRenderer=new Render(this);
-//
-//        if (!detectOpenGLES30()){
-//            finish();
-//            return;
-//        }
-//
-//        // 设置OpenGl ES的版本
-//        mGLSurfaceView.setEGLContextClientVersion(CONTEXT_CLIENT_VERSION);
-//        // 设置与当前GLSurfaceView绑定的Renderer
-//        mGLSurfaceView.setRenderer(mRenderer);
-//        // 设置渲染的模式
-//        mGLSurfaceView.setRenderMode(RENDERMODE_WHEN_DIRTY);
-//
-//        setContentView(mGLSurfaceView);
-        //mGLSurfaceView.loopRender(mRenderer);
+        if (!detectOpenGLES30()){
+            finish();
+            return;
+        }
+
+        // 设置OpenGl ES的版本
+        mGLSurfaceView.setEGLContextClientVersion(CONTEXT_CLIENT_VERSION);
+        // 设置与当前GLSurfaceView绑定的Renderer
+        mGLSurfaceView.setRenderer(mRenderer);
+        // 设置渲染的模式
+        mGLSurfaceView.setRenderMode(RENDERMODE_WHEN_DIRTY);
+
+        setContentView(mGLSurfaceView);
+        mGLSurfaceView.loopRender(mRenderer);
 
         Log.e("ZML","System.nanoTime() / 1000000000.0 === "+(System.nanoTime() / 1000000000.0));
 
