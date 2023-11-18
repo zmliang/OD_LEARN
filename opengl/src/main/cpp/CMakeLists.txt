@@ -16,12 +16,16 @@ include_directories(
         loop
         freetype
         glm
+        samples
 )
 
 #file(GLOB cpp_files
 #        ${CMAKE_SOURCE_DIR}/*.cpp
 #        //
 #       )
+
+#查找当前目录所有源文件，并将查找到的源文件名称列表保存到变量DIR_SRCS中
+aux_source_directory(${CMAKE_SOURCE_DIR}/samples/. DIR_SRCS)
 
 
 add_library(
@@ -37,6 +41,7 @@ add_library(
         TextRender.cpp  #文本渲染，一直没有渲染出来字体，不知道问题出在哪
         TriangleRender.cpp
         Lighting.cpp
+        ${DIR_SRCS}
 )
 
 

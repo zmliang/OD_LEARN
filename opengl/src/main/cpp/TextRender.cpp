@@ -194,15 +194,6 @@ GLint TextRender::init() {
     return 1;
 }
 
-void TextRender::size(int w, int h) {
-    this->width = w;
-    this->height = h;
-
-    ALOGE("onSize =  width=%d, height=%d",width,height);
-
-    glViewport ( 0, 0, width, height );
-}
-
 GLvoid TextRender::draw(float greenVal)
 {
     // 清除颜色缓冲

@@ -9,13 +9,6 @@
 #include "glm/gtc/type_ptr.hpp"
 
 
-void TriangleRender::size(int w, int h) {
-    this->width = w;
-    this->height = h;
-
-    glViewport ( 0, 0, width, height );
-}
-
 GLint TriangleRender::init() {
     GLuint vertexShader;
     GLuint fragmentShader;

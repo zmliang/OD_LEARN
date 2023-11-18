@@ -13,7 +13,6 @@
 class TriangleRender : public render{
 
 public:
-    void size(int w,int h);
     GLvoid draw(float greenVal);
 
     GLint init();

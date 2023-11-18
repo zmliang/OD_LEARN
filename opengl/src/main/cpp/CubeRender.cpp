@@ -4,14 +4,6 @@
 
 #include "inc/CubeRender.h"
 
-
-void CubeRender::size(int w, int h) {
-    this->width = w;
-    this->height = h;
-
-    glViewport ( 0, 0, width, height );
-}
-
 GLint CubeRender::init() {
     glEnable(GL_DEPTH_TEST);
     GLuint vertexShader;

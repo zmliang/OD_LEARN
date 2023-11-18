@@ -6,12 +6,6 @@
 
 
 
-void Lighting::size(int w, int h) {
-    width = w;
-    height = h;
-    glViewport(0,0,w,h);
-}
-
 GLint Lighting::init() {
 
 

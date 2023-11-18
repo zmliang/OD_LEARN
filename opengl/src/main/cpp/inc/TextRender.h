@@ -33,7 +33,6 @@ public:
 
     TextRender();
 
-    void size(int w,int h);
     GLvoid draw(float greenVal);
     GLint init();
 
@@ -46,7 +45,6 @@ private:
 
 private:
 
-    GLint _textureLoc ;
     FT_Library ft;
     FT_Face face;
     std::map<GLchar,CHARACTER> mCharacters;

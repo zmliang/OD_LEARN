@@ -21,7 +21,12 @@ public:
 
     virtual GLvoid draw(float greenVal) = 0;
 
-    virtual void size(int w,int h) = 0;
+    void size(int w,int h){
+        this->width = w;
+        this->height = h;
+
+        glViewport ( 0, 0, width, height );
+    }
     virtual GLint init() = 0;
 
 

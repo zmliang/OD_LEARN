@@ -92,12 +92,6 @@ GLint RectRender::init() {
     return 1;
 }
 
-void RectRender::size(int w, int h) {
-    this->width = w;
-    this->height = h;
-
-    glViewport ( 0, 0, width, height );
-}
 
 
 //void RectRender::loop(float greenVal) {
