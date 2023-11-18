@@ -10,6 +10,13 @@
 
 class ScaleSample : public render{
 
+public:
+    GLvoid draw(float greenVal);
+
+    GLint init();
+
+    ~ScaleSample();
+
 };
 
 

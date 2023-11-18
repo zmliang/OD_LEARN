@@ -10,6 +10,7 @@
 #include "TriangleRender.h"
 #include "CubeRender.h"
 #include "TextRender.h"
+#include "../samples/ScaleSample.h"
 
 class ESContext {
 

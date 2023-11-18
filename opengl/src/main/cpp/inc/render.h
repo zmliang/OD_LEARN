@@ -39,6 +39,25 @@ public:
 
 
 protected:
+
+    GLuint checkLinkStatus(GLuint &program){
+        GLint linked;
+        glGetProgramiv ( program, GL_LINK_STATUS, &linked );
+        if (!linked){
+            GLint infoLen = 0;
+            glGetProgramiv ( program, GL_INFO_LOG_LENGTH, &infoLen );
+            if ( infoLen > 1 )
+            {
+                char *infoLog = (char *)malloc ( sizeof ( char ) * infoLen );
+                glGetProgramInfoLog ( program, infoLen, NULL, infoLog );
+                ALOGE("Error linking program:[%s]", infoLog );
+                free ( infoLog );
+            }
+            return -1;
+        }
+        return 1;
+    }
+
     GLuint loadShader(GLenum type,const char *shaderSrc){
         GLuint shader;
         GLint compiler;
