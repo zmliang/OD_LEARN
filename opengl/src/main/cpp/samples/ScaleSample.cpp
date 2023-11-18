@@ -61,13 +61,12 @@ GLint ScaleSample::init() {
 
     glBindVertexArray(mVAO);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,mEBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices),indices,GL_STATIC_DRAW);
-
     //1:复制顶点数组到缓冲中，供openGL使用
     glBindBuffer(GL_ARRAY_BUFFER,mVBO);
     glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
 
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,mEBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices),indices,GL_STATIC_DRAW);
 
     //2:三角形的坐标
     glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,5*sizeof(float),(void*)0);
@@ -82,7 +81,13 @@ GLint ScaleSample::init() {
 
     ALOGE("开始加载纹理");
     stbi_set_flip_vertically_on_load(true);
+
+    //让字节对齐从默认的4字节对齐改成1字节对齐（选择1的话，无论图片本身是怎样都是绝对不会出问题的，嘛，以效率的牺牲为代价）
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);//通常会用于像素传输(PACK/UNPACK)的场合。尤其是导入纹理(glTexImage2D)的时候：
     loadTexture();
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+
+
     glUseProgram(mProgram);
     glUniform1i(glGetUniformLocation(mProgram, "texture1"), 0);
 
@@ -91,8 +96,8 @@ GLint ScaleSample::init() {
 
 void ScaleSample::loadTexture() {
 
-    glGenTextures(1,&_textureId);
-    glBindTexture(GL_TEXTURE_2D,_textureId);
+    glGenTextures(1,&mTexture);
+    glBindTexture(GL_TEXTURE_2D,mTexture);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -131,7 +136,7 @@ GLvoid ScaleSample::draw(float greenVal) {
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
     //glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, _textureId);
+    glBindTexture(GL_TEXTURE_2D, mTexture);
 
 
     //刷新颜色
@@ -141,7 +146,7 @@ GLvoid ScaleSample::draw(float greenVal) {
     glUniform4f(colorLocation,0.0f, abs(g),1.0f,1.0f);
 
     int timeStampLoc = glGetUniformLocation(mProgram,"scaleConf");
-    glUniform3f(timeStampLoc,_timeDelta,5,0.3);
+    glUniform3f(timeStampLoc,_timeDelta,3,0.8);
 
     glUseProgram(mProgram);
 

@@ -22,8 +22,6 @@ private:
 
     void loadTexture();
 
-    GLuint _textureId;
-
 };
 
 
