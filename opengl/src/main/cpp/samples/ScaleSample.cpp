@@ -93,8 +93,9 @@ GLvoid ScaleSample::draw(float greenVal) {
     int colorLocation = glGetUniformLocation(mProgram,"ourColor");
     glUniform4f(colorLocation,0.0f, abs(g),1.0f,1.0f);
 
-    int timeStampLoc = glGetUniformLocation(mProgram,"timeStamp");
-    glUniform1f(timeStampLoc,_timeDelta);
+    int timeStampLoc = glGetUniformLocation(mProgram,"scaleConf");
+
+    glUniform3f(timeStampLoc,_timeDelta,5,0.3);
 
 
     glBindVertexArray(mVAO);
