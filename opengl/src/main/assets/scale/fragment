@@ -2,9 +2,13 @@
 precision mediump float;
 out vec4 FragColor;
 
+in vec2 TexCoord;
+
 uniform vec4 ourColor; // 在OpenGL程序代码中设定这个变量
+
+uniform sampler2D texture1;
 
 void main()
 {
-   FragColor = ourColor;//vec4(1.0f, 0.5f, 0.2f, 1.0f);
+   FragColor = texture(texture1, TexCoord);
 }

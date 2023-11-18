@@ -40,7 +40,6 @@ void ESContext::readShaderSrcFromAsset(const char *srcName,char* &buffer) {
     buffer[size] = '\0';
 
     numByte = AAsset_read(pAsset, buffer, size);
-    ALOGV("numByte=%d",numByte);
     AAsset_close(pAsset);
 
 }

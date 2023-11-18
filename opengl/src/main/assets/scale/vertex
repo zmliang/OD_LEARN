@@ -1,9 +1,12 @@
 #version 300 es
 layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec2 aTexCoord;
 
 uniform vec3 scaleConf;
 
 const float PI = 3.1415926;
+
+out vec2 TexCoord;
 
 void main()
 {
@@ -18,5 +21,7 @@ void main()
     float _ratio = 1.0 + maxAmplitude * abs(sin(time * (PI / duration)));
 
     gl_Position=vec4(aPos.x*_ratio,aPos.y*_ratio,aPos.z,1.0);
+
+    TexCoord = aTexCoord;
 
 }
