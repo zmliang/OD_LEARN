@@ -88,9 +88,14 @@ GLvoid ScaleSample::draw(float greenVal) {
     glUseProgram(mProgram);
 
     //刷新颜色
-    float g = cos(ESContext::self()->getDeltaTime());
+    float _timeDelta = ESContext::self()->getDeltaTime();
+    float g = cos(_timeDelta);
     int colorLocation = glGetUniformLocation(mProgram,"ourColor");
     glUniform4f(colorLocation,0.0f, abs(g),1.0f,1.0f);
+
+    int timeStampLoc = glGetUniformLocation(mProgram,"timeStamp");
+    glUniform1f(timeStampLoc,_timeDelta);
+
 
     glBindVertexArray(mVAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

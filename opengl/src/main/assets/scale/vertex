@@ -1,6 +1,20 @@
 #version 300 es
 layout (location = 0) in vec3 aPos;
+
+uniform float timeStamp;
+
+const float PI = 3.1415926;
+
 void main()
 {
-   gl_Position=vec4(aPos.x,aPos.y,aPos.z,1.0);
+    //一次缩放效果的时长，0.6秒缩放一次
+    float duration = 0.6;
+    //最大缩放幅度，从1放大到1.3倍
+    float maxAmplitude = 0.3;
+
+    float time = mod(timeStamp,duration);
+    float _ratio = 1.0 + maxAmplitude * abs(sin(time * (PI / duration)));
+
+   gl_Position=vec4(aPos.x*_ratio,aPos.y*_ratio,aPos.z,1.0);
+
 }
