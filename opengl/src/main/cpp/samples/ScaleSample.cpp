@@ -4,6 +4,8 @@
 
 #include "ScaleSample.h"
 
+#include <stdlib.h>
+
 
 GLint ScaleSample::init() {
     char *pVertexCode;
@@ -20,7 +22,7 @@ GLint ScaleSample::init() {
         glDeleteShader(fragmentShader);
         free(pVertexCode);
         free(pFragmentCode);
-        ALOGE("create program occurred error,%s");
+        ALOGE("create program occurred error,");
         return -1;
     }
 
@@ -85,11 +87,10 @@ GLvoid ScaleSample::draw(float greenVal) {
 
     glUseProgram(mProgram);
 
-    //更新uniform颜色
-    //std::time_t t = std::time(0);
-    //float greenVal = sin(t)/2.0f+0.5f;
+    //刷新颜色
+    float g = cos(ESContext::self()->getDeltaTime());
     int colorLocation = glGetUniformLocation(mProgram,"ourColor");
-    glUniform4f(colorLocation,0.0f,greenVal,1.0f,1.0f);
+    glUniform4f(colorLocation,0.0f, abs(g),1.0f,1.0f);
 
     glBindVertexArray(mVAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
