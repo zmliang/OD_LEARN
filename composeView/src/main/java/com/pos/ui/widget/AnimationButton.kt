@@ -1,5 +1,6 @@
 package com.pos.ui.widget
 
+import android.util.Log
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateDpAsState
@@ -30,6 +31,7 @@ import androidx.compose.ui.unit.dp
 @Preview
 @Composable
 fun AnimationButton(){
+    Log.e("zml","进入了这个compose方法里了")
     var zoomIn by remember { mutableStateOf(false) }
 
     val radius by animateDpAsState(targetValue = if (zoomIn) 85.dp else 30.dp, label = "",
