@@ -82,10 +82,7 @@ GLint ScaleSample::init() {
     ALOGE("开始加载纹理");
     stbi_set_flip_vertically_on_load(true);
 
-    //让字节对齐从默认的4字节对齐改成1字节对齐（选择1的话，无论图片本身是怎样都是绝对不会出问题的，嘛，以效率的牺牲为代价）
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);//通常会用于像素传输(PACK/UNPACK)的场合。尤其是导入纹理(glTexImage2D)的时候：
     loadTexture();
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 
 
     glUseProgram(mProgram);
@@ -117,10 +114,28 @@ void ScaleSample::loadTexture() {
     // stb_image 的方法，从内存中加载图片
     unsigned char *data = stbi_load_from_memory(fileData, assetLength, &width, &height, &nrChannels, 0);
     //unsigned char *data = stbi_load(FileSystem::getPath("resources/textures/container.jpg").c_str(), &width, &height, &nrChannels, 0);
+
+    ALOGE("图片的宽=%d， 高=%d , channel=%d",width,height,nrChannels);
+
     if (data){
+        //让字节对齐从默认的4字节对齐改成1字节对齐（选择1的话，无论图片本身是怎样都是绝对不会出问题的，嘛，以效率的牺牲为代价）
+        //将颜色数据从cpu传到gpu 叫GL_UNPACK_ALIGNMENT
+        //也就是将数据从CPU端解包出来的时候的对齐准则
+        //通常会用于像素传输(PACK/UNPACK)的场合。尤其是导入纹理(glTexImage2D)的时候：
+        unsigned int bytesPerRow = width * (nrChannels*8) / 8;//计算一行所有像素的byte值
+        int align;
+        if (bytesPerRow%8 == 0){
+            align = 8;
+        } else if (bytesPerRow%4 == 0){
+            align = 4;
+        } else if(bytesPerRow % 2 == 0){
+            align = 2;
+        } else{
+            align = 1;
+        }
+        glPixelStorei(GL_UNPACK_ALIGNMENT, align);
 
-        glTexImage2D(GL_TEXTURE_2D, 0,  GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-
+        glTexImage2D(GL_TEXTURE_2D, 0,  nrChannels == 4 ? GL_RGBA : GL_RGB, width, height, 0, nrChannels == 4 ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
     }else{
         ALOGE("Failed to load texture");
@@ -146,7 +161,7 @@ GLvoid ScaleSample::draw(float greenVal) {
     glUniform4f(colorLocation,0.0f, abs(g),1.0f,1.0f);
 
     int timeStampLoc = glGetUniformLocation(mProgram,"scaleConf");
-    glUniform3f(timeStampLoc,_timeDelta,3,0.8);
+    glUniform3f(timeStampLoc,_timeDelta,3,1);
 
     glUseProgram(mProgram);
 
