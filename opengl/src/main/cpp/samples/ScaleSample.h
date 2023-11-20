@@ -5,7 +5,8 @@
 #ifndef OD_LEARN_SCALESAMPLE_H
 #define OD_LEARN_SCALESAMPLE_H
 
-#include "../inc/RectRender.h"
+#include "../inc/render.h"
+#include "../inc/ESContext.h"
 #include <ctime>
 
 class ScaleSample : public render{

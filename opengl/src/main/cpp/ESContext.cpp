@@ -18,7 +18,7 @@ void ESContext::setJvm(JavaVM *javaVM) {
 
 
 render* ESContext::createRender() {
-    return new ScaleSample();
+    return new OutBodySample();
 }
 
 

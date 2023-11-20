@@ -11,6 +11,7 @@
 #include "CubeRender.h"
 #include "TextRender.h"
 #include "../samples/ScaleSample.h"
+#include "../samples/OutBodySample.h"
 
 class ESContext {
 

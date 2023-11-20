@@ -1,0 +1,32 @@
+#version 300 es
+precision mediump float;
+
+
+out vec4 FragColor;
+in vec2 TexCoord;
+uniform sampler2D _texture;
+uniform float _time;
+
+void main()
+{
+
+    //周期
+    float duration = 1.0;
+    //最大透明度0.4
+    float maxAlpha = 0.5;
+    //最大放大1.8倍
+    float maxScale = 1.5;
+
+    float progress = mod(_time, duration) / duration;
+    float alpha = maxAlpha * (1.0 - progress);
+    float scale = 1.0 + (maxScale - 1.0) * progress;
+
+    float weakX = 0.5 + (TexCoord.x - 0.5) / scale;
+    float weakY = 0.5 + (TexCoord.y - 0.5) / scale;
+    vec2 weakTextureCoords = vec2(weakX, weakY);
+
+    vec4 weakMask = texture(_texture, weakTextureCoords);
+    vec4 mask = texture(_texture, TexCoord);
+
+    FragColor = mask * (1.0 - alpha) + weakMask * alpha;
+}
