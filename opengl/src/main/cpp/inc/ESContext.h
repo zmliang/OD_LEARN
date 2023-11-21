@@ -12,6 +12,7 @@
 #include "TextRender.h"
 #include "../samples/ScaleSample.h"
 #include "../samples/OutBodySample.h"
+#include "../samples/JoggleSample.h"
 
 class ESContext {
 

@@ -1,0 +1,40 @@
+#version 300 es
+precision mediump float;
+
+
+out vec4 FragColor;
+in vec2 TexCoord;
+uniform sampler2D _texture;
+uniform float _time;
+
+void main()
+{
+
+    //周期
+    float duration = 0.7;
+    //最大放大1.1倍
+    float maxScale = 1.1;
+    //颜色偏移步长
+    float offset = 0.02;
+
+    float progress = mod(_time, duration) / duration;
+
+    //当前这一秒的颜色偏移量，范围【0 ~ 0.02】
+    vec2 offsetCoords = vec2(offset, offset) * progress;
+
+    //当前缩放比例
+    float scale = 1.0 + (maxScale - 1.0) * progress;
+
+    //计算当前纹理坐标
+    float _newX = 0.5 + (TexCoord.x - 0.5) / scale;
+    float _newY = 0.5 + (TexCoord.y - 0.5) / scale;
+    vec2 _newTextureCoords = vec2(_newX, _newY);
+
+    vec4 mask = texture(_texture, _newTextureCoords);
+
+    //颜色偏移的纹素
+    vec4 maskR = texture(_texture, _newTextureCoords + offsetCoords);
+    vec4 maskB = texture(_texture, _newTextureCoords - offsetCoords);
+
+    FragColor = vec4(maskR.r, mask.g, maskB.b, mask.a);
+}
