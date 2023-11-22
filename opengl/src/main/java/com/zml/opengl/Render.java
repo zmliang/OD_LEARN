@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
+import android.view.MotionEvent;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -42,6 +43,8 @@ public class Render implements GLSurfaceView.Renderer {
 
     public native void testLoop();
 
+    native boolean nativeOnTouchEvent(MotionEvent event);
+
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         this.create();
@@ -58,6 +61,10 @@ public class Render implements GLSurfaceView.Renderer {
         this.render(greenValue);
     }
 
+    public boolean onTouchEvent(MotionEvent event){
+
+        return nativeOnTouchEvent(event);
+    }
     public void destroy(){
         this.destroy(this.nativeRenderHandleId);
     }

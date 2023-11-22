@@ -15,6 +15,8 @@
 
 #include "../log.h"
 
+#include "camera.h"
+
 class render {
 
 public:
@@ -29,6 +31,9 @@ public:
     }
     virtual GLint init() = 0;
 
+    bool processInput(){
+        return false;
+    }
 
     virtual ~render(){
         ALOGE("render base destructor");

@@ -13,6 +13,7 @@
 #include "../samples/ScaleSample.h"
 #include "../samples/OutBodySample.h"
 #include "../samples/JoggleSample.h"
+#include "Lighting.h"
 
 class ESContext {
 

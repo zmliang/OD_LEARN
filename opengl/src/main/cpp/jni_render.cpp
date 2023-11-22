@@ -96,3 +96,11 @@ Java_com_zml_opengl_Render_testLoop(JNIEnv *env, jobject thiz) {
     RenderLoop* renderLoop = new RenderLoop() ;
     renderLoop->postMessageDelay(5,2000);
 }
+extern "C"
+JNIEXPORT jboolean JNICALL
+Java_com_zml_opengl_Render_nativeOnTouchEvent(JNIEnv *env, jobject thiz, jobject event) {
+
+    render* ptr = getSelf(env,thiz);
+
+    return ptr->processInput();
+}

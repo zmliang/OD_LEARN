@@ -12,6 +12,7 @@ project("gles")
 #直接用include_directories字目录，使用上面add_add_subdirectory+include_directories
 #会报找不到第三方库的头文件
 
+
 include_directories(
         inc
         loop

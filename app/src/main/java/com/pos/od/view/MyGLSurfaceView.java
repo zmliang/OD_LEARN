@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 
 import androidx.annotation.NonNull;
 
@@ -30,6 +31,12 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
         MyGLSurfaceView instance = new MyGLSurfaceView(context);
         return instance;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        _render.onTouchEvent(event);
+        return super.onTouchEvent(event);
     }
 
     public MyGLSurfaceView(Context context) {
