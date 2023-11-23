@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import com.pos.ui.widget.overScrollVertical
 import com.pos.ui.widget.rememberOverscrollFlingBehavior
+import com.pos.ui.widget.scrollNotice
 
 
 @Composable
@@ -39,6 +40,8 @@ fun Assets(){
                 flingBehavior = rememberOverscrollFlingBehavior { scrollState })
     ) {
         Text(text = "这是资产")
+
+        scrollNotice()
 
     }
 
@@ -71,7 +74,7 @@ fun colorAnimated() {
                 .size(100.dp)
                 .align(Alignment.Center)
                 .graphicsLayer {
-                    translationY=_transactionY.value
+                    translationY = _transactionY.value
                 }
         ) {}
     }
