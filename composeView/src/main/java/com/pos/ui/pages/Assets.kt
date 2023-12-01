@@ -23,6 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
+import com.pos.ui.widget.KLineChartScreen
+import com.pos.ui.widget._canvas
 import com.pos.ui.widget.overScrollVertical
 import com.pos.ui.widget.rememberOverscrollFlingBehavior
 import com.pos.ui.widget.scrollNotice
@@ -30,20 +32,26 @@ import com.pos.ui.widget.scrollNotice
 
 @Composable
 fun Assets(){
+
+    _canvas()
+    //KLineChartScreen()
+
     val scrollState = rememberScrollState()
 
-    Column(
-        Modifier
-            .fillMaxSize()
-            .overScrollVertical()
-            .verticalScroll(state = scrollState,
-                flingBehavior = rememberOverscrollFlingBehavior { scrollState })
-    ) {
-        Text(text = "这是资产")
-
-        scrollNotice()
-
-    }
+//    Column(
+//        Modifier
+//            .fillMaxSize()
+//            .overScrollVertical()
+//            .verticalScroll(state = scrollState,
+//                flingBehavior = rememberOverscrollFlingBehavior { scrollState })
+//    ) {
+//        Text(text = "这是资产")
+//
+//        //scrollNotice()
+//
+//
+//
+//    }
 
 }
 

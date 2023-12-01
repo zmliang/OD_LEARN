@@ -6,8 +6,10 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +18,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -35,13 +39,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.Measurable
 import androidx.compose.ui.layout.MeasurePolicy
@@ -323,7 +330,7 @@ fun MeasureScope.PlaceTextAndIcon(
 @Composable
 private fun JetsnackBottomNavIndicator(
     strokeWidth: Dp = 2.dp,
-    color: Color = MaterialTheme.colorScheme.onSecondary,
+    color: Color = MaterialTheme.colorScheme.error,
     shape: Shape = BottomNavIndicatorShape
 ) {
     Spacer(
@@ -350,4 +357,77 @@ private fun JetsnackBottomNavPreview() {
         currentRoute = "home/feed",
         navigateToRoute = { }
     )
+}
+
+
+
+//============================
+
+data class Candle(val open: Float, val close: Float, val high: Float, val low: Float)
+
+val sampleData = listOf(
+    Candle(100f, 150f, 80f, 200f),
+    Candle(160f, 140f, 120f, 180f),
+    Candle(135f, 170f, 100f, 200f),
+    Candle(100f, 150f, 80f, 200f),
+    Candle(160f, 140f, 120f, 180f),
+    Candle(135f, 170f, 100f, 200f),
+    Candle(100f, 150f, 80f, 200f),
+    Candle(160f, 140f, 120f, 180f),
+    Candle(135f, 170f, 100f, 200f),
+    Candle(100f, 150f, 80f, 200f),
+    Candle(160f, 140f, 120f, 180f),
+    Candle(135f, 170f, 100f, 200f),
+    Candle(100f, 150f, 80f, 200f),
+    Candle(160f, 140f, 120f, 180f),
+    Candle(135f, 170f, 100f, 200f),
+    // Add more sample data as needed
+)
+
+@Composable
+fun CustomKLineChart(data: List<Candle>) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        Canvas(
+            modifier = Modifier
+                .fillMaxSize()
+                .pointerInput(Unit) {
+//                    detectTransformGestures { _, pan, _ ->
+//
+//                    }
+                }
+        ) {
+            drawKLineChart(data)
+        }
+    }
+}
+
+private fun DrawScope.drawKLineChart(data: List<Candle>) {
+    val candleWidth = size.width / (data.size * 2)
+    val verticalScale = size.height / (data.maxOf { it.high } - data.minOf { it.low })
+
+    data.forEachIndexed { index, candle ->
+        val x = index * candleWidth * 2 + candleWidth
+        val highY = (data.maxOf { it.high } - candle.high) * verticalScale
+        val lowY = (data.maxOf { it.high } - candle.low) * verticalScale
+        val openY = (data.maxOf { it.high } - candle.open) * verticalScale
+        val closeY = (data.maxOf { it.high } - candle.close) * verticalScale
+
+        drawLine(
+            color = if (candle.close > candle.open) Color.Green else Color.Red,
+            start = Offset(x, highY),
+            end = Offset(x, lowY),
+            strokeWidth = 2f
+        )
+
+        drawRect(
+            color = if (candle.close > candle.open) Color.Green else Color.Red,
+            topLeft = Offset(x - candleWidth, openY),
+            size = androidx.compose.ui.geometry.Size(candleWidth * 2, closeY - openY)
+        )
+    }
+}
+
+@Composable
+fun KLineChartScreen() {
+    CustomKLineChart(data = sampleData)
 }
