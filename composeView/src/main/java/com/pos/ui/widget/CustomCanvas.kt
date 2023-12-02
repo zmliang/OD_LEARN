@@ -1,5 +1,7 @@
 package com.pos.ui.widget
 
+import android.util.Log
+import android.view.ScaleGestureDetector
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
@@ -17,210 +19,154 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.pointerInteropFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.times
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.lang.Float.max
+import java.lang.Float.min
+import kotlin.random.Random
 
 
 @Composable
 fun _canvas(){
 
-    KLineChartView()
+    KLineChartView(_sampleData, modifier = Modifier.fillMaxSize())
 
 }
 
-
+val _random = Random(200)
 var _sampleData = listOf(
-    KLineData(100f, 150f, 80f, 200f),
-    KLineData(160f, 140f, 120f, 180f),
-    KLineData(135f, 170f, 100f, 200f),
-    KLineData(100f, 150f, 80f, 200f),
-    KLineData(160f, 140f, 120f, 180f),
-    KLineData(135f, 170f, 100f, 200f),
-    KLineData(100f, 150f, 80f, 200f),
-    KLineData(160f, 140f, 120f, 180f),
-    KLineData(135f, 170f, 100f, 200f),
-    KLineData(100f, 150f, 80f, 200f),
-    KLineData(160f, 140f, 120f, 180f),
-    KLineData(135f, 170f, 100f, 200f),
-    KLineData(100f, 150f, 80f, 200f),
-    KLineData(160f, 140f, 120f, 180f),
-    KLineData(135f, 170f, 100f, 200f),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+    KLineData(_random.nextFloat(), _random.nextFloat(), _random.nextFloat(), _random.nextFloat()),
+
     // Add more sample data as needed
 )
 
 data class KLineData(val open:Float,val close:Float,val high:Float,val low:Float)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun KLineChartView(
-    //stockDataLoad:StockDataLoader,
-    initialVisibleCount:Int = 50,
-    initialScaleX:Float = 1f,
-    initialScaleY:Float = 1f,
-){
-    var scaleX by remember { mutableFloatStateOf(initialScaleX) }
-    var scaleY by remember { mutableFloatStateOf(initialScaleY) }
+    kLineDataList: List<KLineData>,
+    modifier: Modifier = Modifier
+) {
+    var scaleX by remember { mutableStateOf(1f) }
+    var scaleY by remember { mutableStateOf(1f) }
+    var translateX by remember { mutableStateOf(0f) }
+    var translateY by remember { mutableStateOf(0f) }
+    val context = LocalContext.current
 
-    var translateX by remember { mutableFloatStateOf(0f) }
-    var translateY by remember { mutableFloatStateOf(0f) }
+    val scaleGestureDetector = remember { ScaleGestureDetector(context, ScaleListener()) }
 
-    var visibleCount by remember { mutableIntStateOf(initialVisibleCount) }
-    var kLineDataList by remember { mutableStateOf(_sampleData) }
-
-    val scope = rememberCoroutineScope()
-
-    suspend fun loadData(){
-        withContext(Dispatchers.IO){
-            // val newdata = stockDataLoad.load(0,visibleCount)
-            kLineDataList = _sampleData
-        }
-    }
-
-    LaunchedEffect(key1 = "", block ={
-        //loadData()
-    } )
-
-
-
-    val kLineChartWidth = 800*scaleX
-    val kLineChartHeight = 400*scaleY
-
-    val kLineChartMinX = -translateX/scaleY
-    val kLineChartMaxX = kLineChartMinX+visibleCount.toFloat()
-
-    val kLineChartMinY = kLineDataList.map { it.low }.minOrNull()?:0f
-    val kLineChartMaxY = kLineDataList.map { it.high }.minOrNull()?:0f
-
-    val kLineChartScaleX = kLineChartWidth/(kLineChartMaxX-kLineChartMinX)
-    val kLineChartScaleY = kLineChartHeight/(kLineChartMaxY-kLineChartMinY)
-
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .pointerInput(Unit) {
-            detectTransformGestures { _, pan, zoom, _ ->
-                scaleX *= zoom
-                scaleY *= zoom
-
-                translateX += pan.x / scaleX
-                translateY -= pan.y / scaleY
-
-                scaleX = scaleX.coerceIn(0.5f, 2f)
-                scaleY = scaleY.coerceIn(0.5f, 2f)
-
-                translateX = translateX.coerceIn(-visibleCount.toFloat(), 0f)
-                translateY = translateY.coerceIn(-kLineChartHeight, 0f)
-
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .pointerInteropFilter { event ->
+                scaleGestureDetector.onTouchEvent(event)
+                true
             }
+            .graphicsLayer(
+                scaleX = scaleX,
+                scaleY = scaleY,
+                translationX = translateX,
+                translationY = translateY
+            )
+    ) {
+        // 绘制K线图
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            // 绘制K线图逻辑
+            drawKLineChart(kLineDataList)
         }
-        .clipToBounds()
-        .background(Color.White)
-    ){
-        drawKlineChart(
-            kLineDataList,
-            kLineChartMinX,
-            kLineChartMaxX,
-            kLineChartMinY,
-            kLineChartMaxY,
-            kLineChartScaleX,
-            kLineChartScaleY,
-            translateX,
-            translateY,
-            kLineChartWidth,
-            kLineChartHeight
-        )
+
     }
+}
+class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
+    private var scaleFactor = 1f
 
-
-//    LaunchedEffect(key1 = visibleCount){
-//        if (visibleCount<stockDataLoad.totalCount){
-//            withContext(Dispatchers.IO){
-//                val
-//            }
-//        }
-//    }
-
-
-    LaunchedEffect(scaleX,scaleY,translateX,translateY ){
-        animate(
-            initialValue = 0f,
-            targetValue = visibleCount.toFloat(),
-            animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
-        ){value,value1 ->
-            visibleCount = value.toInt()
-        }
+    override fun onScale(detector: ScaleGestureDetector): Boolean {
+        Log.i("zml","onScale==$detector")
+        scaleFactor *= detector.scaleFactor
+        scaleFactor = max(0.1f, min(scaleFactor, 10.0f)) // 设置缩放范围
+        // 更新缩放比例
+        return true
     }
-
 }
 
-@Composable
-fun drawKlineChart(
-    kLineDataList:List<KLineData>,
-    _minX:Float,
-    _maxX:Float,
-    _minY:Float,
-    _maxY:Float,
-    _scaleX:Float,
-    _scaleY:Float,
-    _transleteX:Float,
-    _transleteY:Float,
-    width:Float,
-    height:Float
-){
-    Canvas(modifier = Modifier
-        .fillMaxSize()
-        .graphicsLayer(
-            scaleX = _scaleX,
-            scaleY = _scaleY,
-            translationX = _transleteX,
-            translationY = _transleteY
+fun DrawScope.drawKLineChart(kLineDataList: List<KLineData>) {
+    val candleWidth = 10.dp.toPx() // K线蜡烛的宽度
+    val chartPadding = 20.dp.toPx() // 图表的内边距
+
+    val minValue = kLineDataList.minOf { it.low }
+    val maxValue = kLineDataList.maxOf { it.high }
+
+    val chartHeight = size.height - (2 * chartPadding)
+    val chartWidth = size.width - (2 * chartPadding)
+
+    val xStep = chartWidth / kLineDataList.size
+
+    val yScale = chartHeight / (maxValue - minValue)
+
+    kLineDataList.forEachIndexed { index, kLineData ->
+        val x = chartPadding + index * xStep
+        val yHigh = size.height - chartPadding - (kLineData.high - minValue) * yScale
+        val yLow = size.height - chartPadding - (kLineData.low - minValue) * yScale
+        val yOpen = size.height - chartPadding - (kLineData.open - minValue) * yScale
+        val yClose = size.height - chartPadding - (kLineData.close - minValue) * yScale
+
+        // 绘制K线蜡烛的高低线
+        drawLine(
+            color = Color.Black,
+            start = Offset(x, yHigh),
+            end = Offset(x, yLow),
+            strokeWidth = 1.dp.toPx()
         )
-    ){
 
-        val candleWidth = 10.dp.toPx()
-        val candleSpacing = 2.dp.toPx()
-
+        // 绘制K线蜡烛的开盘收盘矩形
         drawRect(
-            color = Color.White,
-            size = Size(width,height)
+            color = if (kLineData.open > kLineData.close) Color.Red else Color.Green,
+            topLeft = Offset(x - candleWidth / 2, yOpen),
+            size = Size(candleWidth, yClose - yOpen)
         )
-
-        for (i in kLineDataList.indices){
-            val data = kLineDataList[i]
-            val x = ((i.toFloat()+_minX)*_scaleX)
-            val candleHeight = (data.high-data.low)*_scaleY
-            val candleTop = height - ((data.high-_minY)*_scaleY)
-            val candleBottom = height - ((data.low-_minY)*_scaleY)
-
-            drawRect(
-                color=if (data.open<data.close)Color.Green else Color.Red,
-                topLeft = Offset(x,candleTop),
-                size = Size(candleWidth,candleHeight)
-            )
-
-            drawRect(
-                color=if (data.open<data.close)Color.Green else Color.Red,
-                topLeft = Offset(x+candleSpacing,candleBottom),
-                size = Size(candleWidth-candleSpacing*2, 1.dp.toPx())
-            )
-
-            drawRect(
-                color=if (data.open<data.close)Color.Green else Color.Red,
-                topLeft = Offset(x+candleSpacing,candleTop),
-                size = Size( 1.dp.toPx(),candleHeight)
-            )
-
-            drawRect(
-                color=if (data.open<data.close)Color.Green else Color.Red,
-                topLeft = Offset(x+candleWidth-candleSpacing*2,candleTop),
-                size = Size( 1.dp.toPx(),candleHeight)
-            )
-
-        }
     }
 }
