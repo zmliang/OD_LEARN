@@ -19,6 +19,7 @@ include_directories(
         freetype
         glm
         samples
+        include
 )
 
 #file(GLOB cpp_files
@@ -53,14 +54,19 @@ find_library(
         log)
 
 
+
 add_library(freetype STATIC IMPORTED )
 set_target_properties(freetype PROPERTIES IMPORTED_LOCATION ${jnilibs}/${ANDROID_ABI}/libfreetype.a)
+
+add_library(v8 STATIC IMPORTED )
+set_target_properties(v8 PROPERTIES IMPORTED_LOCATION ${jnilibs}/${ANDROID_ABI}/libv8.a)
 
 target_link_libraries(
         gles
 
         ${log-lib}
         freetype
+        v8
         EGL
         GLESv3
         android

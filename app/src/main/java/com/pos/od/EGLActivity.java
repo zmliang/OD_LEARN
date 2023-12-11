@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import com.example.od.R;
 import com.pos.od.view.MyGLSurfaceView;
 import com.zml.opengl.Render;
+import com.zml.v8.v8native;
 
 import java.io.IOException;
 
@@ -58,6 +59,9 @@ public class EGLActivity extends Activity {
         mGLSurfaceView.loopRender(mRenderer);
 
         Log.e("ZML","System.nanoTime() / 1000000000.0 === "+(System.nanoTime() / 1000000000.0));
+
+
+        new v8native().runScript("1","1","url");
 
     }
 
