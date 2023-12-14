@@ -4,8 +4,13 @@ import android.graphics.Paint.Style
 import android.text.TextPaint
 import android.util.Log
 import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.VectorConverter
 import androidx.compose.animation.core.animate
+import androidx.compose.animation.core.calculateTargetValue
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.splineBasedDecay
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
@@ -57,6 +62,7 @@ import androidx.compose.ui.input.pointer.consumeAllChanges
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.util.VelocityTracker
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
@@ -124,7 +130,7 @@ fun KLineChart(dataList:List<KLineData>){
     var flingVelocity by remember { mutableFloatStateOf(0f) }//速度
     var continueScroll by remember { mutableStateOf(false) }//是否继续滑动
     val coroutineScope = rememberCoroutineScope()
-    val animationSpec: AnimationSpec<Float> = tween(durationMillis = 1500)
+    val animationSpec: AnimationSpec<Float> = tween(durationMillis = 1500, easing = LinearOutSlowInEasing)
 
     var candleWidth = 0f
     var candleSpace = 0f
@@ -158,6 +164,8 @@ fun KLineChart(dataList:List<KLineData>){
     framePaint.strokeWidth = 1f
     framePaint.color = Color(0xffAAAAAA)
 
+    val decay = splineBasedDecay<Offset>(LocalDensity.current)
+
 
     Canvas(modifier = Modifier
         .fillMaxWidth()
@@ -167,7 +175,7 @@ fun KLineChart(dataList:List<KLineData>){
             detectTransformGestures(
                 onGesture = { centroid, pan, gestureZoom, gestureRotate ->
                     //Log.i("zml","detectTransformGestures: centroid=$centroid   ,  pan=$pan   ,  gestureZoom=$gestureZoom   ,  gestureRotate=$gestureRotate")
-                    //Log.i("zml","detectTransformGestures: pan=$pan， centroid=$centroid")
+                    Log.i("zml","detectTransformGestures:  centroid=$centroid")
                    if (showCross){
                        crossX = centroid.x
                        crossY = centroid.y
@@ -204,33 +212,6 @@ fun KLineChart(dataList:List<KLineData>){
                     }
                 })
         }
-//        .pointerInput(Unit){
-//            detectDragGestures(
-//                onDragStart = { velocityTracker.resetTracking() },
-//                onDragEnd = {
-//                    val velocity = velocityTracker.calculateVelocity().x
-//                    flingVelocity = velocity
-//
-//                    Log.e("zml","手指离开时的速度 = ${velocity.absoluteValue}")
-////                    if (velocity.absoluteValue >= 500f) {
-////                        continueScroll = true
-////                        coroutineScope.launch {
-////                            // 继续滑动一段距离
-////                            awaitAnimationFrame()
-////                            onFling()
-////                            awaitAnimationFrame()
-////                            continueScroll = false
-////                        }
-////                    }
-//                }
-//            ) { change, dragAmount ->
-//                velocityTracker.addPosition(
-//                    change.uptimeMillis,
-//                    Offset(dragAmount.x,dragAmount.y)
-//                )
-//                //change.consume()
-//            }
-//        }
         .pointerInput(Unit) {
             awaitEachGesture {
                 while (true) {
@@ -246,18 +227,43 @@ fun KLineChart(dataList:List<KLineData>){
                         }else if (it.changedToUp()){
                             val velocity = velocityTracker.calculateVelocity().x
                             flingVelocity = velocity
-                            Log.e("zml","手指离开时的速度 = ${velocity.absoluteValue}")
+
                             if (velocity.absoluteValue >= 500f) {
                                 continueScroll = true
                                 coroutineScope.launch {
                                     val inertiaDistance = calculateInertiaDistance(velocity)
-                                    val targetDistance = inertiaDistance.coerceIn(-500f, 500f)
-                                    val animatedDistance = animate(
+
+                                    val targetDistance = inertiaDistance.coerceIn(-100f, 100f)
+
+                                    //todo
+//                                    var targetOffset = decay.calculateTargetValue(Offset.VectorConverter,
+//                                        offset.value, Offset(horizontalVelocity, verticalVelocity)).run {
+//                                        Offset(x.coerceIn(0f, 320.dp.toPx()), y.coerceIn(0f, 320.dp.toPx()))
+//                                    }
+
+
+                                   animate(
                                         initialValue = 0f,
                                         targetValue = targetDistance,
                                         animationSpec = animationSpec
                                     ){f1,f2 ->
 
+                                        //位移
+                                        val dx = if(velocity>0) f1-100 else 100-f1
+
+                                        count = (dx / (candleWidth + candleSpace)).toInt()
+                                        if (kotlin.math.abs(count) >= 1) {
+                                            startIndex += count
+                                            endIndex += count
+                                            if (startIndex < 0) {
+                                                endIndex += kotlin.math.abs(startIndex)
+                                                startIndex = 0
+                                            }
+                                            if (endIndex > dataList.size - 1) {
+                                                startIndex += endIndex - dataList.size
+                                                endIndex = dataList.size - 1
+                                            }
+                                        }
                                     }
                                     //onFling()
                                     // 等待滑动动画完成
