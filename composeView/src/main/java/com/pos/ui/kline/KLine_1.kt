@@ -3,6 +3,9 @@ package com.pos.ui.kline
 import android.graphics.Paint.Style
 import android.text.TextPaint
 import android.util.Log
+import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.animate
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
@@ -29,6 +32,7 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -47,7 +51,11 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.PointerEvent
 import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.changedToDown
+import androidx.compose.ui.input.pointer.changedToUp
+import androidx.compose.ui.input.pointer.consumeAllChanges
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.util.VelocityTracker
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
@@ -56,15 +64,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pos.R
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.lang.Math.abs
 import java.text.DecimalFormat
 import java.util.concurrent.TimeUnit
+import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
 
 private const val DIVIDER_COUNT = 4
-private const val SCALE_DEFAULT = 8F
+private const val SCALE_DEFAULT = 20F
 private const val SCALE_MAX = 25F
 private const val SCALE_MIN = 3F
 
@@ -110,6 +120,12 @@ fun KLineChart(dataList:List<KLineData>){
 
     var scale by remember{ mutableFloatStateOf(SCALE_DEFAULT) }
 
+    val velocityTracker = remember { VelocityTracker() }
+    var flingVelocity by remember { mutableFloatStateOf(0f) }//速度
+    var continueScroll by remember { mutableStateOf(false) }//是否继续滑动
+    val coroutineScope = rememberCoroutineScope()
+    val animationSpec: AnimationSpec<Float> = tween(durationMillis = 1500)
+
     var candleWidth = 0f
     var candleSpace = 0f
     var count = 0
@@ -152,10 +168,13 @@ fun KLineChart(dataList:List<KLineData>){
                 onGesture = { centroid, pan, gestureZoom, gestureRotate ->
                     //Log.i("zml","detectTransformGestures: centroid=$centroid   ,  pan=$pan   ,  gestureZoom=$gestureZoom   ,  gestureRotate=$gestureRotate")
                     //Log.i("zml","detectTransformGestures: pan=$pan， centroid=$centroid")
+                   if (showCross){
+                       crossX = centroid.x
+                       crossY = centroid.y
+                   }
                     //位移
                     val dx = centroid.x - downX
                     count = (-dx / (candleWidth + candleSpace)).toInt()
-                    Log.e("zml","1-start = $startIndex ; end = $endIndex ; count = $count")
                     if (kotlin.math.abs(count) >= 1) {
                         startIndex += count
                         endIndex += count
@@ -169,7 +188,6 @@ fun KLineChart(dataList:List<KLineData>){
                             endIndex = dataList.size - 1
                         }
                     }
-                    Log.e("zml","2-start = $startIndex ; end = $endIndex")
 
                     //缩放
                     if (gestureZoom<1){
@@ -186,22 +204,81 @@ fun KLineChart(dataList:List<KLineData>){
                     }
                 })
         }
-        .pointerInput(Unit){
+//        .pointerInput(Unit){
+//            detectDragGestures(
+//                onDragStart = { velocityTracker.resetTracking() },
+//                onDragEnd = {
+//                    val velocity = velocityTracker.calculateVelocity().x
+//                    flingVelocity = velocity
+//
+//                    Log.e("zml","手指离开时的速度 = ${velocity.absoluteValue}")
+////                    if (velocity.absoluteValue >= 500f) {
+////                        continueScroll = true
+////                        coroutineScope.launch {
+////                            // 继续滑动一段距离
+////                            awaitAnimationFrame()
+////                            onFling()
+////                            awaitAnimationFrame()
+////                            continueScroll = false
+////                        }
+////                    }
+//                }
+//            ) { change, dragAmount ->
+//                velocityTracker.addPosition(
+//                    change.uptimeMillis,
+//                    Offset(dragAmount.x,dragAmount.y)
+//                )
+//                //change.consume()
+//            }
+//        }
+        .pointerInput(Unit) {
             awaitEachGesture {
-                awaitFirstDown().also {
-                    it.consume()
-                    downX = it.position.x
-                    showCross = true
-                }
-                val up = waitForUpOrCancellation()
-                if (up != null) {
-                    up.consume()
-                    if (showCross) {
-                        showCross = false
+                while (true) {
+                    val event = awaitPointerEvent()
+
+                    event.changes.forEach {
+                        if (it.changedToDown()){
+                            velocityTracker.resetTracking()
+                            downX = it.position.x
+                            showCross = true
+                            crossX=downX
+                            crossY = it.position.y
+                        }else if (it.changedToUp()){
+                            val velocity = velocityTracker.calculateVelocity().x
+                            flingVelocity = velocity
+                            Log.e("zml","手指离开时的速度 = ${velocity.absoluteValue}")
+                            if (velocity.absoluteValue >= 500f) {
+                                continueScroll = true
+                                coroutineScope.launch {
+                                    val inertiaDistance = calculateInertiaDistance(velocity)
+                                    val targetDistance = inertiaDistance.coerceIn(-500f, 500f)
+                                    val animatedDistance = animate(
+                                        initialValue = 0f,
+                                        targetValue = targetDistance,
+                                        animationSpec = animationSpec
+                                    ){f1,f2 ->
+
+                                    }
+                                    //onFling()
+                                    // 等待滑动动画完成
+                                    delay(1500)
+                                    continueScroll = false
+                                }
+                            }
+
+                            if (showCross) {
+                                showCross = false
+                            }
+                        }else{
+                            velocityTracker.addPosition(
+                            it.uptimeMillis,
+                            Offset(it.position.x,it.position.y)
+                            )
+                        }
                     }
-                }
             }
         }
+    }
         .drawWithContent {
             drawContent()
             if (showCross){
@@ -256,7 +333,9 @@ fun KLineChart(dataList:List<KLineData>){
             var startX = 0f
             //趋势线
             val path = Path()
+            val path2 = Path()
             var lastPoint: Offset? = null
+
             for (i in startIndex until endIndex) {
                 if (dataList[i].close  > dataList[i].open) {
                     candlePaint.color = Color.Red
@@ -275,12 +354,47 @@ fun KLineChart(dataList:List<KLineData>){
                 //贝塞尔曲线
                 val x = startX+candleWidth/2
                 val y = candleTop
-                if (lastPoint != null) {
-                    buildCurveLine(path, lastPoint, Offset(x, y))
+                lastPoint?.let { p ->
+                    run {
+                        val endPoint = Offset(x, y)
+                        val controller1 = Offset(
+                            x = p.x + (endPoint.x - p.x) / 2F,
+                            y = p.y,
+                        )
+                        val controller2 = Offset(
+                            x = p.x + (endPoint.x - p.x) / 2F,
+                            y = endPoint.y,
+                        )
+
+                        path.also {
+                            run {
+                                it.cubicTo(
+                                    x1 = controller1.x,
+                                    y1 = controller1.y,
+                                    x2 = controller2.x,
+                                    y2 = controller2.y,
+                                    x3 = endPoint.x,
+                                    y3 = endPoint.y,
+                                )
+                            }
+                        }
+                        path2.also {
+                            run {
+                                it.quadraticBezierTo(
+                                    controller1.x,
+                                    controller1.y+100,
+                                    endPoint.x,
+                                    endPoint.y+100)
+                            }
+                        }
+
+                    }
                 }
+
                 lastPoint = Offset(x, y)
                 if (i == startIndex) {
                     path.moveTo(x, y)
+                    path2.moveTo(x,y+100)
                 }
 
 
@@ -355,6 +469,12 @@ fun KLineChart(dataList:List<KLineData>){
                 style = Stroke(0.5.dp.toPx()),
                 color = Color.Black
             )
+
+            drawPath(
+                path = path2,
+                style = Stroke(0.5.dp.toPx()),
+                color = Color.Blue
+            )
         }
 
 
@@ -362,20 +482,26 @@ fun KLineChart(dataList:List<KLineData>){
     }
 }
 
+private fun calculateInertiaDistance(velocity: Float): Float {
+    val decelerationRate = 0.85f // 减速率，可根据需要调整
+
+    return (velocity * velocity) / (2 * decelerationRate)
+}
+
 private fun buildCurveLine(path: Path, startPoint: Offset, endPoint: Offset) {
-    val firstControlPoint = Offset(
+    val controller1 = Offset(
         x = startPoint.x + (endPoint.x - startPoint.x) / 2F,
         y = startPoint.y,
     )
-    val secondControlPoint = Offset(
+    val controller2 = Offset(
         x = startPoint.x + (endPoint.x - startPoint.x) / 2F,
         y = endPoint.y,
     )
     path.cubicTo(
-        x1 = firstControlPoint.x,
-        y1 = firstControlPoint.y,
-        x2 = secondControlPoint.x,
-        y2 = secondControlPoint.y,
+        x1 = controller1.x,
+        y1 = controller1.y,
+        x2 = controller2.x,
+        y2 = controller2.y,
         x3 = endPoint.x,
         y3 = endPoint.y,
     )
