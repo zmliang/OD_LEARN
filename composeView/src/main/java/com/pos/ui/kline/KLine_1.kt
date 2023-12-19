@@ -1,37 +1,22 @@
 package com.pos.ui.kline
 
-import android.graphics.Paint.Style
 import android.text.TextPaint
 import android.util.Log
 import androidx.compose.animation.core.AnimationSpec
-import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.VectorConverter
 import androidx.compose.animation.core.animate
-import androidx.compose.animation.core.calculateTargetValue
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.splineBasedDecay
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
-import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectTransformGestures
-import androidx.compose.foundation.gestures.forEachGesture
-import androidx.compose.foundation.gestures.waitForUpOrCancellation
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -42,41 +27,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.PaintingStyle
 import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.drawscope.DrawStyle
-import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.input.pointer.PointerEvent
-import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.changedToDown
 import androidx.compose.ui.input.pointer.changedToUp
-import androidx.compose.ui.input.pointer.consumeAllChanges
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.util.VelocityTracker
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.drawText
-import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.pos.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.lang.Math.abs
 import java.text.DecimalFormat
-import java.util.concurrent.TimeUnit
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
-import kotlin.math.sqrt
 
 
 private const val DIVIDER_COUNT = 4
@@ -89,8 +58,11 @@ private val CANDLE_WIDTH = 0.5.dp
 private val CANDLE_SPACE = 0.1.dp
 
 private val CHART_HEIGHT = 300.dp
+private val BOTTOM_TREND_HEIGHT = 75.dp
 
 private val CHART_PADDING = 10.dp
+
+private val FLING_DISTANCE = 60F
 
 
 
@@ -112,7 +84,7 @@ fun KLineChart(dataList:List<KLineData>){
         return
     }
     var width = 0f
-    var height = CHART_HEIGHT.value
+    var height = (CHART_HEIGHT+BOTTOM_TREND_HEIGHT).value
     var downX = 0f
 
     var startIndex by remember { mutableIntStateOf(0) }
@@ -149,7 +121,7 @@ fun KLineChart(dataList:List<KLineData>){
     val crossPaint = Paint()
     crossPaint.isAntiAlias = true
     crossPaint.style = PaintingStyle.Stroke
-    crossPaint.strokeWidth = 2f
+    crossPaint.strokeWidth = 0.2f
     crossPaint.color = Color.Black
 
     val candlePaint = Paint()
@@ -164,12 +136,9 @@ fun KLineChart(dataList:List<KLineData>){
     framePaint.strokeWidth = 1f
     framePaint.color = Color(0xffAAAAAA)
 
-    val decay = splineBasedDecay<Offset>(LocalDensity.current)
-
-
     Canvas(modifier = Modifier
         .fillMaxWidth()
-        .height(CHART_HEIGHT)
+        .height(CHART_HEIGHT+BOTTOM_TREND_HEIGHT)
         .padding(CHART_PADDING)
         .pointerInput(Unit){
             detectTransformGestures(
@@ -231,16 +200,9 @@ fun KLineChart(dataList:List<KLineData>){
                             if (velocity.absoluteValue >= 500f) {
                                 continueScroll = true
                                 coroutineScope.launch {
-                                    val inertiaDistance = calculateInertiaDistance(velocity)
+                                    val inertiaDistance = calculateInertiaDistance(velocity/10)
 
-                                    val targetDistance = inertiaDistance.coerceIn(-100f, 100f)
-
-                                    //todo
-//                                    var targetOffset = decay.calculateTargetValue(Offset.VectorConverter,
-//                                        offset.value, Offset(horizontalVelocity, verticalVelocity)).run {
-//                                        Offset(x.coerceIn(0f, 320.dp.toPx()), y.coerceIn(0f, 320.dp.toPx()))
-//                                    }
-
+                                    val targetDistance = inertiaDistance.coerceIn(-FLING_DISTANCE, FLING_DISTANCE)
 
                                    animate(
                                         initialValue = 0f,
@@ -249,7 +211,7 @@ fun KLineChart(dataList:List<KLineData>){
                                     ){f1,f2 ->
 
                                         //位移
-                                        val dx = if(velocity>0) f1-100 else 100-f1
+                                        val dx = if(velocity/10>0) f1-FLING_DISTANCE else FLING_DISTANCE-f1
 
                                         count = (dx / (candleWidth + candleSpace)).toInt()
                                         if (kotlin.math.abs(count) >= 1) {
@@ -285,6 +247,7 @@ fun KLineChart(dataList:List<KLineData>){
             }
         }
     }
+        .background(Color.Gray)
         .drawWithContent {
             drawContent()
             if (showCross){
@@ -302,7 +265,7 @@ fun KLineChart(dataList:List<KLineData>){
         }
     ){
         width = drawContext.size.width
-        height = drawContext.size.height
+        height = drawContext.size.height.div(5).times(DIVIDER_COUNT)
         // y轴等分高度
         yInterval = height / DIVIDER_COUNT
         // 蜡烛宽度
@@ -318,8 +281,8 @@ fun KLineChart(dataList:List<KLineData>){
             endIndex = count
         }
         // 计算当前画布中的最高股价和最低股价
-        maxValue = dataList.maxOf { it.high }
-        minValue = dataList.minOf { it.low }
+        maxValue = dataList.slice(startIndex..endIndex).maxOf { it.high }
+        minValue = dataList.slice(startIndex..endIndex).minOf { it.low }
 
         // y轴最大坐标，最小坐标 与最大价格/最小价格流出间距，用于给最大值和最小值流出绘制空间
         yMaxValue = maxValue + getOffset(maxValue)
@@ -343,6 +306,7 @@ fun KLineChart(dataList:List<KLineData>){
             var lastPoint: Offset? = null
 
             for (i in startIndex until endIndex) {
+
                 if (dataList[i].close  > dataList[i].open) {
                     candlePaint.color = Color.Red
                     candlePaint.style = PaintingStyle.Fill
@@ -452,10 +416,9 @@ fun KLineChart(dataList:List<KLineData>){
 
                 //绘制底部矩形
                 it.drawRect(startX,
-                    height,
+                    drawContext.size.height,
                       startX + candleWidth,
-                    (height-(kotlin.math.abs(candleBottom - candleTop)*0.8f)),
-                            //priceToY(dataList[i].open, yMaxValue, yMinValue, height),
+                    (drawContext.size.height-(kotlin.math.abs(candleBottom - candleTop)*0.45f)),
                     candlePaint)
 
                 startX += candleWidth + candleSpace
@@ -476,14 +439,12 @@ fun KLineChart(dataList:List<KLineData>){
                 color = Color.Black
             )
 
-            drawPath(
-                path = path2,
-                style = Stroke(0.5.dp.toPx()),
-                color = Color.Blue
-            )
+//            drawPath(
+//                path = path2,
+//                style = Stroke(0.5.dp.toPx()),
+//                color = Color.Blue
+//            )
         }
-
-
 
     }
 }
@@ -493,26 +454,6 @@ private fun calculateInertiaDistance(velocity: Float): Float {
 
     return (velocity * velocity) / (2 * decelerationRate)
 }
-
-private fun buildCurveLine(path: Path, startPoint: Offset, endPoint: Offset) {
-    val controller1 = Offset(
-        x = startPoint.x + (endPoint.x - startPoint.x) / 2F,
-        y = startPoint.y,
-    )
-    val controller2 = Offset(
-        x = startPoint.x + (endPoint.x - startPoint.x) / 2F,
-        y = endPoint.y,
-    )
-    path.cubicTo(
-        x1 = controller1.x,
-        y1 = controller1.y,
-        x2 = controller2.x,
-        y2 = controller2.y,
-        x3 = endPoint.x,
-        y3 = endPoint.y,
-    )
-}
-
 fun yToPrice(f: Float, yMaxValue: Float, yMinValue: Float, height: Float): Float {
     return (((yMaxValue - f * (yMaxValue - yMinValue) / height) * 100).roundToInt() / 100).toFloat()
 }
