@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.pos.ui.widget.SwipeRefresh
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -44,7 +45,8 @@ import kotlin.math.sign
 fun Me(){
     Text(text = "这是我的页面")
 
-    OverscrollSample()
+    SwipeRefresh()
+    //OverscrollSample()
     //OverscrollWithDraggable_After()
     //OverscrollWithDraggable_Before()
 }
@@ -122,7 +124,7 @@ fun OverscrollSample() {
     // Create the overscroll controller
     val overscroll = remember(scope) { OffsetOverscrollEffect(scope) }
     // let's build a scrollable that scroll until -512 to 512
-    val scrollStateRange = (-0f).rangeTo(0f)
+    val scrollStateRange = (-80f).rangeTo(80f)
     Box(
         Modifier
             .size(500.dp)
