@@ -44,6 +44,7 @@ add_library(
         TextRender.cpp  #文本渲染，一直没有渲染出来字体，不知道问题出在哪
         TriangleRender.cpp
         Lighting.cpp
+        v8_jni.cpp
         ${DIR_SRCS}
 )
 
