@@ -20,6 +20,7 @@ include_directories(
         glm
         samples
         include
+        v8test
 )
 
 #file(GLOB cpp_files

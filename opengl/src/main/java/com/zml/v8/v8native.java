@@ -6,4 +6,6 @@ public class v8native {
 
     public native void runScript(String code,String func,String url);
 
+    public native void obj();
+
 }

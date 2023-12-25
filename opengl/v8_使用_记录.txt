@@ -1,0 +1,49 @@
+使用v8大概分为以下几个步骤：
+
+1:初始化 V8
+    v8::Platform 可以定制诸如内存页分配（PageAllocator），
+    任务调度（NumberOfWorkerThreads、CallOnWorkerThread、IdleTasks、PostJob）等规则。
+    通常情况下，这些都不需要定制，只使用默认的设置的话，可以通过 v8::platform::NewDefaultPlatform()
+    创建一个默认的配置
+
+
+    创建 v8::Isolate 时，需传入 CreateParams，可以指定 JavaScript 里的 ArrayBuffer 的内存分配器，
+    这样可以对 JavaScript 的 ArrayBuffer 内存进行灵活的管理。当然也可以使用默认的分配器
+
+
+
+2:创建 v8::Isolate
+    Isolate 字面意思是隔离的意思，在 V8 中表示的是一个隔离的运行时环境，拥有自己的堆内存。
+    多个不同的 Isolate 运行时可以并行执行，互不干扰，数据也完全隔离不可互相访问，就像多个沙箱的运行环境。
+    通常，在一个线程中只会创建一个 Isolate 实例。创建 Isolate 后，需要进入 Isolate 才可对
+    Isolate 做进一步操作，在使用完毕后，需要再退出 Isolate。为了方便进入和自动退出，可以使用
+    v8::Isolate::Scope 进入和自动退出 Isolate
+
+
+3:创建 v8::Context
+    可以从具体某个 Isolate 实例中创建一个新的 Context。 v8::Isolate 主要负责堆内存的隔离和管理，
+    有点类似进程的概念。我们知道，需要执行代码的话，还需要有线程的概念。当然 v8 的 Context 和线程
+    也不完全一样。v8::Context 包含了 JavaScript 代码执行所需的上下文信息，包括全局变量、函数等。
+    可以这样简单理解，如果需要执行 JavaScript 代码，则需要有一个 Context 环境
+
+
+
+
+要点1：一个 Isolate 中可以创建多个 Context。
+要点2：同个 Isolate 内的多个 Context 如果要在不同线程执行，需加 v8::Locker 锁
+要点3：尽量让 Context 在同个线程中执行，如果需要在不同线程执行，也需要加 v8::Locker 锁
+和 Isolate 一样，Context 也需要进入才能正常操作，并在使用完毕后退出，可以使用 v8::Context::Scope
+    进入和自动退出。
+
+我们注意到，v8::Context::New(isolate) 返回的类型是 v8::Local<v8::Context>。
+为什么不是返回 v8::Context*? 这和 V8 的内存对象管理有关。一方面，V8 不希望使用者直接访问
+V8 对象的裸的指针地址。因为如果这些对象回收后，可能导致内存的非法访问。另一方面，也不利于
+V8 在进行垃圾回收时，对 V8 对象在内存中进行移动(compact)。
+
+因此，V8 返回的对象都通过 v8::Handle 来包一层，有点类似智能指针。v8::Local 是当前栈上的临时 handle，
+退出栈之后将不可再使用。为了让所有临时 handle 能自动回收，需要使用 v8::HandleScope 再包裹一层。
+
+如果某个函数需要把某个 v8::Local 对象作为返回值返回出去，可以使用 v8::EscapableHandleScope
+避免返回对象被自动回收
+
+
