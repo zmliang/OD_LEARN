@@ -157,8 +157,9 @@ Java_com_zml_v8_v8native_obj(JNIEnv *env, jobject thiz) {
         v8::Context::Scope context_scope(context);
 
         v8::Local<v8::Object> global = context->Global();
-        JSRegister(global);
 
+
+        JSRegister(global);
 
         Local<String> source = String::NewFromUtf8(isolate,"let myObject = new MyClass(); console.log(myObject.GetValue()); myObject.SetValue(24); myObject.log();").ToLocalChecked();
         Local<Script> script = Script::Compile(context,source).ToLocalChecked();

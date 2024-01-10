@@ -86,11 +86,11 @@ private class PullRefreshConnection(
         source: NestedScrollSource
     ): Offset {
         Log.i("zml","onPostScroll,available=$available, consumed=$consumed")
-        if (source == NestedScrollSource.Drag ) {
+        return if (source == NestedScrollSource.Drag ) {
             state.updateOffsetDelta(available.y)
-            return Offset(x = 0f, y = available.y)
+            Offset(x = 0f, y = available.y)
         } else {
-            return Offset.Zero
+            Offset.Zero
         }
     }
 

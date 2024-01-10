@@ -1,9 +1,11 @@
 package com.pos.ui.pages
 
 
+import GlowIndicator
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.OverscrollEffect
 import androidx.compose.foundation.background
 import androidx.compose.material3.Text
@@ -15,12 +17,19 @@ import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.overscroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,8 +42,13 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.pos.ui.widget.NestedScrollConnectionSample
+import com.pos.ui.widget.NestedScrollDispatcherSample
 import com.pos.ui.widget.SwipeRefresh
+import com.pos.ui.widget.SwipeRefresh_zml
+import com.pos.ui.widget.rememberSwipeRefreshState
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -43,9 +57,36 @@ import kotlin.math.sign
 
 @Composable
 fun Me(){
-    Text(text = "这是我的页面")
+    //Text(text = "这是我的页面")
 
-    SwipeRefresh()
+    //NestedScrollConnectionSample()
+
+    var refreshing by remember { mutableStateOf(false) }
+    LaunchedEffect(refreshing) {
+        if (refreshing) {
+            delay(2000)
+            refreshing = false
+        }
+    }
+
+    SwipeRefresh_zml(
+        state = rememberSwipeRefreshState(isRefreshing = refreshing),
+        indicator = { state, trigger ->
+            GlowIndicator(
+                swipeRefreshState = state,
+                refreshTriggerDistance = trigger
+            )
+        },
+        onRefresh = {
+            refreshing = true
+    }) {
+        LazyColumn(contentPadding = PaddingValues(top = 0.dp)) {
+            items(100) { index ->
+                Text("I'm item $index", modifier =
+                Modifier.fillMaxWidth().padding(16.dp))
+            }
+        }
+    }
     //OverscrollSample()
     //OverscrollWithDraggable_After()
     //OverscrollWithDraggable_Before()
