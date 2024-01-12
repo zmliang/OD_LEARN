@@ -95,7 +95,7 @@ static void New(const v8::FunctionCallbackInfo<v8::Value>& args) {
     }
 }
 
-static void HelloWorld(const v8::FunctionCallbackInfo<v8::Value>& args) {
+static void _log(const v8::FunctionCallbackInfo<v8::Value>& args) {
     MyClass* obj = reinterpret_cast<MyClass*>(args.This()->GetAlignedPointerFromInternalField(0));
     obj->log();
 }
@@ -126,7 +126,7 @@ static void JSRegister(const v8::Local<v8::Object> exports){
     instance_t->SetInternalFieldCount(1);
 
     //在对应的js原型对象上设置方法
-    function_t->PrototypeTemplate()->Set(isolate,"log",FunctionTemplate::New(isolate,HelloWorld));
+    function_t->PrototypeTemplate()->Set(isolate,"log",FunctionTemplate::New(isolate,_log));
 
     function_t->PrototypeTemplate()->Set(isolate,"SetValue",FunctionTemplate::New(isolate,SetValue));
 

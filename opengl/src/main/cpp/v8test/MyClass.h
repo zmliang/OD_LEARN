@@ -19,7 +19,7 @@ public:
 
     void log() {
         ALOGE("这是我打印的android代码, %d",value);
-        std::cout << "Hello, World!,value =" <<value<< std::endl;
+        ALOGE("Hello, World!,value = %d",value );
     }
 
     void SetValue(int val) {
