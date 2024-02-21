@@ -9,10 +9,14 @@ import android.content.pm.ConfigurationInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.od.R;
 import com.pos.ui.MyComposeActivity;
@@ -28,6 +32,9 @@ import okhttp3.Response;
 
 
 public class MainActivity extends Activity {
+    static{
+        System.loadLibrary("gles");
+    }
     private final int CONTEXT_CLIENT_VERSION = 3;
 
     @SuppressLint("MissingInflatedId")
@@ -37,21 +44,32 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.main_activity);
 
-        ((Button)findViewById(R.id.go_compose)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, MyComposeActivity.class));
+//        ((Button)findViewById(R.id.go_compose)).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(MainActivity.this, MyComposeActivity.class));
+//
+//            }
+//        });
+//        ((Button)findViewById(R.id.go_opengl)).setOnClickListener(new View.OnClickListener(){
+//
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(MainActivity.this, EGLActivity.class));
+//
+//            }
+//        });
 
-            }
-        });
-        ((Button)findViewById(R.id.go_opengl)).setOnClickListener(new View.OnClickListener(){
 
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, EGLActivity.class));
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.test_rv);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        String[] array = new String[50];
+        for (int i = 0; i < array.length; i++) {
+            array[i] = "string " + i;
+        }
+        //Log.e("zml","最后一个="+String.valueOf(array[array.length-1]));
+        recyclerView.setAdapter(new ArrayAdapter(this, array));
 
-            }
-        });
     }
 
 
@@ -65,12 +83,49 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e("ZML","onResume");
+        //Log.e("ZML","onResume");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+
+    static class ArrayAdapter extends RecyclerView.Adapter<ViewHolder>{
+
+        private String[] mArray;
+        private Context mContext;
+
+        public ArrayAdapter(Context context, String[] array) {
+            mContext = context;
+            mArray = array;
+        }
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+            return new ViewHolder(View.inflate(viewGroup.getContext(), android.R.layout.simple_list_item_1, null));
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder viewHolder, int i) {
+            viewHolder.mTextView.setText(mArray[i]);
+        }
+
+        @Override
+        public int getItemCount() {
+            return mArray.length;
+        }
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder{
+
+        public TextView mTextView;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            mTextView = (TextView) itemView;
+        }
     }
 
 

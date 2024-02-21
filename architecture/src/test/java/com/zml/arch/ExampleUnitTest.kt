@@ -1,4 +1,4 @@
-package com.mvi.base
+package com.zml.arch
 
 import org.junit.Test
 

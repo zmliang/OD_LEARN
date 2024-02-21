@@ -14,9 +14,9 @@ public class Render implements GLSurfaceView.Renderer {
 
     private long nativeRenderHandleId = -1;
 
-    static {
-        System.loadLibrary("gles");
-    }
+//    static {
+//        System.loadLibrary("gles");
+//    }
 
     private AssetManager assetManager;
 

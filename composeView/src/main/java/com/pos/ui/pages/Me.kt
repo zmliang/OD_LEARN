@@ -1,7 +1,6 @@
 package com.pos.ui.pages
 
 
-import GlowIndicator
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -42,11 +41,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.pos.ui.widget.NestedScrollConnectionSample
-import com.pos.ui.widget.NestedScrollDispatcherSample
-import com.pos.ui.widget.SwipeRefresh
-import com.pos.ui.widget.SwipeRefresh_zml
-import com.pos.ui.widget.rememberSwipeRefreshState
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -57,38 +52,9 @@ import kotlin.math.sign
 
 @Composable
 fun Me(){
-    //Text(text = "这是我的页面")
 
-    //NestedScrollConnectionSample()
-
-    var refreshing by remember { mutableStateOf(false) }
-    LaunchedEffect(refreshing) {
-        if (refreshing) {
-            delay(2000)
-            refreshing = false
-        }
-    }
-
-    SwipeRefresh_zml(
-        state = rememberSwipeRefreshState(isRefreshing = refreshing),
-        indicator = { state, trigger ->
-            GlowIndicator(
-                swipeRefreshState = state,
-                refreshTriggerDistance = trigger
-            )
-        },
-        onRefresh = {
-            refreshing = true
-    }) {
-        LazyColumn(contentPadding = PaddingValues(top = 0.dp)) {
-            items(100) { index ->
-                Text("I'm item $index", modifier =
-                Modifier.fillMaxWidth().padding(16.dp))
-            }
-        }
-    }
     //OverscrollSample()
-    //OverscrollWithDraggable_After()
+    OverscrollWithDraggable_After()
     //OverscrollWithDraggable_Before()
 }
 

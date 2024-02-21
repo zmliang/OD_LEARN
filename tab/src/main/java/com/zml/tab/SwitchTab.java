@@ -62,10 +62,11 @@ public class SwitchTab extends ViewGroup {
         for (int i=0;i<count;i++){
             View child = getChildAt(i);
             final ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) child.getLayoutParams();
-            Log.i("zml","lp="+lp.toString());
+
             measureChild(child,widthMeasureSpec,heightMeasureSpec);
             totalWidth+= (child.getMeasuredWidth());
             maxHeight = Math.max(maxHeight,child.getMeasuredHeight());
+            //Log.i("zml","lp="+child.getMeasuredHeight());
         }
 
         if (w_mode == MeasureSpec.AT_MOST){
@@ -74,7 +75,7 @@ public class SwitchTab extends ViewGroup {
         if (h_mode == MeasureSpec.AT_MOST){
             h_value = maxHeight;
         }
-        Log.i("zml","width="+w_value+"； height="+h_value);
+        //Log.e("zml","width="+w_value+"； height="+h_value+";  ");
         setMeasuredDimension(w_value,h_value);
     }
 
@@ -84,9 +85,9 @@ public class SwitchTab extends ViewGroup {
         int left = l;
         for (int i=0;i<count;i++){
             View child = getChildAt(i);
-            Log.i("zml","index="+i+"; left = "+left+"; top = "+t
-                    +"; right = "+(left+child.getMeasuredWidth())
-                    +"; bottom = "+child.getMeasuredHeight());
+//            Log.i("zml","index="+i+"; left = "+left+"; top = "+t
+//                    +"; right = "+(left+child.getMeasuredWidth())
+//                    +"; bottom = "+child.getMeasuredHeight());
             child.layout(left,t,left+child.getMeasuredWidth(),child.getMeasuredHeight());
             left+=child.getMeasuredWidth();
         }

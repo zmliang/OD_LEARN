@@ -55,7 +55,6 @@ import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
 import com.pos.R
 import com.pos.ui.widget.InfiniteCarousel
-import com.pos.ui.widget.PullRefresh
 import com.pos.ui.widget.Resident
 import com.pos.ui.widget.Token
 import com.pos.ui.widget.TokenList
@@ -76,44 +75,44 @@ fun Home() {
 
 
 
-    PullRefresh(
-        onRefresh = {
-            delay(2000)
-        },
-        loadingIndicator = {
-            Box(modifier = Modifier.padding(10.dp)) {
-                CircularProgressIndicator(Modifier.size(200.dp))
-            }
-        }
-    ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-
-        ) {
-
-            item {
-                InfiniteCarousel()
-            }
-            item {
-                Resident()
-            }
-
-            stickyHeader {
-                Box(
-                    modifier = Modifier
-                        .height(50.dp)
-                        .fillMaxWidth()
-                        .background(Color.Green)
-                ) {
-                    Text(text = "这是吸顶的title")
-                }
-            }
-
-            allTokens(tokens)
-
-        }
-    }
+//    PullRefresh(
+//        onRefresh = {
+//            delay(2000)
+//        },
+//        loadingIndicator = {
+//            Box(modifier = Modifier.padding(10.dp)) {
+//                CircularProgressIndicator(Modifier.size(200.dp))
+//            }
+//        }
+//    ) {
+//        LazyColumn(
+//            modifier = Modifier
+//                .fillMaxSize()
+//
+//        ) {
+//
+//            item {
+//                InfiniteCarousel()
+//            }
+//            item {
+//                Resident()
+//            }
+//
+//            stickyHeader {
+//                Box(
+//                    modifier = Modifier
+//                        .height(50.dp)
+//                        .fillMaxWidth()
+//                        .background(Color.Green)
+//                ) {
+//                    Text(text = "这是吸顶的title")
+//                }
+//            }
+//
+//            allTokens(tokens)
+//
+//        }
+//    }
 
 }
 
@@ -184,7 +183,6 @@ fun LazyListScope.allTokens(tokens: List<Token>) {
 }
 
 
-@Preview()
 @Composable
 fun tokenItem(token: Token) {
     Row(

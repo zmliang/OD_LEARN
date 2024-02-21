@@ -1,25 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent">
 
+
     <com.zml.tab.SwitchTab
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/go_compose"
             android:text="compose界面"
-            android:layout_width="150dp"
+            android:layout_width="100dp"
             android:layout_height="60dp"/>
         <Button
             android:id="@+id/go_opengl"
             android:text="OPENGL"
-            android:layout_width="150dp"
+            android:layout_width="100dp"
             android:layout_height="60dp"/>
         <Button
-            android:text="按钮3"
-            android:layout_width="150dp"
+            android:text="V8测试"
+            android:id="@+id/go_v8"
+            android:layout_width="100dp"
             android:layout_height="60dp"/>
         <Button
             android:text="按钮4"
@@ -28,4 +32,16 @@
 
     </com.zml.tab.SwitchTab>
 
-</FrameLayout>
+    <com.pos.od.view.PullToRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+
+            android:layout_width="match_parent"
+            android:id="@+id/test_rv"
+            android:layout_height="match_parent"/>
+
+    </com.pos.od.view.PullToRefreshLayout>
+
+</LinearLayout>

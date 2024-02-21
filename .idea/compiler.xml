@@ -2,6 +2,7 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.8">
+      <module name="OD_LEARN.exchange" target="17" />
       <module name="OD_LEARN.mvi-base" target="17" />
     </bytecodeTargetLevel>
   </component>

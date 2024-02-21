@@ -61,8 +61,6 @@ public class EGLActivity extends Activity {
         Log.e("ZML","System.nanoTime() / 1000000000.0 === "+(System.nanoTime() / 1000000000.0));
 
 
-        //new v8native().obj();
-
     }
 
 
