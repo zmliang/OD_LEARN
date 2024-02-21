@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
 import android.util.TypedValue
+import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
@@ -66,7 +67,8 @@ class PullToRefreshLayout @JvmOverloads constructor(context: Context,attr:Attrib
         headerIndicator.tag = INDICATOR
         headerIndicator.setBackgroundColor(ContextCompat.getColor(context,android.R.color.darker_gray))
         headerIndicator.text = "头部的indicator"
-        headerIndicator.layoutParams= LayoutParams(LayoutParams.MATCH_PARENT,INDICATOR_HEIGHT)
+        headerIndicator.gravity = Gravity.CENTER
+        headerIndicator.layoutParams= LayoutParams(LayoutParams.MATCH_PARENT,INDICATOR_HEIGHT*2)
         headerIndicator.offsetTopAndBottom(-INDICATOR_HEIGHT)
 
         addView(headerIndicator,0)
@@ -87,7 +89,7 @@ class PullToRefreshLayout @JvmOverloads constructor(context: Context,attr:Attrib
         //Log.e("zml","onLayout top = $top")
         for (v in children){
             if (v.tag == INDICATOR){
-                v.layout(left,top+indicatorOffsetTop,right,INDICATOR_HEIGHT+indicatorOffsetTop)
+                v.layout(left,top+indicatorOffsetTop.times(2),right,INDICATOR_HEIGHT+indicatorOffsetTop)
             }else{
                 v.layout(left,top+offsetTop,right,bottom+offsetTop)
             }
