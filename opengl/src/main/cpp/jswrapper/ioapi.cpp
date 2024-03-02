@@ -12,7 +12,9 @@
 
 #include "ioapi.h"
 
-namespace CrossApp {
+#ifdef CA
+namespace cc {
+#endif
 
 voidpf call_zopen64 (const zlib_filefunc64_32_def* pfilefunc,const void*filename,int mode)
 {
@@ -242,4 +244,6 @@ void fill_fopen64_filefunc (zlib_filefunc64_def*  pzlib_filefunc_def)
     pzlib_filefunc_def->opaque = NULL;
 }
 
-} // end of namespace CrossApp
+#ifdef CA
+}
+#endif

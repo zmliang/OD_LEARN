@@ -46,8 +46,9 @@
 #include <stdlib.h>
 #include "zlib.h"
 
+#define CA
 #ifdef CA
-namespace CrossApp {
+namespace cc {
 #endif
 
 #if defined(USE_FILE32API)

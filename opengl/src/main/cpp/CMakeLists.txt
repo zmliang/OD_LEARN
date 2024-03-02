@@ -26,6 +26,7 @@ include_directories(
         samples
         include
         v8test
+
         base
         jswrapper
         jswrapper/v8
@@ -46,6 +47,7 @@ include_directories(
 
 #查找当前目录所有源文件，并将查找到的源文件名称列表保存到变量DIR_SRCS中
 aux_source_directory(${CMAKE_SOURCE_DIR}/samples/. DIR_SRCS)
+
 aux_source_directory(${CMAKE_SOURCE_DIR}/base/. DIR_SRCS)
 aux_source_directory(${CMAKE_SOURCE_DIR}/jswrapper/. DIR_SRCS)
 aux_source_directory(${CMAKE_SOURCE_DIR}/jswrapper/v8/. DIR_SRCS)
@@ -105,4 +107,5 @@ target_link_libraries(
         EGL
         GLESv3
         android
+        z
 )
