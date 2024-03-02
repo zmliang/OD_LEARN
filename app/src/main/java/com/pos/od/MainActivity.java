@@ -16,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -28,7 +27,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.od.R;
 import com.pos.ui.MyComposeActivity;
 
-import com.zml.guide.GuideLayer;
 import com.zml.guide.GuiderCreator;
 import com.zml.guide.IGuiderLayer;
 import com.zml.guide.Offset;

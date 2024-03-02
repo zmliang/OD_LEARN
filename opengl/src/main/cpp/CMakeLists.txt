@@ -13,6 +13,11 @@ project("gles")
 #会报找不到第三方库的头文件
 
 
+
+#todo
+#ScriptEngine.cpp
+#
+
 include_directories(
         inc
         loop
@@ -21,6 +26,17 @@ include_directories(
         samples
         include
         v8test
+        base
+        jswrapper
+        jswrapper/v8
+        manual
+#        js_binding/bindings/manual
+#        js_binding/bindings/utils
+#        js_binding/bindings/event
+#        js_binding/bindings/sebind
+#        js_binding/bindings/docs
+#        js_binding/bindings/dop
+
 )
 
 #file(GLOB cpp_files
@@ -30,12 +46,25 @@ include_directories(
 
 #查找当前目录所有源文件，并将查找到的源文件名称列表保存到变量DIR_SRCS中
 aux_source_directory(${CMAKE_SOURCE_DIR}/samples/. DIR_SRCS)
+aux_source_directory(${CMAKE_SOURCE_DIR}/base/. DIR_SRCS)
+aux_source_directory(${CMAKE_SOURCE_DIR}/jswrapper/. DIR_SRCS)
+aux_source_directory(${CMAKE_SOURCE_DIR}/jswrapper/v8/. DIR_SRCS)
+
+aux_source_directory(${CMAKE_SOURCE_DIR}/manual/. DIR_SRCS)
+#aux_source_directory(${CMAKE_SOURCE_DIR}/js_binding/bindings/manual/. DIR_SRCS)
+#aux_source_directory(${CMAKE_SOURCE_DIR}/js_binding/bindings/utils/. DIR_SRCS)
+#aux_source_directory(${CMAKE_SOURCE_DIR}/js_binding/bindings/event/. DIR_SRCS)
+#aux_source_directory(${CMAKE_SOURCE_DIR}/js_binding/bindings/sebind/. DIR_SRCS)
+#aux_source_directory(${CMAKE_SOURCE_DIR}/js_binding/bindings/docs/. DIR_SRCS)
+#aux_source_directory(${CMAKE_SOURCE_DIR}/js_binding/bindings/dop/. DIR_SRCS)
 
 
 add_library(
         gles
         SHARED
         log.h
+        JniImp.h
+        JniHelper.h
 
         CubeRender.cpp
         ESContext.cpp
@@ -46,6 +75,10 @@ add_library(
         TriangleRender.cpp
         Lighting.cpp
         v8_jni.cpp
+
+        JniImp.cpp
+        JniHelper.cpp
+
         ${DIR_SRCS}
 )
 
