@@ -8,6 +8,7 @@
 #include "include/v8.h"
 #include "log.h"
 #include "v8test/MyClass.h"
+#include "ScriptEngine.h"
 
 
 using namespace v8;
@@ -141,4 +142,12 @@ Java_com_zml_v8_v8native_register(JNIEnv *env, jobject thiz) {
     v8::V8::Dispose();
     v8::V8::ShutdownPlatform();
     delete create_params.array_buffer_allocator;
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_zml_v8_v8native_runScript(JNIEnv *env, jobject thiz) {
+    se::ScriptEngine *se = se::ScriptEngine::getInstance();
+    se->start();
+    se->evalString("let a=10; ");
 }

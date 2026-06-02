@@ -3,7 +3,11 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
-    }
+        maven { url 'https://jitpack.io' }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+
+
+}
 }
 plugins {
     id 'org.gradle.toolchains.foojay-resolver-convention' version '0.4.0'
@@ -13,7 +17,11 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
+
+
 }
 rootProject.name = "OD_LEARN"
 include ':app'
@@ -26,3 +34,5 @@ include ':composeView'
 //include ':mvi-base'
 include ':architecture'
 include ':guide'
+include ':lib_websocket'
+include ':weitong'

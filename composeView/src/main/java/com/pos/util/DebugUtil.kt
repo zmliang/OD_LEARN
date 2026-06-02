@@ -10,6 +10,7 @@ import com.pos.BuildConfig
 import com.pos.R
 import com.pos.base.TimeCapsule
 import com.pos.base.UiState
+import kotlinx.coroutines.flow.flow
 
 fun Modifier.debugInputPointer(
     context: Context,
@@ -53,4 +54,12 @@ private data class DebugState(val index: Int, val state: UiState) {
     override fun toString(): String {
         return "${index + 1}. $state"
     }
+}
+
+ fun flowTest(){
+
+     flow<String> {
+
+     }
+
 }

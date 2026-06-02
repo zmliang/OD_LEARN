@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_height="50dp">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_total_asset_btc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:textSize="32sp"
+            android:gravity="bottom"
+            android:ellipsize="end"
+            app:autoSizeTextType="uniform"
+            app:autoSizeMaxTextSize="28dp"
+            app:autoSizeMinTextSize="10dp"
+            app:autoSizeStepGranularity="0.5sp"
+            tools:text="5.490000" />
+
+        <TextView
+            android:layout_toRightOf="@+id/tv_total_asset_btc"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/total_asset_unit"
+            android:layout_marginStart="5dp"
+            android:text="USDT"
+            android:drawablePadding="3dp"
+            android:backgroundTint="@color/black"
+            android:drawableEnd="@android:drawable/arrow_down_float"
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

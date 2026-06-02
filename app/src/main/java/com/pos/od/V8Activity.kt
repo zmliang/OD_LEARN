@@ -10,7 +10,7 @@ class V8Activity:Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.v8_activity)
-        v8native().obj()
+        v8native().runScript()
     }
 
 }

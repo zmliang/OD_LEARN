@@ -13,20 +13,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.od.R;
+import com.pos.od.kb.NKeyboard;
 import com.pos.ui.MyComposeActivity;
-
 import com.zml.guide.GuiderCreator;
 import com.zml.guide.IGuiderLayer;
 import com.zml.guide.Offset;
@@ -36,12 +30,8 @@ import com.zml.guide.RoundCornerDrawable;
 
 import java.io.IOException;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Headers;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.annotations.Nullable;
 
 
 public class MainActivity extends Activity {
@@ -55,7 +45,6 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.main_activity);
 
         guide = GuiderCreator.Companion.create(this)
@@ -97,6 +86,13 @@ public class MainActivity extends Activity {
         ((Button)findViewById(R.id.go_compose)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                flag[0] = !flag[0];
+//                if (!flag[0]){
+//                    aav.setValue("999999.0000000abcedfft");
+//                }else {
+//                    aav.setValue("999");
+//                }
+
                 startActivity(new Intent(MainActivity.this, MyComposeActivity.class));
 
             }
@@ -110,19 +106,53 @@ public class MainActivity extends Activity {
             }
         });
 
+        ((Button)findViewById(R.id.go_v8)).setOnClickListener(new View.OnClickListener(){
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.test_rv);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        String[] array = new String[50];
-        for (int i = 0; i < array.length; i++) {
-            array[i] = "string " + i;
-        }
-        //Log.e("zml","最后一个="+String.valueOf(array[array.length-1]));
-        recyclerView.setAdapter(new ArrayAdapter(this, array));
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, V8Activity.class));
 
-        guide.show();
+            }
+        });
+
+
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.e("zml","权限通过了");
+        testSM3();
+    }
+
+    private void testSM3(){
+        try {
+            //File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            //String downloadsPath = downloadsDir.getAbsolutePath();
+           // Log.e("ZML","SM3 downloadsPath: " + downloadsPath);
+            //String p = "/storage/emulated/0/20240617490.zip";
+            //File file = new File(p);
+            String sm3Digest = SM3Utils.sm3Digest(this);
+            Log.e("ZML","SM3 Digest: " + (sm3Digest));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        NKeyboard.Companion.get().hide(this,true);
+        return super.onTouchEvent(event);
+    }
+
+    public void onBackPressed() {
+        if (NKeyboard.Companion.get().isKeyBoardShowing()) {
+            NKeyboard.Companion.get().hide(this,true);
+            return;
+        }
+        super.onBackPressed();
+    }
 
     private int dp2px(float dp) {
         return (int) TypedValue.applyDimension(
@@ -150,72 +180,6 @@ public class MainActivity extends Activity {
         super.onPause();
     }
 
-
-    static class ArrayAdapter extends RecyclerView.Adapter<ViewHolder>{
-
-        private String[] mArray;
-        private Context mContext;
-
-        public ArrayAdapter(Context context, String[] array) {
-            mContext = context;
-            mArray = array;
-        }
-
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-            return new ViewHolder(View.inflate(viewGroup.getContext(), android.R.layout.simple_list_item_1, null));
-        }
-
-        @Override
-        public void onBindViewHolder(ViewHolder viewHolder, int i) {
-            viewHolder.mTextView.setText(mArray[i]);
-        }
-
-        @Override
-        public int getItemCount() {
-            return mArray.length;
-        }
-    }
-
-    static class ViewHolder extends RecyclerView.ViewHolder{
-
-        public TextView mTextView;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            mTextView = (TextView) itemView;
-        }
-    }
-
-
-    private final OkHttpClient client = new OkHttpClient.Builder()
-            .build();
-
-    public void run() throws Exception {
-        Request request = new Request.Builder()
-                .url("https://www.wanandroid.com/article/list/1/json")
-                .build();
-
-        client.newCall(request)
-                .enqueue(new Callback() {
-            @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-                Log.i("zml","\r\n\r\n");
-                Headers responseHeaders = response.headers();
-                for (int i = 0; i < responseHeaders.size(); i++) {
-                    Log.i("zml",responseHeaders.name(i) + ": " + responseHeaders.value(i));
-                }
-
-                Log.i("zml",response.body().string());
-            }
-        });
-    }
 
 
 }

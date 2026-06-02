@@ -16,7 +16,7 @@ android {
             cmake {
                 cppFlags "-std=c++17"
                 cFlags "-std=c11"
-                abiFilters "armeabi-v7a" , "arm64-v8a"
+                abiFilters "arm64-v8a"
             }
         }
     }

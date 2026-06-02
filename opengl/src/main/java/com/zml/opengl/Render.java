@@ -62,7 +62,6 @@ public class Render implements GLSurfaceView.Renderer {
     }
 
     public boolean onTouchEvent(MotionEvent event){
-
         return nativeOnTouchEvent(event);
     }
     public void destroy(){

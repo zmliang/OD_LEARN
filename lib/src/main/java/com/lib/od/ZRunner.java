@@ -30,6 +30,35 @@ import java.util.stream.Collectors;
 
 public class ZRunner {
 
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode p = new ListNode();
+        ListNode header = p;
+        ListNode p1 = l1;
+        ListNode p2 = l2;
+        int c = 0;
+        while (p1!=null || p2!=null){
+            int a = p1==null?0:p1.value;
+            int b = p2==null?0:p2.value;
+            int value = a+b;
+            ListNode tmp = new ListNode();
+            tmp.value = value%10+c;
+            p.next = tmp;
+            p = tmp;
+
+            c = value/10;
+
+            if (p1!=null){
+                p1 = p1.next;
+            }
+           if (p2!=null){
+               p2 = p2.next;
+           }
+
+        }
+
+        return header.next;
+    }
+
 
     public static void main(String[] args) {
 

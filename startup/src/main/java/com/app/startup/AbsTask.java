@@ -53,7 +53,6 @@ public abstract class AbsTask {
         executor.execute(runnable);
     }
 
-
     private void notifyFinished(){
         if (taskList!=null && !taskList.isEmpty()){
             SortUtil.sort(taskList);

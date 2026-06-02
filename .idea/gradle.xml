@@ -14,10 +14,12 @@
             <option value="$PROJECT_DIR$/composeView" />
             <option value="$PROJECT_DIR$/guide" />
             <option value="$PROJECT_DIR$/lib" />
+            <option value="$PROJECT_DIR$/lib_websocket" />
             <option value="$PROJECT_DIR$/noHttp" />
             <option value="$PROJECT_DIR$/opengl" />
             <option value="$PROJECT_DIR$/startup" />
             <option value="$PROJECT_DIR$/tab" />
+            <option value="$PROJECT_DIR$/weitong" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />
